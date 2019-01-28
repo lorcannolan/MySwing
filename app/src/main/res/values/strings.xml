@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MySwing</string>
+
+    <string-array name="teeBoxes">
+        <item>Men\'s</item>
+        <item>Ladies</item>
+    </string-array>
+    <string name="title_activity_home">Home</string>
+    <string name="title_play">Play</string>
+    <string name="title_rounds">Rounds</string>
+    <string name="title_tournaments">Tournaments</string>
+    <string name="title_map">Map</string>
+    <string name="title_profile">Profile</string>
+</resources>
