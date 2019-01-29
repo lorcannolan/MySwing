@@ -32,12 +32,20 @@ public class Home extends AppCompatActivity {
                 case R.id.navigation_play:
                     break;
                 case R.id.navigation_rounds:
+                    Intent roundsIntent = new Intent(Home.this, Rounds.class);
+                    startActivity(roundsIntent);
                     break;
                 case R.id.navigation_tournaments:
+                    Intent tournamentsIntent = new Intent(Home.this, Tournaments.class);
+                    startActivity(tournamentsIntent);
                     break;
                 case R.id.navigation_map:
+                    Intent mapIntent = new Intent(Home.this, Map.class);
+                    startActivity(mapIntent);
                     break;
                 case R.id.navigation_profile:
+                    Intent profileIntent = new Intent(Home.this, Profile.class);
+                    startActivity(profileIntent);
                     break;
             }
             return false;
@@ -54,6 +62,9 @@ public class Home extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Menu menu = navigation.getMenu();
+        MenuItem mItem = menu.getItem(0);
+        mItem.setChecked(true);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
