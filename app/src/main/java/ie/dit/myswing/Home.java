@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.Menu;
@@ -18,37 +19,34 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Home extends AppCompatActivity {
 
-    private TextView mTextMessage;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private AppCompatButton signOut;
-
+    // Tutorial on BottomNavigationView followed at this source:
+    //      - https://www.youtube.com/watch?v=tPV8xA7m-iw
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_play:
+                    selectedFragment = new PlayFragment();
                     break;
                 case R.id.navigation_rounds:
-                    Intent roundsIntent = new Intent(Home.this, Rounds.class);
-                    startActivity(roundsIntent);
+                    selectedFragment = new RoundsFragment();
                     break;
                 case R.id.navigation_tournaments:
-                    Intent tournamentsIntent = new Intent(Home.this, Tournaments.class);
-                    startActivity(tournamentsIntent);
+                    selectedFragment = new TournamentsFragment();
                     break;
                 case R.id.navigation_map:
-                    Intent mapIntent = new Intent(Home.this, Map.class);
-                    startActivity(mapIntent);
+                    selectedFragment = new MapFragment();
                     break;
                 case R.id.navigation_profile:
-                    Intent profileIntent = new Intent(Home.this, Profile.class);
-                    startActivity(profileIntent);
+                    selectedFragment = new ProfileFragment();
                     break;
             }
-            return false;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    selectedFragment).commit();
+            return true;
         }
     };
 
@@ -57,51 +55,12 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        TextView title = (TextView)findViewById(R.id.playTitle);
-        title.setText(R.string.title_play);
-
         BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Menu menu = navigation.getMenu();
-        MenuItem mItem = menu.getItem(0);
-        mItem.setChecked(true);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                if (currentUser == null) {
-                    Toast.makeText(Home.this, "Signing out.", Toast.LENGTH_SHORT).show();
-                    Intent loginActivityIntent = new Intent(Home.this, Login.class);
-                    startActivity(loginActivityIntent);
-                }
-            }
-        };
-
-        signOut = (AppCompatButton)findViewById(R.id.signOut);
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-            }
-        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new PlayFragment()).commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            // If not removed, this listener will be active at all times
-            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
-        }
     }
 }
