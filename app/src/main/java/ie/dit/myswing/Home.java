@@ -32,17 +32,13 @@ public class Home extends AppCompatActivity {
                 case R.id.navigation_play:
                     break;
                 case R.id.navigation_rounds:
-                    mTextMessage.setText(R.string.title_rounds);
-                    return true;
+                    break;
                 case R.id.navigation_tournaments:
-                    mTextMessage.setText(R.string.title_tournaments);
-                    return true;
+                    break;
                 case R.id.navigation_map:
-                    mTextMessage.setText(R.string.title_map);
-                    return true;
+                    break;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
-                    return true;
+                    break;
             }
             return false;
         }
@@ -53,7 +49,9 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mTextMessage = (TextView)findViewById(R.id.message);
+        TextView title = (TextView)findViewById(R.id.playTitle);
+        title.setText(R.string.title_play);
+
         BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
