@@ -30,8 +30,7 @@ public class Home extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_play:
-                    mTextMessage.setText(R.string.title_play);
-                    return true;
+                    break;
                 case R.id.navigation_rounds:
                     mTextMessage.setText(R.string.title_rounds);
                     return true;

@@ -27,6 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ie.dit.myswing.Login" />
         </activity>
+        <activity android:name=".Rounds" />
+        <activity android:name=".Tournaments" />
+        <activity android:name=".Map" />
+        <activity android:name=".Profile"></activity>
     </application>
 
 </manifest>
