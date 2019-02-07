@@ -1,12 +1,15 @@
 package ie.dit.myswing;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,18 +33,23 @@ public class Home extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_play:
                     selectedFragment = new PlayFragment();
+                    getSupportActionBar().setTitle("Play");
                     break;
                 case R.id.navigation_rounds:
                     selectedFragment = new RoundsFragment();
+                    getSupportActionBar().setTitle("Rounds");
                     break;
                 case R.id.navigation_tournaments:
                     selectedFragment = new TournamentsFragment();
+                    getSupportActionBar().setTitle("Tournament");
                     break;
                 case R.id.navigation_map:
                     selectedFragment = new MapFragment();
+                    getSupportActionBar().setTitle("Map");
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = new ProfileFragment();
+                    getSupportActionBar().setTitle("Profile");
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -65,6 +73,7 @@ public class Home extends AppCompatActivity {
                 new PlayFragment()).commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("Play");
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -109,4 +118,7 @@ public class Home extends AppCompatActivity {
             FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
         }
     }
+
+
+
 }

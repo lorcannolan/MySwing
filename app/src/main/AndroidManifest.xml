@@ -27,6 +27,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ie.dit.myswing.Login" />
         </activity>
+        <activity android:name=".AddCourse"></activity>
     </application>
 
 </manifest>

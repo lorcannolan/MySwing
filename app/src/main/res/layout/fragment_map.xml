@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/searchText"
+            android:hint="Search Configured Courses"
+            android:textSize="18dp"
+            android:layout_toRightOf="@+id/search_mag_icon"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/search_mag_icon"
+            android:src="@drawable/ic_search_icon"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/playTitle"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"
-        android:text="Map"/>
+        android:id="@+id/add_course"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/ic_add_icon"
+        app:backgroundTint="@color/homeBackground"
+        android:scaleType="fitCenter"/>
 
 </RelativeLayout>
