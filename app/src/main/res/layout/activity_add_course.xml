@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCourse">
+    tools:context=".AddCourse"
+    android:id="@+id/add_course_layout">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -30,15 +31,15 @@
     </RelativeLayout>
 
     <ru.dimorinny.floatingtextbutton.FloatingTextButton
-        android:id="@+id/action_button"
+        android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:floating_background_color="@color/colorAccent"
         app:floating_left_icon="@drawable/ic_save_icon"
         app:floating_title="Save Course"
         app:floating_title_color="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"/>
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="16dp"
+        app:layout_behavior="ru.dimorinny.floatingtextbutton.behavior.SnackbarBehavior"/>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
