@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -76,7 +77,8 @@ public class AddCourse extends AppCompatActivity implements OnMapReadyCallback {
                 Place.Field.NAME,
                 Place.Field.LAT_LNG,
                 Place.Field.ADDRESS,
-                Place.Field.WEBSITE_URI
+                Place.Field.WEBSITE_URI,
+                Place.Field.PHOTO_METADATAS
         ));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {

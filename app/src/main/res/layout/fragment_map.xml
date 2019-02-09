@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:id="@+id/course_list"
             android:layout_below="@+id/search_bar_layout"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
         </ListView>
 
         <TextView
@@ -34,7 +34,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/searchText"
+                android:id="@+id/search_text"
                 android:hint="Search Configured Courses"
                 android:textSize="18dp"
                 android:layout_toRightOf="@+id/search_mag_icon"/>

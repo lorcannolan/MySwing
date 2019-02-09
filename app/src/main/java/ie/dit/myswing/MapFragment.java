@@ -7,12 +7,17 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +33,8 @@ import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 public class MapFragment extends Fragment {
 
     private FloatingTextButton addNewCourse;
-    private ArrayList<Course> courseList;
+    private EditText textBox;
+    private ArrayList<Course> courseList = new ArrayList<>();
     private CourseListAdapter courseListAdapter;
 
     DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
@@ -38,7 +44,7 @@ public class MapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        final View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         addNewCourse = (FloatingTextButton) view.findViewById(R.id.add_course);
         addNewCourse.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +56,32 @@ public class MapFragment extends Fragment {
             }
         });
 
+        loadAllCourses(view);
+
+        textBox = (EditText)view.findViewById(R.id.search_text);
+        textBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loadSearchedCourses(view);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        return view;
+    }
+
+    public void loadAllCourses(View view) {
         final ListView courseListView = (ListView)view.findViewById(R.id.course_list);
         final TextView empty = (TextView)view.findViewById(R.id.empty_text);
-        courseList = new ArrayList<>();
 
         courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -76,16 +105,49 @@ public class MapFragment extends Fragment {
                     }
                     courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
                     courseListView.setAdapter(courseListAdapter);
+                    courseListView.setDivider(null);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-        return view;
     }
 
+    public void loadSearchedCourses (View view) {
+        final ListView courseListView = (ListView)view.findViewById(R.id.course_list);
+        final TextView empty = (TextView)view.findViewById(R.id.empty_text);
 
+        if (textBox.getText().toString().equals("")) {
+            loadAllCourses(view);
+        }
+        else {
+            courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (!courseList.isEmpty()) {
+                        courseList.clear();
+                    }
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        if (data.child("name").getValue().toString().toLowerCase().contains(textBox.getText().toString().toLowerCase()) ) {
+                            Course course = new Course(
+                                    data.child("placesID").getValue().toString(),
+                                    data.child("name").getValue().toString(),
+                                    data.child("Address").getValue().toString(),
+                                    data.child("website").getValue().toString()
+                            );
+                            courseList.add(course);
+                        }
+                    }
+                    courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
+                    courseListView.setAdapter(courseListAdapter);
+                    courseListView.setDivider(null);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+    }
 
 }
