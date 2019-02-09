@@ -1,5 +1,6 @@
 package ie.dit.myswing;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -122,7 +123,12 @@ public class AddCourse extends AppCompatActivity implements OnMapReadyCallback {
                                 courseRef.child(id).child("Address").setValue(currentPlace.getAddress());
                                 courseRef.child(id).child("location").setValue(currentPlace.getLatLng());
                                 courseRef.child(id).child("website").setValue(currentPlace.getWebsiteUri().toString());
-                                Snackbar.make(container, "Data Saved to Database", Snackbar.LENGTH_LONG).show();
+
+                                // After adding new course, reload map fragment
+                                Intent goBackToListIntent = new Intent(AddCourse.this, Home.class);
+                                goBackToListIntent.putExtra("fragment", "Map");
+                                startActivity(goBackToListIntent);
+                                finish();
                             } else {
                                 Snackbar.make(container, "Data Already Exists in Database", Snackbar.LENGTH_LONG).show();
                             }

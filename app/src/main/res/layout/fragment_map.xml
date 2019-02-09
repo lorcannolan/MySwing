@@ -1,42 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="match_parent">
 
-        <EditText
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/searchText"
-            android:hint="Search Configured Courses"
-            android:textSize="18dp"
-            android:layout_toRightOf="@+id/search_mag_icon"/>
+            android:id="@+id/course_list"
+            android:layout_below="@+id/search_bar_layout"
+            android:layout_marginTop="10dp">
+        </ListView>
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/search_mag_icon"
-            android:src="@drawable/ic_search_icon"/>
+            android:id="@+id/empty_text"
+            android:gravity="center"
+            android:textSize="30sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/search_bar_layout">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/searchText"
+                android:hint="Search Configured Courses"
+                android:textSize="18dp"
+                android:layout_toRightOf="@+id/search_mag_icon"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/search_mag_icon"
+                android:src="@drawable/ic_search_icon"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_course"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
-        android:src="@drawable/ic_add_icon"
-        app:backgroundTint="@color/homeBackground"
-        android:scaleType="fitCenter"/>
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        app:floating_left_icon="@drawable/ic_add_icon"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_title_color="@color/white"
+        app:floating_title="New Course"/>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

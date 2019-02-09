@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Home extends AppCompatActivity {
+
+    private static final String TAG = "Home";
 
     // Tutorial on BottomNavigationView followed at this source:
     //      - https://www.youtube.com/watch?v=tPV8xA7m-iw
@@ -69,11 +72,21 @@ public class Home extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new PlayFragment()).commit();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("Play");
+
+        Intent i = getIntent();
+        String moveToFragment = i.getStringExtra("fragment");
+        if (moveToFragment == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new PlayFragment()).commit();
+            getSupportActionBar().setTitle("Play");
+        }
+        // Moves to map fragment directly after course was added
+        else if (moveToFragment.contentEquals("Map")){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MapFragment()).commit();
+            getSupportActionBar().setTitle("Map");
+        }
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
