@@ -48,7 +48,7 @@ public class Home extends AppCompatActivity {
                     break;
                 case R.id.navigation_map:
                     selectedFragment = new MapFragment();
-                    getSupportActionBar().setTitle("Map");
+                    getSupportActionBar().setTitle("Choose Course to Configure");
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = new ProfileFragment();

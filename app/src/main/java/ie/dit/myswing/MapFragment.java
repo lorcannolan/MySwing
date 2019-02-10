@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +38,9 @@ public class MapFragment extends Fragment {
     private ArrayList<Course> courseList = new ArrayList<>();
     private CourseListAdapter courseListAdapter;
 
+    private ListView courseListView;
+    private TextView empty;
+
     DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
 
     private static final String TAG = "MapFragment";
@@ -55,6 +59,9 @@ public class MapFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        courseListView = (ListView)view.findViewById(R.id.course_list);
+        empty = (TextView)view.findViewById(R.id.empty_text);
 
         loadAllCourses(view);
 
@@ -76,13 +83,22 @@ public class MapFragment extends Fragment {
             }
         });
 
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Course selectedCourse = (Course) parent.getItemAtPosition(position);
+                Intent configureCourseIntent = new Intent(getActivity(), ConfigureCourse.class);
+                configureCourseIntent.putExtra("courseName", selectedCourse.getName());
+                startActivity(configureCourseIntent);
+                getActivity().finish();
+            }
+
+        });
+
         return view;
     }
 
     public void loadAllCourses(View view) {
-        final ListView courseListView = (ListView)view.findViewById(R.id.course_list);
-        final TextView empty = (TextView)view.findViewById(R.id.empty_text);
-
         courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,9 +131,6 @@ public class MapFragment extends Fragment {
     }
 
     public void loadSearchedCourses (View view) {
-        final ListView courseListView = (ListView)view.findViewById(R.id.course_list);
-        final TextView empty = (TextView)view.findViewById(R.id.empty_text);
-
         if (textBox.getText().toString().equals("")) {
             loadAllCourses(view);
         }
