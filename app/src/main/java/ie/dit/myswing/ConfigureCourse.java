@@ -1,6 +1,8 @@
 package ie.dit.myswing;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class ConfigureCourse extends AppCompatActivity {
+
+    private TabLayout tabLayout;
+
+    private TabLayout.OnTabSelectedListener mOnTabSelectedListener
+            = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            Fragment selectedTab = null;
+            switch (tab.getText().toString()) {
+                case "Map":
+                    selectedTab = new ConfigureMapFragment();
+                    break;
+                case "Scorecard":
+                    selectedTab = new ConfigureScorecardFragment();
+                    break;
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.tab_container,
+                    selectedTab).commit();
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {}
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {}
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +47,14 @@ public class ConfigureCourse extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("Configure " + courseName);
+
+        tabLayout = (TabLayout)findViewById(R.id.tab_navigation);
+        tabLayout.addTab(tabLayout.newTab().setText("Map"));
+        tabLayout.addTab(tabLayout.newTab().setText("Scorecard"));
+        tabLayout.addOnTabSelectedListener(mOnTabSelectedListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.tab_container,
+                new ConfigureMapFragment()).commit();
     }
 
     @Override
@@ -36,5 +72,11 @@ public class ConfigureCourse extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        tabLayout.removeOnTabSelectedListener(mOnTabSelectedListener);
     }
 }
