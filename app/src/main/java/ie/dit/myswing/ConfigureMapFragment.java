@@ -3,6 +3,7 @@ package ie.dit.myswing;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import ru.dimorinny.floatingtextbutton.FloatingTextButton;
+
 public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback, ConfigureCourse.OnLatLangReceivedListener {
 
     private GoogleMap myMap;
@@ -24,7 +27,7 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
     private String longitude;
     private LatLng latLng;
 
-    private ConfigureCourse configureCourseAcitvity;
+    private FloatingTextButton zoom;
 
     private static final String TAG = "ConfigureMapFragment";
 
@@ -36,8 +39,16 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.add_course_locations_map);
         mapFragment.getMapAsync(this);
 
-        configureCourseAcitvity = (ConfigureCourse) getActivity();
+        ConfigureCourse configureCourseAcitvity = (ConfigureCourse) getActivity();
         configureCourseAcitvity.setLatLngListener(this);
+
+        zoom = (FloatingTextButton)view.findViewById(R.id.focus);
+        zoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveCam(latLng);
+            }
+        });
 
         return view;
     }
@@ -46,10 +57,9 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         myMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-        MarkerOptions courseLocation = new MarkerOptions()
-                .position(latLng);
-        myMap.addMarker(courseLocation);
+        if (latLng != null) {
+            moveCam(latLng);
+        }
     }
 
     @Override
@@ -58,5 +68,12 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
                 Double.parseDouble(latitude),
                 Double.parseDouble(longitude)
         );
+    }
+
+    public void moveCam(LatLng latLng) {
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+        MarkerOptions courseLocation = new MarkerOptions()
+                .position(latLng);
+        myMap.addMarker(courseLocation);
     }
 }

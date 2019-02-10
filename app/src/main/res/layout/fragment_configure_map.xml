@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -9,4 +11,16 @@
         android:id="@+id/add_course_locations_map"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-</android.support.constraint.ConstraintLayout>
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/focus"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        app:floating_title="Focus On Course"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_title_color="@color/white">
+    </ru.dimorinny.floatingtextbutton.FloatingTextButton>
+
+</RelativeLayout>
