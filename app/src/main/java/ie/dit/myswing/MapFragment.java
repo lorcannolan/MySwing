@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,7 +89,7 @@ public class MapFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course selectedCourse = (Course) parent.getItemAtPosition(position);
                 Intent configureCourseIntent = new Intent(getActivity(), ConfigureCourse.class);
-                configureCourseIntent.putExtra("courseName", selectedCourse.getName());
+                configureCourseIntent.putExtra("coursePlacesID", selectedCourse.getPlacesID());
                 startActivity(configureCourseIntent);
                 getActivity().finish();
             }

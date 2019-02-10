@@ -1,10 +1,13 @@
 package ie.dit.myswing;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Course {
     private String placesID;
     private String name;
     private String address;
     private String websiteURI;
+    private LatLng latLng;
 
     public Course (String placesID, String name, String address, String websiteURI) {
         this.placesID = placesID;
