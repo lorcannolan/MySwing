@@ -29,8 +29,6 @@ public class ConfigureCourse extends AppCompatActivity {
     private String courseLatitude;
     private String courseLongitude;
 
-    private OnLatLangReceivedListener mLatLngListener;
-
     private static final String TAG = "ConfigureCourse";
 
     DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
@@ -39,8 +37,6 @@ public class ConfigureCourse extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_course);
-
-        setTitleAndLatLng();
 
         // Originally, content was stored in frame layout. However, this was changed to view pager
         // to allow swiping between tabs. This also prevents map tab fragment from reloading.
@@ -51,55 +47,10 @@ public class ConfigureCourse extends AppCompatActivity {
 
         tabLayout = (TabLayout)findViewById(R.id.tab_navigation);
         tabLayout.setupWithViewPager(mViewPager);
-    }
 
-    public void setTitleAndLatLng() {
         Intent i = getIntent();
-        final String coursePlacesID = i.getStringExtra("coursePlacesID");
-
-        courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    // If data exists in database, break and set boolean
-                    if (data.child("placesID").getValue().toString().equals(coursePlacesID)) {
-                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                        getSupportActionBar().setTitle("Configure " + data.child("name").getValue().toString());
-                        setCourseLatitude(data.child("location").child("latitude").getValue().toString());
-                        setCourseLongitude(data.child("location").child("longitude").getValue().toString());
-                        break;
-                    }
-                }
-                mLatLngListener.onLatLngReceived(getCourseLatitude(), getCourseLongitude());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-    }
-
-    public interface OnLatLangReceivedListener {
-        void onLatLngReceived(String latitude, String longitude);
-    }
-
-    public void setLatLngListener(OnLatLangReceivedListener listener) {
-        this.mLatLngListener = listener;
-    }
-
-    public void setCourseLatitude(String courseLatitude) {
-        this.courseLatitude = courseLatitude;
-    }
-
-    public void setCourseLongitude(String courseLongitude) {
-        this.courseLongitude = courseLongitude;
-    }
-
-    public String getCourseLatitude() {
-        return courseLatitude;
-    }
-
-    public String getCourseLongitude() {
-        return courseLongitude;
+        String courseName = i.getStringExtra("courseName");
+        getSupportActionBar().setTitle("Configure " + courseName);
     }
 
     public void setupViewPager (ViewPager viewPager) {

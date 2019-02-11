@@ -90,6 +90,9 @@ public class MapFragment extends Fragment {
                 Course selectedCourse = (Course) parent.getItemAtPosition(position);
                 Intent configureCourseIntent = new Intent(getActivity(), ConfigureCourse.class);
                 configureCourseIntent.putExtra("coursePlacesID", selectedCourse.getPlacesID());
+                configureCourseIntent.putExtra("courseName", selectedCourse.getName());
+                configureCourseIntent.putExtra("courseLatitude", selectedCourse.getLatitude());
+                configureCourseIntent.putExtra("courseLongitude", selectedCourse.getLongitude());
                 startActivity(configureCourseIntent);
                 getActivity().finish();
             }
@@ -116,7 +119,9 @@ public class MapFragment extends Fragment {
                                 data.child("placesID").getValue().toString(),
                                 data.child("name").getValue().toString(),
                                 data.child("Address").getValue().toString(),
-                                data.child("website").getValue().toString()
+                                data.child("website").getValue().toString(),
+                                data.child("location").child("latitude").getValue().toString(),
+                                data.child("location").child("longitude").getValue().toString()
                         );
                         courseList.add(course);
                     }
@@ -148,7 +153,9 @@ public class MapFragment extends Fragment {
                                     data.child("placesID").getValue().toString(),
                                     data.child("name").getValue().toString(),
                                     data.child("Address").getValue().toString(),
-                                    data.child("website").getValue().toString()
+                                    data.child("website").getValue().toString(),
+                                    data.child("location").child("latitude").getValue().toString(),
+                                    data.child("location").child("longitude").getValue().toString()
                             );
                             courseList.add(course);
                         }

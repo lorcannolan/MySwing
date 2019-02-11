@@ -7,13 +7,16 @@ public class Course {
     private String name;
     private String address;
     private String websiteURI;
-    private LatLng latLng;
+    private String latitude;
+    private String longitude;
 
-    public Course (String placesID, String name, String address, String websiteURI) {
+    public Course (String placesID, String name, String address, String websiteURI, String latitude, String longitude) {
         this.placesID = placesID;
         this.name = name;
         this.address = address;
         this.websiteURI = websiteURI;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getPlacesID() {
@@ -32,6 +35,14 @@ public class Course {
         return websiteURI;
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
     public void setPlacesID(String placesID) {
         this.placesID = placesID;
     }
@@ -46,5 +57,13 @@ public class Course {
 
     public void setWebsiteURI(String websiteURI) {
         this.websiteURI = websiteURI;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }
