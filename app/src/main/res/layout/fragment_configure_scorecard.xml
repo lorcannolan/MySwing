@@ -9,6 +9,7 @@
         android:layout_height="45dp"
         android:id="@+id/top_dropdowns"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true">
 
         <Spinner
@@ -27,46 +28,59 @@
 
     </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:id="@+id/hole"
-        android:layout_below="@id/top_dropdowns"
-        android:layout_marginLeft="20dp"
-        android:textSize="20sp"
-        android:text="Hole"
-        android:textStyle="bold"
-        android:textColor="@color/homeBackgroundDark"/>
+        android:id="@+id/headers"
+        android:layout_below="@id/top_dropdowns">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:id="@+id/par"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/top_dropdowns"
-        android:textSize="20sp"
-        android:text="Par"
-        android:textStyle="bold"
-        android:textColor="@color/homeBackgroundDark"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/hole"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:text="Hole"
+            android:textStyle="bold"
+            android:textColor="@color/homeBackgroundDark"/>
 
-    <TextView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/par"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:text="Par"
+            android:textStyle="bold"
+            android:textColor="@color/homeBackgroundDark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/index"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textSize="20sp"
+            android:text="Index"
+            android:textStyle="bold"
+            android:textColor="@color/homeBackgroundDark"/>
+
+    </RelativeLayout>
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:id="@+id/index"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_below="@id/top_dropdowns"
-        android:textSize="20sp"
-        android:text="Index"
-        android:textStyle="bold"
-        android:textColor="@color/homeBackgroundDark"/>
+        android:id="@+id/divider"
+        android:layout_height="5px"
+        android:layout_below="@+id/headers"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/homeBackgroundDark" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/hole_number_list"
-        android:layout_below="@id/hole"
-        android:layout_marginTop="10dp">
+        android:layout_below="@id/headers">
     </ListView>
 
 </RelativeLayout>

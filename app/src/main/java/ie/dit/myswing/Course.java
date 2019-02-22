@@ -3,6 +3,7 @@ package ie.dit.myswing;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Course {
+    private String firebaseKey;
     private String placesID;
     private String name;
     private String address;
@@ -10,13 +11,18 @@ public class Course {
     private String latitude;
     private String longitude;
 
-    public Course (String placesID, String name, String address, String websiteURI, String latitude, String longitude) {
+    public Course (String firebaseKey, String placesID, String name, String address, String websiteURI, String latitude, String longitude) {
+        this.firebaseKey = firebaseKey;
         this.placesID = placesID;
         this.name = name;
         this.address = address;
         this.websiteURI = websiteURI;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public String getFirebaseKey() {
+        return firebaseKey;
     }
 
     public String getPlacesID() {
@@ -41,6 +47,10 @@ public class Course {
 
     public String getLongitude() {
         return longitude;
+    }
+
+    public void setFirebaseKey(String firebaseKey) {
+        this.firebaseKey = firebaseKey;
     }
 
     public void setPlacesID(String placesID) {

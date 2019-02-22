@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
@@ -42,7 +44,12 @@ public class MapFragment extends Fragment {
     private ListView courseListView;
     private TextView empty;
 
+    private boolean holesFieldPresent = false;
+
     DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
+
+    private Course selectedCourse;
+    private Map<String, Object> postValues;
 
     private static final String TAG = "MapFragment";
 
@@ -87,19 +94,57 @@ public class MapFragment extends Fragment {
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Course selectedCourse = (Course) parent.getItemAtPosition(position);
+                selectedCourse = (Course) parent.getItemAtPosition(position);
                 Intent configureCourseIntent = new Intent(getActivity(), ConfigureCourse.class);
+                configureCourseIntent.putExtra("courseFirebaseKey", selectedCourse.getFirebaseKey());
                 configureCourseIntent.putExtra("coursePlacesID", selectedCourse.getPlacesID());
                 configureCourseIntent.putExtra("courseName", selectedCourse.getName());
                 configureCourseIntent.putExtra("courseLatitude", selectedCourse.getLatitude());
                 configureCourseIntent.putExtra("courseLongitude", selectedCourse.getLongitude());
+
+                // Add new default data for each hole to database if it doesn't already exist
+                courseRef.child(selectedCourse.getFirebaseKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        postValues = new HashMap<String, Object>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            postValues.put(data.getKey(), data.getValue());
+                            if (data.getKey().equalsIgnoreCase("holes")) {
+                                holesFieldPresent = true;
+                            }
+                        }
+
+                        if (!holesFieldPresent) {
+                            addDefaultData();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+
                 startActivity(configureCourseIntent);
-                getActivity().finish();
+                //getActivity().finish();
             }
 
         });
 
         return view;
+    }
+
+    public void addDefaultData() {
+        Map<String, Object> holes = new HashMap<String, Object>();
+        for (int i = 1; i <= 18; i++) {
+            Map<String, Object> hole = new HashMap<String, Object>();
+            hole.put("number", i);
+            hole.put("mens par", 3);
+            hole.put("ladies par", 3);
+            hole.put("mens index", 1);
+            hole.put("ladies index", 1);
+            holes.put(i + "", hole);
+        }
+        postValues.put("holes", holes);
+        courseRef.child(selectedCourse.getFirebaseKey()).updateChildren(postValues);
     }
 
     public void loadAllCourses(View view) {
@@ -116,6 +161,7 @@ public class MapFragment extends Fragment {
                     }
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Course course = new Course(
+                                data.getKey(),
                                 data.child("placesID").getValue().toString(),
                                 data.child("name").getValue().toString(),
                                 data.child("Address").getValue().toString(),
@@ -150,6 +196,7 @@ public class MapFragment extends Fragment {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         if (data.child("name").getValue().toString().toLowerCase().contains(textBox.getText().toString().toLowerCase()) ) {
                             Course course = new Course(
+                                    data.getKey(),
                                     data.child("placesID").getValue().toString(),
                                     data.child("name").getValue().toString(),
                                     data.child("Address").getValue().toString(),
