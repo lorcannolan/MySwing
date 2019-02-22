@@ -37,6 +37,7 @@ public class ScorecardAdapter extends ArrayAdapter<String> {
     private String mGender;
 
     private EditText holeParEditText, holeIndexEditText;
+    // Array lists to store each edit text when they are being created to be able to access them later after being created
     private ArrayList<EditText> holeParEditTextList = new ArrayList<>();
     private ArrayList<EditText> holeIndexEditTextList = new ArrayList<>();
 
@@ -101,6 +102,7 @@ public class ScorecardAdapter extends ArrayAdapter<String> {
                     public void onClick(DialogInterface dialog, int which) {
                         Resources res = getContext().getResources();
                         String[] pars = res.getStringArray(R.array.pars);
+                        // Sets the text of the edit text widget that was clicked by using an ArrayList to store all of the individual edit texts
                         holeParEditTextList.get(mPosition).setText(pars[which]);
                         int holeNumber = Integer.parseInt(getItem(mPosition));
                         if (mGender.equalsIgnoreCase("ladies")) {

@@ -22,6 +22,22 @@
         <item>13</item><item>14</item><item>15</item>
         <item>16</item><item>17</item><item>18</item>
     </string-array>
+    <string-array name="hole_numbers">
+        <item>-Select Hole-</item>
+        <item>1</item><item>2</item><item>3</item>
+        <item>4</item><item>5</item><item>6</item>
+        <item>7</item><item>8</item><item>9</item>
+        <item>10</item><item>11</item><item>12</item>
+        <item>13</item><item>14</item><item>15</item>
+        <item>16</item><item>17</item><item>18</item>
+    </string-array>
+    <string-array name="location_type">
+        <item>Men\'s Tee Box</item>
+        <item>Ladies Tee Box</item>
+        <item>Front of Green</item>
+        <item>Middle of Green</item>
+        <item>Back of Green</item>
+    </string-array>
     <string name="title_activity_home">Home</string>
     <string name="title_play">Play</string>
     <string name="title_rounds">Rounds</string>

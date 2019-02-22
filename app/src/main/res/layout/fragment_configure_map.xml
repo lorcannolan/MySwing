@@ -11,4 +11,23 @@
         android:id="@+id/add_course_locations_map"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:id="@+id/spinner_container"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/choose_hole"
+            android:textAlignment="center"
+            android:popupBackground="#E6FFFFFF">
+        </Spinner>
+
+    </RelativeLayout>
+
 </RelativeLayout>

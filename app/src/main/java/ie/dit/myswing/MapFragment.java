@@ -141,6 +141,31 @@ public class MapFragment extends Fragment {
             hole.put("ladies par", 3);
             hole.put("mens index", 1);
             hole.put("ladies index", 1);
+            hole.put("mens tee box", new LatLng(
+                    Double.parseDouble(selectedCourse.getLatitude()),
+                    Double.parseDouble(selectedCourse.getLongitude())
+                )
+            );
+            hole.put("ladies tee box", new LatLng(
+                            Double.parseDouble(selectedCourse.getLatitude()),
+                            Double.parseDouble(selectedCourse.getLongitude())
+                    )
+            );
+            hole.put("front green", new LatLng(
+                            Double.parseDouble(selectedCourse.getLatitude()),
+                            Double.parseDouble(selectedCourse.getLongitude())
+                    )
+            );
+            hole.put("middle green", new LatLng(
+                            Double.parseDouble(selectedCourse.getLatitude()),
+                            Double.parseDouble(selectedCourse.getLongitude())
+                    )
+            );
+            hole.put("back green", new LatLng(
+                            Double.parseDouble(selectedCourse.getLatitude()),
+                            Double.parseDouble(selectedCourse.getLongitude())
+                    )
+            );
             holes.put(i + "", hole);
         }
         postValues.put("holes", holes);
