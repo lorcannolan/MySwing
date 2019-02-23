@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebStorage;
 import android.widget.DatePicker;
@@ -23,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +37,8 @@ public class Register extends AppCompatActivity {
     private EditText fname, sname, email, pwd, dob, gender;
     private AppCompatButton register;
     private FirebaseAuth mAuth;
+
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +142,13 @@ public class Register extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        // Add User Data To Firebase
+                                        String id = mAuth.getCurrentUser().getUid();
+                                        usersRef.child(id).child("first name").setValue(fname.getText().toString());
+                                        usersRef.child(id).child("last name").setValue(sname.getText().toString());
+                                        usersRef.child(id).child("dob").setValue(dob.getText().toString());
+                                        usersRef.child(id).child("tee box").setValue(gender.getText().toString());
+
                                         // Sign in success, update UI with the signed-in user's information
                                         Intent homeIntent = new Intent(Register.this, Home.class);
                                         startActivity(homeIntent);

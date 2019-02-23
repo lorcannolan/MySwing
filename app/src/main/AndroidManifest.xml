@@ -47,7 +47,8 @@
                 android:value="ie.dit.myswing.Login" />
         </activity>
         <activity android:name=".AddCourse" />
-        <activity android:name=".ConfigureCourse"></activity>
+        <activity android:name=".ConfigureCourse" />
+        <activity android:name=".ConfirmRound"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfirmRound"
+    android:id="@+id/confirm_round_layout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/handicap_layout"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/handicap"
+                android:text="Handicap: "
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/enter_handicap"
+                android:hint="Enter Handicap"
+                android:layout_toRightOf="@+id/handicap"
+                android:inputType="number"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/handicap_layout"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/course"
+                android:text="Selected Course: "
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_alignParentLeft="true"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/course"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selected_course"
+                    android:text="Selected Course: "
+                    android:textSize="18sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="10dp"/>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/change_course"
+                    android:text="Change"
+                    android:textColor="@color/white"
+                    android:background="@color/homeBackgroundDark"
+                    android:layout_toRightOf="@id/selected_course"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="20dp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirm_round"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="16dp"
+        app:floating_left_icon="@drawable/ic_check_box_white_24dp"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_title_color="@color/white"
+        app:floating_title="Confirm Course"
+        app:layout_behavior="ru.dimorinny.floatingtextbutton.behavior.SnackbarBehavior"/>
+
+</android.support.design.widget.CoordinatorLayout>

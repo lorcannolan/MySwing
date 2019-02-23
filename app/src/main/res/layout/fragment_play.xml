@@ -4,12 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/playTitle"
-        android:textSize="30dp"
-        android:layout_centerInParent="true"
-        android:text="Play"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/play_course_list"
+            android:layout_below="@+id/play_search_bar_layout"
+            android:layout_marginTop="5dp">
+        </ListView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/play_empty_text"
+            android:gravity="center"
+            android:textSize="30sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/play_search_bar_layout">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/play_search_text"
+                android:hint="Search Saved Courses"
+                android:textSize="18dp"
+                android:layout_toRightOf="@+id/play_search_mag_icon"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/play_search_mag_icon"
+                android:src="@drawable/ic_search_icon"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

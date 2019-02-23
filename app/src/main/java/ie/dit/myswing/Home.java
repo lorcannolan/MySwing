@@ -38,7 +38,7 @@ public class Home extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_play:
                     selectedFragment = new PlayFragment();
-                    getSupportActionBar().setTitle("Play");
+                    getSupportActionBar().setTitle("Select Course to Play");
                     break;
                 case R.id.navigation_rounds:
                     selectedFragment = new RoundsFragment();
@@ -81,7 +81,7 @@ public class Home extends AppCompatActivity {
         if (moveToFragment == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new PlayFragment()).commit();
-            getSupportActionBar().setTitle("Play");
+            getSupportActionBar().setTitle("Select Course to Play");
         }
         // Moves to map fragment directly after course was added
         else if (moveToFragment.contentEquals("Map")){
