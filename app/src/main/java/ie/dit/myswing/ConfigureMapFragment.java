@@ -26,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -86,7 +87,7 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
                     MarkerOptions courseLocation = new MarkerOptions()
                             .position(courseLatLng)
                             .title(courseName)
-                            .draggable(true);
+                            .draggable(false);
                     myMap.addMarker(courseLocation);
                 }
                 else {
@@ -208,15 +209,47 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
             MarkerOptions courseLocation = new MarkerOptions()
                     .position(courseLatLng)
                     .title(courseName)
-                    .draggable(true);
+                    .draggable(false);
             myMap.addMarker(courseLocation);
             Snackbar.make(getView(), "No saved locations for hole " + selectedHole, Snackbar.LENGTH_LONG).show();
         }
         else {
             LatLngBounds mapBounds = mapBoundsBuilder.build();
+//            CameraPosition cameraPosition = new CameraPosition.Builder()
+//                    .bearing(90)
+//                    .zoom(getBoundsZoomLeve)
+//                    .build();
             myMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds, 100));
         }
     }
+
+    // TODO:
+    // Come back to this: https://stackoverflow.com/questions/14631334/android-maps-v2-newlatlngbounds-with-bearing
+//    public int getBoundsZoomLevel(LatLngBounds bounds, int mapWidthPx, int mapHeightPx){
+//
+//        LatLng ne = bounds.northeast;
+//        LatLng sw = bounds.southwest;
+//
+//        double latFraction = (latRad(ne.latitude) - latRad(sw.latitude)) / Math.PI;
+//
+//        double lngDiff = ne.longitude - sw.longitude;
+//        double lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+//
+//        double latZoom = zoom(mapHeightPx, WORLD_PX_HEIGHT, latFraction);
+//        double lngZoom = zoom(mapWidthPx, WORLD_PX_WIDTH, lngFraction);
+//
+//        int result = Math.min((int)latZoom, (int)lngZoom);
+//        return Math.min(result, ZOOM_MAX);
+//    }
+//
+//    private double latRad(double lat) {
+//        double sin = Math.sin(lat * Math.PI / 180);
+//        double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+//        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+//    }
+//    private double zoom(int mapPx, int worldPx, double fraction) {
+//        return Math.floor(Math.log(mapPx / worldPx / fraction) / LN2);
+//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -225,56 +258,58 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
         myMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Select the Location Type for this Marker.");
-                builder.setItems(R.array.location_type, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Resources res = getContext().getResources();
-                        String[] locationType = res.getStringArray(R.array.location_type);
-                        String chosenLocationType = (locationType[which]);
-                        String firebasePath = "";
-                        if (!selectedHole.equalsIgnoreCase("-select hole-")) {
-                            switch (chosenLocationType) {
-                                case "Men's Tee Box":
-                                    firebasePath = "mens tee box";
-                                    break;
-                                case "Ladies Tee Box":
-                                    firebasePath = "ladies tee box";
-                                    break;
-                                case "Front of Green":
-                                    firebasePath = "front green";
-                                    break;
-                                case "Middle of Green":
-                                    firebasePath = "middle green";
-                                    break;
-                                case "Back of Green":
-                                    firebasePath = "back green";
-                                    break;
-                            }
-                            holesRef.child(selectedHole).child(firebasePath).setValue(latLng);
-                            myMap.clear();
-                            holesRef.child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    displayMarkers(dataSnapshot);
+                if (!selectedHole.equalsIgnoreCase("-select hole-")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Select the Location Type for this Marker.");
+                    builder.setItems(R.array.location_type, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Resources res = getContext().getResources();
+                            String[] locationType = res.getStringArray(R.array.location_type);
+                            String chosenLocationType = (locationType[which]);
+                            String firebasePath = "";
+                            if (!selectedHole.equalsIgnoreCase("-select hole-")) {
+                                switch (chosenLocationType) {
+                                    case "Men's Tee Box":
+                                        firebasePath = "mens tee box";
+                                        break;
+                                    case "Ladies Tee Box":
+                                        firebasePath = "ladies tee box";
+                                        break;
+                                    case "Front of Green":
+                                        firebasePath = "front green";
+                                        break;
+                                    case "Middle of Green":
+                                        firebasePath = "middle green";
+                                        break;
+                                    case "Back of Green":
+                                        firebasePath = "back green";
+                                        break;
                                 }
+                                holesRef.child(selectedHole).child(firebasePath).setValue(latLng);
+                                myMap.clear();
+                                holesRef.child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        displayMarkers(dataSnapshot);
+                                    }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {}
-                            });
-                        }
-                    }
-                });
-                builder.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                });
                             }
-                        });
+                        }
+                    });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                AlertDialog chooselocationType = builder.create();
-                chooselocationType.show();
+                    AlertDialog chooselocationType = builder.create();
+                    chooselocationType.show();
+                }
             }
         });
 
@@ -290,24 +325,26 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                String firebasePath = "";
-                if (marker.getTitle().contains("Men's")) {
-                    firebasePath = "mens tee box";
+                if (!marker.getTitle().equalsIgnoreCase(courseName)) {
+                    String firebasePath = "";
+                    if (marker.getTitle().contains("Men's")) {
+                        firebasePath = "mens tee box";
+                    }
+                    else if (marker.getTitle().contains("Ladies")) {
+                        firebasePath = "ladies tee box";
+                    }
+                    else if (marker.getTitle().contains("Front")) {
+                        firebasePath = "front green";
+                    }
+                    else if (marker.getTitle().contains("Middle")) {
+                        firebasePath = "middle green";
+                    }
+                    else if (marker.getTitle().contains("Back")) {
+                        firebasePath = "back green";
+                    }
+                    holesRef.child(selectedHole).child(firebasePath).child("latitude").setValue(marker.getPosition().latitude);
+                    holesRef.child(selectedHole).child(firebasePath).child("longitude").setValue(marker.getPosition().longitude);
                 }
-                else if (marker.getTitle().contains("Ladies")) {
-                    firebasePath = "ladies tee box";
-                }
-                else if (marker.getTitle().contains("Front")) {
-                    firebasePath = "front green";
-                }
-                else if (marker.getTitle().contains("Middle")) {
-                    firebasePath = "middle green";
-                }
-                else if (marker.getTitle().contains("Back")) {
-                    firebasePath = "back green";
-                }
-                holesRef.child(selectedHole).child(firebasePath).child("latitude").setValue(marker.getPosition().latitude);
-                holesRef.child(selectedHole).child(firebasePath).child("longitude").setValue(marker.getPosition().longitude);
             }
         });
     }
