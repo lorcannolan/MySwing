@@ -16,15 +16,6 @@
         app:tabIndicatorColor="@color/white">
     </android.support.design.widget.TabLayout>
 
-    <!--
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tab_container"
-        android:layout_below="@+id/tab_navigation">
-    </FrameLayout>
-    -->
-
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"

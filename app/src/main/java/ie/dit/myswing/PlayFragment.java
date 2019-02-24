@@ -85,7 +85,7 @@ public class PlayFragment extends Fragment {
                 confirmRoundIntent.putExtra("courseLongitude", selectedCourse.getLongitude());
 
                 startActivity(confirmRoundIntent);
-                //getActivity().finish();
+                getActivity().finish();
             }
 
         });

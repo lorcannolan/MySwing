@@ -48,7 +48,8 @@
         </activity>
         <activity android:name=".AddCourse" />
         <activity android:name=".ConfigureCourse" />
-        <activity android:name=".ConfirmRound"></activity>
+        <activity android:name=".ConfirmRound" />
+        <activity android:name=".PlayMapAndScorecard"></activity>
     </application>
 
 </manifest>
