@@ -4,10 +4,141 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/play_score_and_nine"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:weightSum="100">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/total_score_container"
+            android:layout_weight="50">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:id="@+id/total_score"
+                android:text="Total Score:"
+                android:gravity="center_vertical"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:id="@+id/round_score"
+                android:gravity="center_vertical"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_toRightOf="@+id/total_score"
+                android:layout_toEndOf="@+id/total_score"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/nine_spinner_container"
+            android:layout_weight="50">
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/play_choose_nine"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/play_headers"
+        android:layout_below="@id/play_score_and_nine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/play_headers_linear"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/play_hole"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Hole"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_weight="25"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/play_par"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Par"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_weight="25"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/play_index"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Index"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_weight="25"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/hole_score"
+                android:gravity="center_horizontal"
+                android:textSize="20sp"
+                android:text="Score"
+                android:textStyle="bold"
+                android:textColor="@color/homeBackgroundDark"
+                android:layout_weight="25"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Play Scorecard Fragment"/>
+        android:id="@+id/divider"
+        android:layout_height="5px"
+        android:layout_below="@+id/play_headers"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/homeBackgroundDark" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/play_hole_data_list"
+        android:layout_below="@id/play_headers">
+    </ListView>
 
 </RelativeLayout>

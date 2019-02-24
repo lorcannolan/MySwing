@@ -21,7 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
@@ -43,7 +45,7 @@ public class ConfirmRound extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Intent i = getIntent();
-        String courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
+        final String courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
         String coursePlacesID = i.getStringExtra("coursePlacesID");
         final String courseName = i.getStringExtra("courseName");
         String courseLatitude = i.getStringExtra("courseLatitude");
@@ -91,6 +93,9 @@ public class ConfirmRound extends AppCompatActivity {
 
                             Intent startPlayingIntent = new Intent(ConfirmRound.this, PlayMapAndScorecard.class);
                             startPlayingIntent.putExtra("courseName", courseName);
+                            startPlayingIntent.putExtra("userGender", dataSnapshot.child("tee box").getValue().toString());
+                            startPlayingIntent.putExtra("courseFirebaseKey", courseFirebaseKey);
+                            startPlayingIntent.putExtra("roundID", roundID);
                             startActivity(startPlayingIntent);
                             finish();
                         }
