@@ -48,8 +48,8 @@ public class ConfirmRound extends AppCompatActivity {
         final String courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
         String coursePlacesID = i.getStringExtra("coursePlacesID");
         final String courseName = i.getStringExtra("courseName");
-        String courseLatitude = i.getStringExtra("courseLatitude");
-        String courseLongitude = i.getStringExtra("courseLongitude");
+        final String courseLatitude = i.getStringExtra("courseLatitude");
+        final String courseLongitude = i.getStringExtra("courseLongitude");
 
         final Date date = Calendar.getInstance().getTime();
         final String mDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
@@ -96,6 +96,8 @@ public class ConfirmRound extends AppCompatActivity {
                             startPlayingIntent.putExtra("userGender", dataSnapshot.child("tee box").getValue().toString());
                             startPlayingIntent.putExtra("courseFirebaseKey", courseFirebaseKey);
                             startPlayingIntent.putExtra("roundID", roundID);
+                            startPlayingIntent.putExtra("courseLatitude", courseLatitude);
+                            startPlayingIntent.putExtra("courseLongitude", courseLongitude);
                             startActivity(startPlayingIntent);
                             finish();
                         }

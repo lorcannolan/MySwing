@@ -1,13 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/play_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/play_info_container"/>
+
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Play Map Fragment"/>
+        android:id="@+id/show_markers"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_alignBottom="@+id/play_map"
+        android:layout_marginBottom="15dp"
+        app:backgroundTint="@color/quantum_grey"
+        app:srcCompat="@drawable/ic_action_location_flag" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/play_info_container"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <Spinner
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/play_choose_hole"
+            android:textAlignment="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:popupBackground="#E6FFFFFF">
+        </Spinner>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/play_score_container"
+            android:layout_toRightOf="@id/play_choose_hole"
+            android:layout_toEndOf="@id/play_choose_hole">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/score_text"
+                android:text="Score:"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/score_number"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/score_text"
+                android:layout_toEndOf="@+id/score_text"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/putts_container"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/putts_text"
+                android:text="Putts:"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/putt_plus"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/putts_text"
+                android:layout_toEndOf="@+id/putts_text"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:background="@color/homeBackgroundDark"
+                android:text="+"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/putts_number"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toRightOf="@+id/putt_plus"
+                android:layout_toEndOf="@+id/putt_plus"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/putt_minus"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/putts_number"
+                android:layout_toEndOf="@+id/putts_number"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:background="@color/homeBackgroundDark"
+                android:text="-"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
