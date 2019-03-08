@@ -65,13 +65,14 @@ public class Home extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        BottomNavigationView navigation = (BottomNavigationView)findViewById(R.id.navigation);
+        navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -85,9 +86,11 @@ public class Home extends AppCompatActivity {
         }
         // Moves to map fragment directly after course was added
         else if (moveToFragment.contentEquals("Map")){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new MapFragment()).commit();
-            getSupportActionBar().setTitle("Map");
+            navigation.setSelectedItemId(R.id.navigation_map);
+        }
+        // Moves to profile fragment directly after club/society was joined
+        else if (moveToFragment.contentEquals("Profile")){
+            navigation.setSelectedItemId(R.id.navigation_profile);
         }
 
         mAuth = FirebaseAuth.getInstance();

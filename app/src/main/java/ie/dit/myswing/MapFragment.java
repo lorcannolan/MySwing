@@ -63,6 +63,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent mapIntent = new Intent(getActivity(), AddCourse.class);
+                mapIntent.putExtra("source", "Map");
                 startActivity(mapIntent);
                 getActivity().finish();
             }
@@ -76,9 +77,7 @@ public class MapFragment extends Fragment {
         textBox = (EditText)view.findViewById(R.id.search_text);
         textBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -86,9 +85,7 @@ public class MapFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -126,7 +123,6 @@ public class MapFragment extends Fragment {
                 startActivity(configureCourseIntent);
                 //getActivity().finish();
             }
-
         });
 
         return view;

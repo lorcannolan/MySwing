@@ -70,7 +70,7 @@ public class Register extends AppCompatActivity {
                     - OnDateSet listener
                     - year, month and day default values obtained above
                 */
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Register.this,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(Register.this, R.style.DialogTheme,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -151,6 +151,11 @@ public class Register extends AppCompatActivity {
 
                                         // Sign in success, update UI with the signed-in user's information
                                         Intent homeIntent = new Intent(Register.this, Home.class);
+                                        homeIntent.putExtra("UID", mAuth.getCurrentUser().getUid());
+                                        homeIntent.putExtra("userFirstName", fname.getText().toString());
+                                        homeIntent.putExtra("userLastName", sname.getText().toString());
+                                        homeIntent.putExtra("DOB", dob.getText().toString());
+                                        homeIntent.putExtra("teeBox", gender.getText().toString());
                                         startActivity(homeIntent);
                                     } else {
                                         // If sign in fails, display a message to the user.
