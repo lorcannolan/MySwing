@@ -130,6 +130,15 @@ public class AddCourse extends AppCompatActivity implements OnMapReadyCallback {
                                 Intent returnToSource;
                                 if (getIntent().getStringExtra("source").equalsIgnoreCase("joinclub")) {
                                     returnToSource = new Intent(AddCourse.this, JoinClub.class);
+                                    returnToSource.putExtra("source", "AddCourse");
+                                    if (getIntent().hasExtra("parentSource")) {
+                                        if (getIntent().getStringExtra("parentSource").equalsIgnoreCase("create tournament join club")) {
+                                            returnToSource.putExtra("destination", "Create Tournament Join Club");
+                                        }
+                                        else if (getIntent().getStringExtra("parentSource").equalsIgnoreCase("create tournament select club")) {
+                                            returnToSource.putExtra("destination", "Create Tournament Select Club");
+                                        }
+                                    }
                                 }
                                 else {
                                     returnToSource = new Intent(AddCourse.this, Home.class);

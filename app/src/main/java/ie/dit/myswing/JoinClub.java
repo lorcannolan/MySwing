@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -57,7 +58,7 @@ public class JoinClub extends AppCompatActivity {
 
         source = getIntent().getStringExtra("source");
 
-        if (source.equalsIgnoreCase("create tournament")) {
+        if (source.equalsIgnoreCase("create tournament select club")) {
             getSupportActionBar().setTitle("Select Course");
         }
         else {
@@ -91,7 +92,7 @@ public class JoinClub extends AppCompatActivity {
                 returnToProfileIntent.putExtra("fragment", "Profile");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(JoinClub.this);
-                if (source.equalsIgnoreCase("create tournament")) {
+                if (source.equalsIgnoreCase("create tournament select club")) {
                     builder.setTitle("Are you sure you want to select " + selectedCourse.getName() + "?");
                 }
                 else {
@@ -101,17 +102,36 @@ public class JoinClub extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                userRef.child("club").setValue(selectedCourse.getFirebaseKey());
-                                if (source.equalsIgnoreCase("profile")) {
-                                    startActivity(returnToProfileIntent);
+                                if (source.equalsIgnoreCase("profile") || source.equalsIgnoreCase("addcourse")) {
+                                    if (getIntent().hasExtra("destination")) {
+                                        if (getIntent().getStringExtra("destination").equalsIgnoreCase("create tournament join club")) {
+                                            userRef.child("club").setValue(selectedCourse.getFirebaseKey());
+                                        }
+                                        else if (getIntent().getStringExtra("destination").equalsIgnoreCase("create tournament select club")) {
+                                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
+                                            SharedPreferences.Editor editor = prefs.edit();
+                                            editor.putString("Course Name", selectedCourse.getName());
+                                            editor.apply();
+                                        }
+                                        finish();
+                                    }
+                                    else {
+                                        startActivity(returnToProfileIntent);
+                                        finish();
+                                    }
                                 }
-                                else {
-                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putString("Course Name", selectedCourse.getName());
-                                    editor.apply();
+                                else if (source.contains("Create Tournament")){
+                                    if (source.equalsIgnoreCase("create tournament join club")) {
+                                        userRef.child("club").setValue(selectedCourse.getFirebaseKey());
+                                    }
+                                    else if (source.equalsIgnoreCase("create tournament select club")) {
+                                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("Course Name", selectedCourse.getName());
+                                        editor.apply();
+                                    }
+                                    finish();
                                 }
-                                finish();
                             }
                         });
                 builder.setNegativeButton("No",
@@ -122,6 +142,23 @@ public class JoinClub extends AppCompatActivity {
                         });
                 AlertDialog chooseTeeBoxes = builder.create();
                 chooseTeeBoxes.show();
+            }
+        });
+
+        addNewCourse = (FloatingTextButton)findViewById(R.id.add_course);
+        addNewCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(JoinClub.this, AddCourse.class);
+                mapIntent.putExtra("source", "JoinClub");
+                if (source.equalsIgnoreCase("create tournament join club")) {
+                    mapIntent.putExtra("parentSource", "Create Tournament Join Club");
+                }
+                else if (source.equalsIgnoreCase("create tournament")) {
+                    mapIntent.putExtra("parentSource", "Create Tournament Select Club");
+                }
+                startActivity(mapIntent);
+                finish();
             }
         });
     }
@@ -158,17 +195,6 @@ public class JoinClub extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-
-        addNewCourse = (FloatingTextButton)findViewById(R.id.add_course);
-        addNewCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapIntent = new Intent(JoinClub.this, AddCourse.class);
-                mapIntent.putExtra("source", "JoinClub");
-                startActivity(mapIntent);
-                finish();
-            }
         });
     }
 

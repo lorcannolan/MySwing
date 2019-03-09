@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,14 +17,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Calendar;
+
+import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
 public class CreateTournament extends AppCompatActivity {
 
+    private FloatingTextButton confirm;
     private EditText editTextTournamentName, editTextTournamentType;
     private FloatingActionButton selectCourseFAB, selectDateFAB;
     private TextView textViewCourseName, textViewDate;
     private String courseName;
+
+    DatabaseReference userRef;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +46,29 @@ public class CreateTournament extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Create Tournament");
 
+        mAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
+
         editTextTournamentName = (EditText) findViewById(R.id.tournament_name);
 
         textViewCourseName = (TextView) findViewById(R.id.selected_course);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (getIntent().hasExtra("tournamentFragment")) {
+            editor.putString("Course Name", "");
+            editor.apply();
+        }
+        courseName = prefs.getString("Course Name", "no course");
+        if (!courseName.equalsIgnoreCase("no course")) {
+            textViewCourseName.setText(courseName);
+        }
 
         selectCourseFAB = (FloatingActionButton) findViewById(R.id.select_course_fab);
         selectCourseFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent selectCourseIntent = new Intent(CreateTournament.this, JoinClub.class);
-                selectCourseIntent.putExtra("source", "Create Tournament");
+                selectCourseIntent.putExtra("source", "Create Tournament Select Club");
                 startActivity(selectCourseIntent);
             }
         });
@@ -100,6 +127,70 @@ public class CreateTournament extends AppCompatActivity {
                 chooseTeeBoxes.show();
             }
         });
+
+        confirm = (FloatingTextButton) findViewById(R.id.confirm_tournament);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")
+                                && !dataSnapshot.hasChild("club")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                            builder.setTitle("Error");
+                            builder.setMessage("You need to be a member of a club to create a club Tournament. Would you like to join a Club?");
+                            builder.setPositiveButton("Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent selectCourseIntent = new Intent(CreateTournament.this, JoinClub.class);
+                                            selectCourseIntent.putExtra("source", "Create Tournament Join Club");
+                                            startActivity(selectCourseIntent);
+                                        }
+                                    });
+                            builder.setNegativeButton("No",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog chooseTeeBoxes = builder.create();
+                            chooseTeeBoxes.show();
+                        }
+
+                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("society")
+                                && !dataSnapshot.hasChild("society")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                            builder.setTitle("Error");
+                            builder.setMessage("You need to be a member of a society to create a society Tournament. Would you like to join a Society?");
+                            builder.setPositiveButton("Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent selectSocietyIntent = new Intent(CreateTournament.this, JoinSociety.class);
+                                            selectSocietyIntent.putExtra("source", "Create Tournament");
+                                            startActivity(selectSocietyIntent);
+                                        }
+                                    });
+                            builder.setNegativeButton("No",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog chooseTeeBoxes = builder.create();
+                            chooseTeeBoxes.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
+        });
     }
 
     @Override
@@ -110,8 +201,6 @@ public class CreateTournament extends AppCompatActivity {
         courseName = prefs.getString("Course Name", "no course");
         if (!courseName.equalsIgnoreCase("no course")) {
             textViewCourseName.setText(courseName);
-            editor.putString("Course Name", "");
-            editor.apply();
         }
     }
 }

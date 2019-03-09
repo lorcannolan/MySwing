@@ -39,6 +39,7 @@ public class TournamentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent createTournamentIntent = new Intent(getActivity(), CreateTournament.class);
+                createTournamentIntent.putExtra("tournamentFragment", "Tournament Fragment");
                 startActivity(createTournamentIntent);
             }
         });
