@@ -50,7 +50,8 @@
         <activity android:name=".ConfigureCourse" />
         <activity android:name=".ConfirmRound" />
         <activity android:name=".PlayMapAndScorecard" />
-        <activity android:name=".JoinClub"></activity>
+        <activity android:name=".JoinClub" />
+        <activity android:name=".JoinSociety"></activity>
     </application>
 
 </manifest>

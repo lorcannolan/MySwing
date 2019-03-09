@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
     private ImageView info;
     private FloatingActionButton changeDOB, changeClub, changeSociety;
 
-    DatabaseReference usersRef, courseRef;
+    DatabaseReference usersRef, courseRef, societyRef;
     FirebaseAuth mAuth;
 
     @Nullable
@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
         courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
+        societyRef = FirebaseDatabase.getInstance().getReference().child("societies");
 
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -222,7 +223,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("society")) {
-                    textViewSociety.setText(dataSnapshot.child("society").getValue().toString());
+                    String societyID = dataSnapshot.child("society").getValue().toString();
+                    societyRef.child(societyID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            textViewSociety.setText(dataSnapshot.child("name").getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
                 }
                 else {
                     textViewSociety.setText("Not a Society member");
@@ -236,7 +246,9 @@ public class ProfileFragment extends Fragment {
         changeSociety.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent joinSocietyIntent = new Intent(getActivity(), JoinSociety.class);
+                joinSocietyIntent.putExtra("UID", getActivity().getIntent().getStringExtra("UID"));
+                startActivity(joinSocietyIntent);
             }
         });
 
