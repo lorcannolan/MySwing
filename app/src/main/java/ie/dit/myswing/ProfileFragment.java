@@ -214,6 +214,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent joinClubIntent = new Intent(getActivity(), JoinClub.class);
                 joinClubIntent.putExtra("UID", getActivity().getIntent().getStringExtra("UID"));
+                joinClubIntent.putExtra("source", "Profile");
                 startActivity(joinClubIntent);
             }
         });

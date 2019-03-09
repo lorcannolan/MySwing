@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +45,7 @@ public class JoinClub extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private Course selectedCourse;
+    private String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,14 @@ public class JoinClub extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
 
-        getSupportActionBar().setTitle("Join Club");
+        source = getIntent().getStringExtra("source");
+
+        if (source.equalsIgnoreCase("create tournament")) {
+            getSupportActionBar().setTitle("Select Course");
+        }
+        else {
+            getSupportActionBar().setTitle("Join Club");
+        }
 
         courseListView = (ListView)findViewById(R.id.course_list);
         empty = (TextView)findViewById(R.id.empty_text);
@@ -81,13 +91,26 @@ public class JoinClub extends AppCompatActivity {
                 returnToProfileIntent.putExtra("fragment", "Profile");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(JoinClub.this);
-                builder.setTitle("Are you sure you want to join " + selectedCourse.getName() + "?");
+                if (source.equalsIgnoreCase("create tournament")) {
+                    builder.setTitle("Are you sure you want to select " + selectedCourse.getName() + "?");
+                }
+                else {
+                    builder.setTitle("Are you sure you want to join " + selectedCourse.getName() + "?");
+                }
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 userRef.child("club").setValue(selectedCourse.getFirebaseKey());
-                                startActivity(returnToProfileIntent);
+                                if (source.equalsIgnoreCase("profile")) {
+                                    startActivity(returnToProfileIntent);
+                                }
+                                else {
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("Course Name", selectedCourse.getName());
+                                    editor.apply();
+                                }
                                 finish();
                             }
                         });

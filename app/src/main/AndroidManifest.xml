@@ -51,7 +51,8 @@
         <activity android:name=".ConfirmRound" />
         <activity android:name=".PlayMapAndScorecard" />
         <activity android:name=".JoinClub" />
-        <activity android:name=".JoinSociety"></activity>
+        <activity android:name=".JoinSociety" />
+        <activity android:name=".CreateTournament"></activity>
     </application>
 
 </manifest>

@@ -68,4 +68,9 @@
     <string name="title_tournaments">Tournaments</string>
     <string name="title_map">Map</string>
     <string name="title_profile">Profile</string>
+    <string-array name="tournament_types">
+        <item>Society</item>
+        <item>Club</item>
+        <item>Casual</item>
+    </string-array>
 </resources>

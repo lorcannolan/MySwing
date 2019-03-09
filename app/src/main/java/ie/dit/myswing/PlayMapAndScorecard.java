@@ -12,7 +12,7 @@ import android.view.MenuItem;
 public class PlayMapAndScorecard extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private ConfigureCourseTabPageAdapter mPageAdapter;
+    private TabPageAdapter mPageAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -22,7 +22,7 @@ public class PlayMapAndScorecard extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.play_tab_container);
 
-        mPageAdapter = new ConfigureCourseTabPageAdapter(getSupportFragmentManager());
+        mPageAdapter = new TabPageAdapter(getSupportFragmentManager());
         setupViewPager(mViewPager);
 
         tabLayout = (TabLayout)findViewById(R.id.play_tab_navigation);
@@ -35,7 +35,7 @@ public class PlayMapAndScorecard extends AppCompatActivity {
     }
 
     public void setupViewPager (ViewPager viewPager) {
-        ConfigureCourseTabPageAdapter adapter = new ConfigureCourseTabPageAdapter(getSupportFragmentManager());
+        TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new PlayMapFragment(), "Map");
         adapter.addFragment(new PlayScorecardFragment(), "Scorecard");
         viewPager.setAdapter(adapter);
