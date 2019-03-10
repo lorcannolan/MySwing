@@ -1,180 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateTournament"
-    android:weightSum="100"
-    android:orientation="vertical">
+    tools:context=".CreateTournament">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="22.5"
-        android:weightSum="15"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Tournament Name:"
-            android:layout_weight="6.5"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tournament_name"
-                android:hint="Enter Name"
-                android:layout_centerVertical="true"
-                android:textSize="16sp" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="22.5"
+        android:layout_height="match_parent"
         android:weightSum="100"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Select Course:"
-            android:layout_weight="35"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="22.5"
+            android:weightSum="15"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/selected_course"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:layout_weight="45"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Tournament Name:"
+                android:layout_weight="6.5"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8">
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tournament_name"
+                    android:hint="Enter Name"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="22.5"
+            android:weightSum="100"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Select Course:"
+                android:layout_weight="35"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/select_course_fab"
-                android:layout_centerInParent="true"
-                app:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_edit_white_24dp"
-                app:fabSize="mini"/>
+                android:id="@+id/selected_course"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:layout_weight="45"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20">
 
-    </LinearLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/select_course_fab"
+                    android:layout_centerInParent="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_edit_white_24dp"
+                    app:fabSize="mini"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="22.5"
-        android:weightSum="100"
-        android:orientation="horizontal">
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="30"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="Select Date:"/>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/selected_date"
-            android:layout_weight="50"
-            android:gravity="center"
-            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="22.5"
+            android:weightSum="100"
+            android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Select Date:"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/select_date_fab"
-                android:layout_centerInParent="true"
-                app:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/ic_date_range_white_24dp"
-                app:fabSize="mini"/>
+                android:id="@+id/selected_date"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textSize="18sp"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20">
 
-    </LinearLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/select_date_fab"
+                    android:layout_centerInParent="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_date_range_white_24dp"
+                    app:fabSize="mini"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="22.5"
-        android:weightSum="100"
-        android:orientation="horizontal">
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="42.5"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="Tournament Type:"/>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="55">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="22.5"
+            android:weightSum="100"
+            android:orientation="horizontal">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tournament_type"
-                android:hint="Select Tournament Type"
-                android:layout_centerVertical="true"
-                android:textAlignment="center"
-                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42.5"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Tournament Type:"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="55">
 
-    </LinearLayout>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tournament_type"
+                    android:hint="Select Tournament Type"
+                    android:layout_centerVertical="true"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        android:gravity="center">
+            </RelativeLayout>
 
-        <ru.dimorinny.floatingtextbutton.FloatingTextButton
-            android:id="@+id/confirm_tournament"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:floating_background_color="@color/homeBackground"
-            app:floating_left_icon="@drawable/ic_done_white_24dp"
-            app:floating_title="Confirm Tournament"
-            app:floating_title_color="@android:color/white"/>
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:id="@+id/confirm_tournament"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_left_icon="@drawable/ic_done_white_24dp"
+        app:floating_title="Confirm Tournament"
+        app:floating_title_color="@android:color/white"
+        app:layout_behavior="ru.dimorinny.floatingtextbutton.behavior.SnackbarBehavior"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="16dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

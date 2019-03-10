@@ -111,6 +111,7 @@ public class JoinClub extends AppCompatActivity {
                                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
                                             SharedPreferences.Editor editor = prefs.edit();
                                             editor.putString("Course Name", selectedCourse.getName());
+                                            editor.putString("Course Firebase Key", selectedCourse.getFirebaseKey());
                                             editor.apply();
                                         }
                                         finish();
@@ -128,6 +129,7 @@ public class JoinClub extends AppCompatActivity {
                                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinClub.this);
                                         SharedPreferences.Editor editor = prefs.edit();
                                         editor.putString("Course Name", selectedCourse.getName());
+                                        editor.putString("Course Firebase Key", selectedCourse.getFirebaseKey());
                                         editor.apply();
                                     }
                                     finish();

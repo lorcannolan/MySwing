@@ -9,9 +9,11 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -34,9 +36,9 @@ public class CreateTournament extends AppCompatActivity {
     private EditText editTextTournamentName, editTextTournamentType;
     private FloatingActionButton selectCourseFAB, selectDateFAB;
     private TextView textViewCourseName, textViewDate;
-    private String courseName;
+    private String courseName, courseFirebaseKey;
 
-    DatabaseReference userRef;
+    DatabaseReference userRef, tournamentsRef, coursesRef;
     FirebaseAuth mAuth;
 
     @Override
@@ -48,6 +50,8 @@ public class CreateTournament extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
+        tournamentsRef = FirebaseDatabase.getInstance().getReference().child("tournaments");
+        coursesRef = FirebaseDatabase.getInstance().getReference().child("courses");
 
         editTextTournamentName = (EditText) findViewById(R.id.tournament_name);
 
@@ -56,9 +60,11 @@ public class CreateTournament extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         if (getIntent().hasExtra("tournamentFragment")) {
             editor.putString("Course Name", "");
+            editor.putString("Course Firebase Key", "");
             editor.apply();
         }
         courseName = prefs.getString("Course Name", "no course");
+        courseFirebaseKey = prefs.getString("Course Firebase Key", "");
         if (!courseName.equalsIgnoreCase("no course")) {
             textViewCourseName.setText(courseName);
         }
@@ -114,6 +120,14 @@ public class CreateTournament extends AppCompatActivity {
                         Resources res = CreateTournament.this.getResources();
                         String[] types = res.getStringArray(R.array.tournament_types);
                         editTextTournamentType.setText(types[which]);
+                        if (types[which].equalsIgnoreCase("casual")) {
+                            confirm.setTitle("Invite Players");
+                        }
+                        else {
+                            if (confirm.getTitle().toString().equalsIgnoreCase("invite players")) {
+                                confirm.setTitle("Confirm Tournament");
+                            }
+                        }
                     }
                 });
                 builder.setNegativeButton("Cancel",
@@ -131,64 +145,122 @@ public class CreateTournament extends AppCompatActivity {
         confirm = (FloatingTextButton) findViewById(R.id.confirm_tournament);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")
-                                && !dataSnapshot.hasChild("club")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
-                            builder.setTitle("Error");
-                            builder.setMessage("You need to be a member of a club to create a club Tournament. Would you like to join a Club?");
-                            builder.setPositiveButton("Yes",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent selectCourseIntent = new Intent(CreateTournament.this, JoinClub.class);
-                                            selectCourseIntent.putExtra("source", "Create Tournament Join Club");
-                                            startActivity(selectCourseIntent);
-                                        }
-                                    });
-                            builder.setNegativeButton("No",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
+            public void onClick(final View v) {
+                if (editTextTournamentType.getText().toString().equals("")) {
+                    Snackbar.make(v, "Must Select Tournament Type", Snackbar.LENGTH_LONG).show();
+                }
+                else {
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                            if (confirm.getTitle().equalsIgnoreCase("confirm tournament")) {
+                                // If user has selected to create club event but is not a member of a club
+                                if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")
+                                        && !dataSnapshot.hasChild("club")) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                    builder.setTitle("Error");
+                                    builder.setMessage("You need to be a member of a club to create a club Tournament. Would you like to join a Club?");
+                                    builder.setPositiveButton("Yes",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent selectCourseIntent = new Intent(CreateTournament.this, JoinClub.class);
+                                                    selectCourseIntent.putExtra("source", "Create Tournament Join Club");
+                                                    startActivity(selectCourseIntent);
+                                                }
+                                            });
+                                    builder.setNegativeButton("No",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
 
-                            AlertDialog chooseTeeBoxes = builder.create();
-                            chooseTeeBoxes.show();
+                                    AlertDialog chooseTeeBoxes = builder.create();
+                                    chooseTeeBoxes.show();
+                                }
+                                // If user has selected to create society event but is not a member of a society
+                                else if (editTextTournamentType.getText().toString().equalsIgnoreCase("society")
+                                        && !dataSnapshot.hasChild("society")) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                    builder.setTitle("Error");
+                                    builder.setMessage("You need to be a member of a society to create a society Tournament. Would you like to join a Society?");
+                                    builder.setPositiveButton("Yes",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent selectSocietyIntent = new Intent(CreateTournament.this, JoinSociety.class);
+                                                    selectSocietyIntent.putExtra("source", "Create Tournament");
+                                                    startActivity(selectSocietyIntent);
+                                                }
+                                            });
+                                    builder.setNegativeButton("No",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+
+                                    AlertDialog chooseTeeBoxes = builder.create();
+                                    chooseTeeBoxes.show();
+                                }
+                                // If user has selected to create society/club event and is a member of a society/club
+                                else if ((editTextTournamentType.getText().toString().equalsIgnoreCase("club") && dataSnapshot.hasChild("club"))
+                                        || (editTextTournamentType.getText().toString().equalsIgnoreCase("society") && dataSnapshot.hasChild("society"))) {
+                                    // Validate inputs
+                                    if (editTextTournamentName.getText().toString().equals("")
+                                            || textViewCourseName.getText().toString().equals("")
+                                            || textViewDate.getText().toString().equals("")) {
+                                        Snackbar.make(v, "Must Enter All Details", Snackbar.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                        builder.setTitle("Confirm Tournament Details");
+                                        builder.setPositiveButton("Confirm",
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        // Create tournament and invite all members of club/society
+                                                        String id = tournamentsRef.push().getKey();
+                                                        tournamentsRef.child(id).child("name").setValue(editTextTournamentName.getText().toString());
+                                                        tournamentsRef.child(id).child("course").setValue(courseFirebaseKey);
+                                                        tournamentsRef.child(id).child("date").setValue(textViewDate.getText().toString());
+                                                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")) {
+                                                            tournamentsRef.child(id).child("club").setValue(dataSnapshot.child("club").getValue());
+                                                        }
+                                                        else {
+                                                            tournamentsRef.child(id).child("society").setValue(dataSnapshot.child("society").getValue());
+                                                        }
+                                                        finish();
+                                                    }
+                                                });
+                                        builder.setNegativeButton("Cancel",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+
+                                        AlertDialog chooseTeeBoxes = builder.create();
+                                        chooseTeeBoxes.show();
+                                    }
+                                }
+                            }
+                            // If tournament type casual is selected
+                            else {
+                                // Validate inputs
+                                if (editTextTournamentName.getText().toString().equals("")
+                                        || textViewCourseName.getText().toString().equals("")
+                                        || textViewDate.getText().toString().equals("")) {
+                                    Snackbar.make(v, "Must Enter All Details", Snackbar.LENGTH_LONG).show();
+                                }
+                            }
                         }
 
-                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("society")
-                                && !dataSnapshot.hasChild("society")) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
-                            builder.setTitle("Error");
-                            builder.setMessage("You need to be a member of a society to create a society Tournament. Would you like to join a Society?");
-                            builder.setPositiveButton("Yes",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent selectSocietyIntent = new Intent(CreateTournament.this, JoinSociety.class);
-                                            selectSocietyIntent.putExtra("source", "Create Tournament");
-                                            startActivity(selectSocietyIntent);
-                                        }
-                                    });
-                            builder.setNegativeButton("No",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                            AlertDialog chooseTeeBoxes = builder.create();
-                            chooseTeeBoxes.show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
+                }
             }
         });
     }
@@ -199,6 +271,7 @@ public class CreateTournament extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         courseName = prefs.getString("Course Name", "no course");
+        courseFirebaseKey = prefs.getString("Course Firebase Key", "");
         if (!courseName.equalsIgnoreCase("no course")) {
             textViewCourseName.setText(courseName);
         }

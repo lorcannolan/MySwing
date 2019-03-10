@@ -97,8 +97,15 @@ public class JoinSociety extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 currentUserRef.child("society").setValue(selectedSociety.getFirebaseKey());
-                                startActivity(returnToProfileIntent);
-                                finish();
+                                if (getIntent().hasExtra("source")) {
+                                    if (getIntent().getStringExtra("source").equalsIgnoreCase("create tournament")) {
+                                        finish();
+                                    }
+                                }
+                                else {
+                                    startActivity(returnToProfileIntent);
+                                    finish();
+                                }
                             }
                         });
                 builder.setNegativeButton("No",
