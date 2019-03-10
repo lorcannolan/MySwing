@@ -1,11 +1,13 @@
 package ie.dit.myswing;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class InvitePlayers extends AppCompatActivity {
 
@@ -26,6 +29,9 @@ public class InvitePlayers extends AppCompatActivity {
     private TextView empty;
 
     DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+    private User selectedUser;
+    private ArrayList<User> selectedUsersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,20 @@ public class InvitePlayers extends AppCompatActivity {
         empty = (TextView) findViewById(R.id.user_empty_text);
 
         loadAllCourses();
+
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedUser = (User) parent.getItemAtPosition(position);
+                if (selectedUsersList.contains(selectedUser)) {
+                    selectedUsersList.remove(selectedUser);
+                }
+                else {
+                    selectedUsersList.add(selectedUser);
+                }
+                userListAdapter.highlightCard(position);
+            }
+        });
     }
 
     public void loadAllCourses() {

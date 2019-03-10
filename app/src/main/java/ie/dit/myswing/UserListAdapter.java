@@ -2,6 +2,8 @@ package ie.dit.myswing;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,9 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private Context mContext;
     private int mResourse;
 
+    private CardView userCard;
+    private ArrayList<CardView> userCardList = new ArrayList<>();
+
     public UserListAdapter(Context context, int resource, ArrayList<User> objects) {
         super(context, resource, objects);
         mContext = context;
@@ -39,6 +44,9 @@ public class UserListAdapter extends ArrayAdapter<User> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResourse, parent, false);
+
+        userCard = (CardView)convertView.findViewById(R.id.user_card);
+        userCardList.add(userCard);
 
         TextView firstName = (TextView)convertView.findViewById(R.id.user_first_name);
         firstName.setText(getItem(position).getFirstName());
@@ -82,6 +90,10 @@ public class UserListAdapter extends ArrayAdapter<User> {
         }
 
         return convertView;
+    }
+
+    public void highlightCard(int position) {
+        Log.d("UserListAdapter", "****************\n" + userCardList.get(position).getCardBackgroundColor());
     }
 
 }
