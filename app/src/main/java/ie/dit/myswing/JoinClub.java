@@ -117,6 +117,7 @@ public class JoinClub extends AppCompatActivity {
                                         finish();
                                     }
                                     else {
+                                        userRef.child("club").setValue(selectedCourse.getFirebaseKey());
                                         startActivity(returnToProfileIntent);
                                         finish();
                                     }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +31,8 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private Context mContext;
     private int mResourse;
 
-    private CardView userCard;
-    private ArrayList<CardView> userCardList = new ArrayList<>();
+    private CheckBox userCheckBox;
+    private ArrayList<CheckBox> userCheckBoxList = new ArrayList<>();
 
     public UserListAdapter(Context context, int resource, ArrayList<User> objects) {
         super(context, resource, objects);
@@ -45,8 +46,8 @@ public class UserListAdapter extends ArrayAdapter<User> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResourse, parent, false);
 
-        userCard = (CardView)convertView.findViewById(R.id.user_card);
-        userCardList.add(userCard);
+        userCheckBox = (CheckBox) convertView.findViewById(R.id.card_checkbox);
+        userCheckBoxList.add(userCheckBox);
 
         TextView firstName = (TextView)convertView.findViewById(R.id.user_first_name);
         firstName.setText(getItem(position).getFirstName());
@@ -92,8 +93,13 @@ public class UserListAdapter extends ArrayAdapter<User> {
         return convertView;
     }
 
-    public void highlightCard(int position) {
-        Log.d("UserListAdapter", "****************\n" + userCardList.get(position).getCardBackgroundColor());
+    public void checkCard(int position) {
+        if (userCheckBoxList.get(position).isChecked()) {
+            userCheckBoxList.get(position).setChecked(false);
+        }
+        else {
+            userCheckBoxList.get(position).setChecked(true);
+        }
     }
 
 }

@@ -33,7 +33,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/search_text"
+            android:id="@+id/user_search_text"
             android:hint="Search Users"
             android:textSize="18dp"
             android:layout_toRightOf="@+id/user_search_mag_icon"/>
@@ -45,5 +45,17 @@
             android:src="@drawable/ic_search_icon"/>
 
     </RelativeLayout>
+
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:id="@+id/confirm_invite_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_left_icon="@drawable/ic_done_white_24dp"
+        app:floating_title="Confirm Tournament"
+        app:floating_title_color="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"/>
 
 </RelativeLayout>

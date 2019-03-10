@@ -20,124 +20,143 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/user_first_name"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="String"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/user_last_name"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="String"
-                    android:layout_toRightOf="@+id/user_first_name"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
+                android:layout_weight="7"
+                android:orientation="vertical">
 
-                <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/user_first_name"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/user_last_name"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_toRightOf="@+id/user_first_name"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:id="@+id/dob_text"
-                    android:textSize="16sp"
-                    android:text="DOB:"
-                    android:textStyle="bold"/>
+                    android:layout_marginTop="5dp">
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:id="@+id/dob_text"
+                        android:textSize="16sp"
+                        android:text="DOB:"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/user_dob"
+                        android:textSize="16sp"
+                        android:layout_toRightOf="@+id/dob_text"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/user_dob"
-                    android:textSize="16sp"
-                    android:text="String"
-                    android:layout_toRightOf="@+id/dob_text"/>
+                    android:layout_marginTop="5dp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:id="@+id/club_text"
+                        android:textSize="16sp"
+                        android:text="Club:"
+                        android:textStyle="bold"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/user_club"
+                        android:textSize="16sp"
+                        android:layout_toRightOf="@+id/club_text"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:id="@+id/society_text"
+                        android:textSize="16sp"
+                        android:text="Society:"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/user_society"
+                        android:textSize="16sp"
+                        android:layout_toRightOf="@+id/society_text"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
+                android:layout_weight="3"
+                android:gravity="center">
 
-                <TextView
+                <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:id="@+id/club_text"
-                    android:textSize="16sp"
-                    android:text="Club:"
-                    android:textStyle="bold"/>
+                    android:id="@+id/card_checkbox"
+                    android:focusable="false"
+                    android:clickable="false"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/user_club"
-                    android:textSize="16sp"
-                    android:text="String"
-                    android:layout_toRightOf="@+id/club_text"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:id="@+id/society_text"
-                    android:textSize="16sp"
-                    android:text="Society:"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/user_society"
-                    android:textSize="16sp"
-                    android:text="String"
-                    android:layout_toRightOf="@+id/society_text"/>
-
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

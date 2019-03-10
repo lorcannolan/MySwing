@@ -163,6 +163,9 @@ public class ProfileFragment extends Fragment {
                         totalScore += Integer.parseInt(dataSnapshot.child(roundID).child("score").getValue().toString());
                     }
                     Integer avgHandicap = (totalScore / (int)dataSnapshot.getChildrenCount()) - 72;
+                    if (avgHandicap < 0) {
+                        avgHandicap = 0;
+                    }
                     textViewAvgHandicap.setText(avgHandicap.toString());
                     info.setVisibility(View.INVISIBLE);
                 }
@@ -275,6 +278,9 @@ public class ProfileFragment extends Fragment {
                 }
 
                 Integer intAge = age;
+                if (intAge < 0) {
+                    intAge = 0;
+                }
                 textViewAge.setText(intAge.toString());
             }
 

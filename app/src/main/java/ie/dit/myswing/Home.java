@@ -92,6 +92,10 @@ public class Home extends AppCompatActivity {
         else if (moveToFragment.contentEquals("Profile")){
             navigation.setSelectedItemId(R.id.navigation_profile);
         }
+        // Moves to tournament fragment directly after creating tournament
+        else if (moveToFragment.contentEquals("Tournaments")){
+            navigation.setSelectedItemId(R.id.navigation_tournaments);
+        }
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
