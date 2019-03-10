@@ -52,7 +52,8 @@
         <activity android:name=".PlayMapAndScorecard" />
         <activity android:name=".JoinClub" />
         <activity android:name=".JoinSociety" />
-        <activity android:name=".CreateTournament"></activity>
+        <activity android:name=".CreateTournament" />
+        <activity android:name=".InvitePlayers"></activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -254,6 +255,13 @@ public class CreateTournament extends AppCompatActivity {
                                         || textViewDate.getText().toString().equals("")) {
                                     Snackbar.make(v, "Must Enter All Details", Snackbar.LENGTH_LONG).show();
                                 }
+                                else {
+                                    Intent invitePlayersIntent = new Intent(CreateTournament.this, InvitePlayers.class);
+                                    invitePlayersIntent.putExtra("tournament name", editTextTournamentName.getText().toString());
+                                    invitePlayersIntent.putExtra("tournament course", courseFirebaseKey);
+                                    invitePlayersIntent.putExtra("tournament date", textViewDate.getText().toString());
+                                    startActivity(invitePlayersIntent);
+                                }
                             }
                         }
 
@@ -275,5 +283,15 @@ public class CreateTournament extends AppCompatActivity {
         if (!courseName.equalsIgnoreCase("no course")) {
             textViewCourseName.setText(courseName);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
