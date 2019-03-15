@@ -27,7 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
@@ -208,59 +211,115 @@ public class CreateTournament extends AppCompatActivity {
                                 // If user has selected to create society/club event and is a member of a society/club
                                 else if ((editTextTournamentType.getText().toString().equalsIgnoreCase("club") && dataSnapshot.hasChild("club"))
                                         || (editTextTournamentType.getText().toString().equalsIgnoreCase("society") && dataSnapshot.hasChild("society"))) {
-                                    // Validate inputs
+                                    // ensure other tournament fields are not empty
                                     if (editTextTournamentName.getText().toString().equals("")
                                             || textViewCourseName.getText().toString().equals("")
                                             || textViewDate.getText().toString().equals("")) {
                                         Snackbar.make(v, "Must Enter All Details", Snackbar.LENGTH_LONG).show();
                                     }
+                                    // Create tournament and invite all members of club/society
                                     else {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
-                                        builder.setTitle("Confirm Tournament Details");
-                                        builder.setPositiveButton("Confirm",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        // Create tournament and invite all members of club/society
-                                                        String id = tournamentsRef.push().getKey();
-                                                        tournamentsRef.child(id).child("name").setValue(editTextTournamentName.getText().toString());
-                                                        tournamentsRef.child(id).child("course").setValue(courseFirebaseKey);
-                                                        tournamentsRef.child(id).child("date").setValue(textViewDate.getText().toString());
-                                                        if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")) {
-                                                            tournamentsRef.child(id).child("club").setValue(dataSnapshot.child("club").getValue());
-                                                        }
-                                                        else {
-                                                            tournamentsRef.child(id).child("society").setValue(dataSnapshot.child("society").getValue());
-                                                        }
-                                                        finish();
-                                                    }
-                                                });
-                                        builder.setNegativeButton("Cancel",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        dialog.cancel();
-                                                    }
-                                                });
+                                        // Date selected should be today's date or sometime in the future
+                                        try {
+                                            Date selectedDate = new SimpleDateFormat("dd/MM/yyyy").parse(textViewDate.getText().toString());
+                                            Calendar today = Calendar.getInstance();
+                                            today.set(android.icu.util.Calendar.HOUR_OF_DAY, 0);
+                                            today.set(android.icu.util.Calendar.MINUTE, 0);
+                                            today.set(android.icu.util.Calendar.SECOND, 0);
+                                            today.set(android.icu.util.Calendar.MILLISECOND, 0);
+                                            if (selectedDate.before(today.getTime())) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                                builder.setTitle("Warning");
+                                                builder.setMessage("Cannot Select Date Before Today's Date");
+                                                builder.setNegativeButton("OK",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.cancel();
+                                                            }
+                                                        });
 
-                                        AlertDialog chooseTeeBoxes = builder.create();
-                                        chooseTeeBoxes.show();
+                                                AlertDialog chooseTeeBoxes = builder.create();
+                                                chooseTeeBoxes.show();
+                                            }
+                                            else {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                                builder.setTitle("Confirm Tournament Details");
+                                                builder.setPositiveButton("Confirm",
+                                                        new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                String id = tournamentsRef.push().getKey();
+                                                                tournamentsRef.child(id).child("name").setValue(editTextTournamentName.getText().toString());
+                                                                tournamentsRef.child(id).child("course").setValue(courseFirebaseKey);
+                                                                tournamentsRef.child(id).child("date").setValue(textViewDate.getText().toString());
+                                                                if (editTextTournamentType.getText().toString().equalsIgnoreCase("club")) {
+                                                                    tournamentsRef.child(id).child("club").setValue(dataSnapshot.child("club").getValue());
+                                                                }
+                                                                else {
+                                                                    tournamentsRef.child(id).child("society").setValue(dataSnapshot.child("society").getValue());
+                                                                }
+                                                                finish();
+                                                            }
+                                                        });
+                                                builder.setNegativeButton("Cancel",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.cancel();
+                                                            }
+                                                        });
+
+                                                AlertDialog chooseTeeBoxes = builder.create();
+                                                chooseTeeBoxes.show();
+                                            }
+                                        }
+                                        catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                             }
                             // If tournament type casual is selected
                             else {
-                                // Validate inputs
+                                // ensure other tournament fields are not empty
                                 if (editTextTournamentName.getText().toString().equals("")
                                         || textViewCourseName.getText().toString().equals("")
                                         || textViewDate.getText().toString().equals("")) {
                                     Snackbar.make(v, "Must Enter All Details", Snackbar.LENGTH_LONG).show();
                                 }
                                 else {
-                                    Intent invitePlayersIntent = new Intent(CreateTournament.this, InvitePlayers.class);
-                                    invitePlayersIntent.putExtra("tournament name", editTextTournamentName.getText().toString());
-                                    invitePlayersIntent.putExtra("tournament course", courseFirebaseKey);
-                                    invitePlayersIntent.putExtra("tournament date", textViewDate.getText().toString());
-                                    startActivity(invitePlayersIntent);
+                                    // Date selected should be today's date or sometime in the future
+                                    try {
+                                        Date selectedDate = new SimpleDateFormat("dd/MM/yyyy").parse(textViewDate.getText().toString());
+                                        Calendar today = Calendar.getInstance();
+                                        today.set(android.icu.util.Calendar.HOUR_OF_DAY, 0);
+                                        today.set(android.icu.util.Calendar.MINUTE, 0);
+                                        today.set(android.icu.util.Calendar.SECOND, 0);
+                                        today.set(android.icu.util.Calendar.MILLISECOND, 0);
+                                        if (selectedDate.before(today.getTime())) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(CreateTournament.this);
+                                            builder.setTitle("Warning");
+                                            builder.setMessage("Cannot Select Date Before Today's Date");
+                                            builder.setNegativeButton("OK",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+
+                                            AlertDialog chooseTeeBoxes = builder.create();
+                                            chooseTeeBoxes.show();
+                                        }
+                                        else {
+                                            Intent invitePlayersIntent = new Intent(CreateTournament.this, InvitePlayers.class);
+                                            invitePlayersIntent.putExtra("tournament name", editTextTournamentName.getText().toString());
+                                            invitePlayersIntent.putExtra("tournament course", courseFirebaseKey);
+                                            invitePlayersIntent.putExtra("tournament date", textViewDate.getText().toString());
+                                            startActivity(invitePlayersIntent);
+                                        }
+                                    }
+                                    catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }

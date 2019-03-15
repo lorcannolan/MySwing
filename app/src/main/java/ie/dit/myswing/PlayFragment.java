@@ -48,8 +48,6 @@ public class PlayFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_play, container, false);
 
-        loadAllCourses(view);
-
         courseListView = (ListView)view.findViewById(R.id.play_course_list);
         empty = (TextView)view.findViewById(R.id.play_empty_text);
 
@@ -105,6 +103,7 @@ public class PlayFragment extends Fragment {
                     if (!courseList.isEmpty()) {
                         courseList.clear();
                     }
+                    long numberOfCourses = dataSnapshot.getChildrenCount();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Course course = new Course(
                                 data.getKey(),
@@ -116,10 +115,20 @@ public class PlayFragment extends Fragment {
                                 data.child("location").child("longitude").getValue().toString()
                         );
                         courseList.add(course);
+                        numberOfCourses -= 1;
+                        if (numberOfCourses == 0) {
+                            /*
+                            This condition added in-case of rapid change of menu item or if back button is selected. Allows app to continue running as the user intends.
+                            Found at the below link:
+                             - https://stackoverflow.com/questions/39532507/attempt-to-invoke-virtual-method-java-lang-object-android-content-context-getsy
+                             */
+                            if (getActivity() != null) {
+                                courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
+                                courseListView.setAdapter(courseListAdapter);
+                                courseListView.setDivider(null);
+                            }
+                        }
                     }
-                    courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
-                    courseListView.setAdapter(courseListAdapter);
-                    courseListView.setDivider(null);
                 }
             }
 
