@@ -258,6 +258,9 @@ public class CreateTournament extends AppCompatActivity {
                                                                 else {
                                                                     tournamentsRef.child(id).child("society").setValue(dataSnapshot.child("society").getValue());
                                                                 }
+                                                                Intent returnToTournamentsIntent = new Intent(CreateTournament.this, Home.class);
+                                                                returnToTournamentsIntent.putExtra("fragment", "Tournaments");
+                                                                startActivity(returnToTournamentsIntent);
                                                                 finish();
                                                             }
                                                         });

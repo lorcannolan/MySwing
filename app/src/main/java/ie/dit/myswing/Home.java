@@ -84,6 +84,9 @@ public class Home extends AppCompatActivity {
                     new PlayFragment()).commit();
             getSupportActionBar().setTitle("Select Course to Play");
         }
+        else if (moveToFragment.contentEquals("Play")) {
+            navigation.setSelectedItemId(R.id.navigation_play);
+        }
         // Moves to map fragment directly after course was added
         else if (moveToFragment.contentEquals("Map")){
             navigation.setSelectedItemId(R.id.navigation_map);

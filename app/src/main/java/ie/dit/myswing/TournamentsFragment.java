@@ -41,6 +41,7 @@ public class TournamentsFragment extends Fragment {
                 Intent createTournamentIntent = new Intent(getActivity(), CreateTournament.class);
                 createTournamentIntent.putExtra("tournamentFragment", "Tournament Fragment");
                 startActivity(createTournamentIntent);
+                //getActivity().finish();
             }
         });
 
