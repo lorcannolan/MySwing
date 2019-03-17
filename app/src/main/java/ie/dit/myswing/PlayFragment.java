@@ -2,19 +2,26 @@ package ie.dit.myswing;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,146 +37,37 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ru.dimorinny.floatingtextbutton.FloatingTextButton;
+
+import static android.widget.ListPopupWindow.MATCH_PARENT;
+
 public class PlayFragment extends Fragment {
 
-    private EditText textBox;
-    private ArrayList<Course> courseList = new ArrayList<>();
-    private CourseListAdapter courseListAdapter;
-
-    private ListView courseListView;
-    private TextView empty;
-
-    DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
-
-    private Course selectedCourse;
+    private CardView personal, tournament;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_play, container, false);
 
-        courseListView = (ListView)view.findViewById(R.id.play_course_list);
-        empty = (TextView)view.findViewById(R.id.play_empty_text);
-
-        loadAllCourses(view);
-
-        textBox = (EditText)view.findViewById(R.id.play_search_text);
-        textBox.addTextChangedListener(new TextWatcher() {
+        personal = (CardView) view.findViewById(R.id.personal);
+        personal.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loadSearchedCourses(view);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                Intent selectCourseIntent = new Intent(getActivity(), PlaySelectCourse.class);
+                startActivity(selectCourseIntent);
             }
         });
 
-        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tournament = (CardView) view.findViewById(R.id.tournament);
+        tournament.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCourse = (Course) parent.getItemAtPosition(position);
-                Intent confirmRoundIntent = new Intent(getActivity(), ConfirmRound.class);
-                confirmRoundIntent.putExtra("courseFirebaseKey", selectedCourse.getFirebaseKey());
-                confirmRoundIntent.putExtra("coursePlacesID", selectedCourse.getPlacesID());
-                confirmRoundIntent.putExtra("courseName", selectedCourse.getName());
-                confirmRoundIntent.putExtra("courseLatitude", selectedCourse.getLatitude());
-                confirmRoundIntent.putExtra("courseLongitude", selectedCourse.getLongitude());
-
-                startActivity(confirmRoundIntent);
-                getActivity().finish();
+            public void onClick(View v) {
+                Intent selectTournamentIntent = new Intent(getActivity(), PlaySelectTournament.class);
+                startActivity(selectTournamentIntent);
             }
-
         });
 
         return view;
-    }
-
-    public void loadAllCourses(View view) {
-        courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    empty.setText("No Courses Saved to Database");
-                    courseListView.setEmptyView(empty);
-                }
-                else {
-                    if (!courseList.isEmpty()) {
-                        courseList.clear();
-                    }
-                    long numberOfCourses = dataSnapshot.getChildrenCount();
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Course course = new Course(
-                                data.getKey(),
-                                data.child("placesID").getValue().toString(),
-                                data.child("name").getValue().toString(),
-                                data.child("Address").getValue().toString(),
-                                data.child("website").getValue().toString(),
-                                data.child("location").child("latitude").getValue().toString(),
-                                data.child("location").child("longitude").getValue().toString()
-                        );
-                        courseList.add(course);
-                        numberOfCourses -= 1;
-                        if (numberOfCourses == 0) {
-                            /*
-                            This condition added in-case of rapid change of menu item or if back button is selected. Allows app to continue running as the user intends.
-                            Found at the below link:
-                             - https://stackoverflow.com/questions/39532507/attempt-to-invoke-virtual-method-java-lang-object-android-content-context-getsy
-                             */
-                            if (getActivity() != null) {
-                                courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
-                                courseListView.setAdapter(courseListAdapter);
-                                courseListView.setDivider(null);
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-    }
-
-    public void loadSearchedCourses (View view) {
-        if (textBox.getText().toString().equals("")) {
-            loadAllCourses(view);
-        }
-        else {
-            courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (!courseList.isEmpty()) {
-                        courseList.clear();
-                    }
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        if (data.child("name").getValue().toString().toLowerCase().contains(textBox.getText().toString().toLowerCase()) ) {
-                            Course course = new Course(
-                                    data.getKey(),
-                                    data.child("placesID").getValue().toString(),
-                                    data.child("name").getValue().toString(),
-                                    data.child("Address").getValue().toString(),
-                                    data.child("website").getValue().toString(),
-                                    data.child("location").child("latitude").getValue().toString(),
-                                    data.child("location").child("longitude").getValue().toString()
-                            );
-                            courseList.add(course);
-                        }
-                    }
-                    courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
-                    courseListView.setAdapter(courseListAdapter);
-                    courseListView.setDivider(null);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
-            });
-        }
     }
 }

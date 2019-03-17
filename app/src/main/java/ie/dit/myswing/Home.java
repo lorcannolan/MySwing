@@ -38,7 +38,7 @@ public class Home extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_play:
                     selectedFragment = new PlayFragment();
-                    getSupportActionBar().setTitle("Select Course to Play");
+                    getSupportActionBar().setTitle("Select Round Type");
                     break;
                 case R.id.navigation_rounds:
                     selectedFragment = new RoundsFragment();
@@ -46,7 +46,7 @@ public class Home extends AppCompatActivity {
                     break;
                 case R.id.navigation_tournaments:
                     selectedFragment = new TournamentsFragment();
-                    getSupportActionBar().setTitle("Tournament");
+                    getSupportActionBar().setTitle("Tournaments");
                     break;
                 case R.id.navigation_map:
                     selectedFragment = new MapFragment();
@@ -82,7 +82,7 @@ public class Home extends AppCompatActivity {
         if (moveToFragment == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new PlayFragment()).commit();
-            getSupportActionBar().setTitle("Select Course to Play");
+            getSupportActionBar().setTitle("Select Round Type");
         }
         else if (moveToFragment.contentEquals("Play")) {
             navigation.setSelectedItemId(R.id.navigation_play);

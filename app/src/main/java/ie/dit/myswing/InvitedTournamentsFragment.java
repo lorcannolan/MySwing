@@ -20,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import ru.dimorinny.floatingtextbutton.FloatingTextButton;
+
 public class InvitedTournamentsFragment extends Fragment {
 
     private ArrayList<Tournament> tournamentList = new ArrayList<>();
@@ -81,6 +83,9 @@ public class InvitedTournamentsFragment extends Fragment {
 
         tournamentListView = (ListView)view.findViewById(R.id.invited_tournaments_list);
         empty = (TextView)view.findViewById(R.id.invited_empty_text);
+
+        FloatingTextButton newTournament = (FloatingTextButton)view.findViewById(R.id.play_new_tournament);
+        newTournament.setVisibility(View.INVISIBLE);
 
         return view;
     }

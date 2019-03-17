@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListView
         android:layout_width="match_parent"
@@ -15,6 +15,18 @@
         android:layout_height="match_parent"
         android:id="@+id/invited_empty_text"
         android:gravity="center"
-        android:textSize="30sp"/>
+        android:textSize="25sp"/>
+
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:id="@+id/play_new_tournament"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:floating_background_color="@color/homeBackground"
+        app:floating_left_icon="@drawable/ic_add_icon"
+        app:floating_title="New Tournament"
+        app:floating_title_color="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"/>
 
 </RelativeLayout>

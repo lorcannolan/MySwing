@@ -171,9 +171,19 @@ public class InvitePlayers extends AppCompatActivity {
                                         String invitedID = tournamentsRef.child(id).child("invited").push().getKey();
                                         tournamentsRef.child(id).child("invited").child(invitedID).child("userID").setValue(u.getFirebaseKey());
                                     }
-                                    Intent backToTournamentsIntent = new Intent(InvitePlayers.this, Home.class);
-                                    backToTournamentsIntent.putExtra("fragment", "Tournaments");
-                                    startActivity(backToTournamentsIntent);
+
+                                    // If creating tournament while starting play
+                                    if (getIntent().hasExtra("playFragment")) {
+                                        Intent returnToPlaySetup = new Intent(InvitePlayers.this, PlaySelectTournament.class);
+                                        startActivity(returnToPlaySetup);
+                                        finish();
+                                    }
+                                    // If creating tournament from within tournaments
+                                    else {
+                                        Intent backToTournamentsIntent = new Intent(InvitePlayers.this, Home.class);
+                                        backToTournamentsIntent.putExtra("fragment", "Tournaments");
+                                        startActivity(backToTournamentsIntent);
+                                    }
                                 }
                             });
                     builder.setNegativeButton("Cancel",

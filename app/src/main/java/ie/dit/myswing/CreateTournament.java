@@ -62,7 +62,7 @@ public class CreateTournament extends AppCompatActivity {
         textViewCourseName = (TextView) findViewById(R.id.selected_course);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
-        if (getIntent().hasExtra("tournamentFragment")) {
+        if (getIntent().hasExtra("tournamentFragment") || getIntent().hasExtra("playFragment")) {
             editor.putString("Course Name", "");
             editor.putString("Course Firebase Key", "");
             editor.apply();
@@ -258,10 +258,20 @@ public class CreateTournament extends AppCompatActivity {
                                                                 else {
                                                                     tournamentsRef.child(id).child("society").setValue(dataSnapshot.child("society").getValue());
                                                                 }
-                                                                Intent returnToTournamentsIntent = new Intent(CreateTournament.this, Home.class);
-                                                                returnToTournamentsIntent.putExtra("fragment", "Tournaments");
-                                                                startActivity(returnToTournamentsIntent);
-                                                                finish();
+
+                                                                // If creating tournament while starting play
+                                                                if (getIntent().hasExtra("playFragment")) {
+                                                                    Intent returnToPlaySetup = new Intent(CreateTournament.this, PlaySelectTournament.class);
+                                                                    startActivity(returnToPlaySetup);
+                                                                    finish();
+                                                                }
+                                                                // If creating tournament from within tournaments
+                                                                else {
+                                                                    Intent returnToTournamentsIntent = new Intent(CreateTournament.this, Home.class);
+                                                                    returnToTournamentsIntent.putExtra("fragment", "Tournaments");
+                                                                    startActivity(returnToTournamentsIntent);
+                                                                    finish();
+                                                                }
                                                             }
                                                         });
                                                 builder.setNegativeButton("Cancel",
@@ -317,6 +327,11 @@ public class CreateTournament extends AppCompatActivity {
                                             invitePlayersIntent.putExtra("tournament name", editTextTournamentName.getText().toString());
                                             invitePlayersIntent.putExtra("tournament course", courseFirebaseKey);
                                             invitePlayersIntent.putExtra("tournament date", textViewDate.getText().toString());
+
+                                            // If creating tournament while starting play
+                                            if (getIntent().hasExtra("playFragment")) {
+                                                invitePlayersIntent.putExtra("playFragment", "Play Fragment");
+                                            }
                                             startActivity(invitePlayersIntent);
                                         }
                                     }

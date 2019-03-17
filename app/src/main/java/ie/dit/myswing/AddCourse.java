@@ -55,7 +55,7 @@ public class AddCourse extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        getSupportActionBar().setTitle("Add New Course");
+        getSupportActionBar().setTitle("Select Course to Play");
 
         // Initialize Places, required as part of new static Places library rather than avilable through Play Servises
         // https://developers.google.com/places/android-sdk/client-migration
