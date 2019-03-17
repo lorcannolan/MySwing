@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
@@ -47,6 +49,7 @@ public class PlaySelectTournament extends AppCompatActivity {
     long numberOfTournaments;
 
     private FloatingTextButton createTournament;
+    private Tournament selectedTournament;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,21 @@ public class PlaySelectTournament extends AppCompatActivity {
                 Intent createTournamentIntent = new Intent(PlaySelectTournament.this, CreateTournament.class);
                 createTournamentIntent.putExtra("playFragment", "Play Fragment");
                 startActivity(createTournamentIntent);
+            }
+        });
+
+        tournamentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedTournament = (Tournament) parent.getItemAtPosition(position);
+                Intent confirmRoundIntent = new Intent(PlaySelectTournament.this, ConfirmRound.class);
+                confirmRoundIntent.putExtra("tournamentFirebaseKey", selectedTournament.getFirebaseKey());
+                confirmRoundIntent.putExtra("tournamentName", selectedTournament.getName());
+                confirmRoundIntent.putExtra("tournamentCourseName", selectedTournament.getCourseName());
+                confirmRoundIntent.putExtra("tournamentCourseID", selectedTournament.getCourseID());
+
+                startActivity(confirmRoundIntent);
+                finish();
             }
         });
 

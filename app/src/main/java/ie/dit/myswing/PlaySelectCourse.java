@@ -42,7 +42,7 @@ public class PlaySelectCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_select_course);
 
-        getSupportActionBar().setTitle("Add New Course");
+        getSupportActionBar().setTitle("Select Course");
 
         courseListView = (ListView)findViewById(R.id.play_course_list);
         empty = (TextView)findViewById(R.id.play_empty_text);

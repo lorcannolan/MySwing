@@ -8,87 +8,133 @@
     tools:context=".ConfirmRound"
     android:id="@+id/confirm_round_layout">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
             android:id="@+id/handicap_layout"
-            android:layout_marginTop="50dp"
-            android:layout_centerHorizontal="true">
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:id="@+id/handicap"
-                android:text="Handicap: "
+                android:text="Handicap:"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/enter_handicap"
-                android:hint="Enter Handicap"
-                android:layout_toRightOf="@+id/handicap"
-                android:inputType="number"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/handicap_layout"
-            android:layout_marginTop="50dp"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/course"
-                android:text="Selected Course: "
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"/>
+                android:gravity="center"/>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/course"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp">
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/selected_course"
-                    android:text="Selected Course: "
-                    android:textSize="18sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="10dp"/>
-
-                <android.support.v7.widget.AppCompatButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:id="@+id/change_course"
-                    android:text="Change"
-                    android:textColor="@color/white"
-                    android:background="@color/homeBackgroundDark"
-                    android:layout_toRightOf="@id/selected_course"
-                    android:textSize="15sp"
-                    android:layout_marginLeft="20dp"/>
+                    android:id="@+id/enter_handicap"
+                    android:hint="Enter Handicap"
+                    android:inputType="number"/>
 
             </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:weightSum="100"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Course:"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/selected_course"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textSize="18sp"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_selected_course"
+                    android:layout_centerInParent="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_edit_white_24dp"
+                    app:fabSize="mini"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:weightSum="100"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Tournament:"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/selected_tournament"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textSize="18sp"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_selected_tournament"
+                    android:layout_centerInParent="true"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_edit_white_24dp"
+                    app:fabSize="mini"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ru.dimorinny.floatingtextbutton.FloatingTextButton
         android:layout_width="wrap_content"
@@ -99,7 +145,7 @@
         app:floating_left_icon="@drawable/ic_check_box_white_24dp"
         app:floating_background_color="@color/homeBackground"
         app:floating_title_color="@color/white"
-        app:floating_title="Confirm Course"
+        app:floating_title="Confirm Round"
         app:layout_behavior="ru.dimorinny.floatingtextbutton.behavior.SnackbarBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,10 +2,15 @@ package ie.dit.myswing;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,12 +35,19 @@ import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 public class ConfirmRound extends AppCompatActivity {
 
     private EditText enterHandicap;
-    private TextView selectedCourse;
-    private AppCompatButton changeCourse;
-    private FloatingTextButton confirmCourse;
+    private TextView selectedCourse, selectedTournament;
+    private FloatingActionButton changeCourse, changeTournament;
+    private FloatingTextButton confirmRound;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+    private DatabaseReference coursesRef = FirebaseDatabase.getInstance().getReference().child("courses");
+
+    private String tournamentFirebaseKey, tournamentName, tournamentCourseName, tournamentCourseID,
+                    courseLatitude, courseLongitude, courseFirebaseKey, coursePlacesID, courseName,
+                    todaysDateString;
+
+    private Date todaysDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,34 +56,71 @@ public class ConfirmRound extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        Intent i = getIntent();
-        final String courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
-        String coursePlacesID = i.getStringExtra("coursePlacesID");
-        final String courseName = i.getStringExtra("courseName");
-        final String courseLatitude = i.getStringExtra("courseLatitude");
-        final String courseLongitude = i.getStringExtra("courseLongitude");
-
-        final Date date = Calendar.getInstance().getTime();
-        final String mDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
-
-        getSupportActionBar().setTitle("Confirm Round");
+        changeTournament = (FloatingActionButton) findViewById(R.id.edit_selected_tournament);
+        changeCourse = (FloatingActionButton) findViewById(R.id.edit_selected_course);
 
         enterHandicap = (EditText)findViewById(R.id.enter_handicap);
         selectedCourse = (TextView)findViewById(R.id.selected_course);
-        selectedCourse.setText(courseName);
+        selectedTournament = (TextView)findViewById(R.id.selected_tournament);
 
-        changeCourse = (AppCompatButton)findViewById(R.id.change_course);
-        changeCourse.setOnClickListener(new View.OnClickListener() {
+        confirmRound = (FloatingTextButton)findViewById(R.id.confirm_round);
+
+        getSupportActionBar().setTitle("Confirm Round");
+
+        Intent i = getIntent();
+        // If coming from select tournament
+        if (i.hasExtra("tournamentFirebaseKey")) {
+            tournamentFirebaseKey = i.getStringExtra("courseFirebaseKey");
+            tournamentName = i.getStringExtra("tournamentName");
+            tournamentCourseName = i.getStringExtra("tournamentCourseName");
+            tournamentCourseID = i.getStringExtra("tournamentCourseID");
+            coursesRef.child(tournamentCourseID).child("location").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    courseLatitude = dataSnapshot.child("latitude").getValue().toString();
+                    courseLongitude = dataSnapshot.child("longitude").getValue().toString();
+                    setupView();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+
+            // If tournament round, don't show edit course button
+            changeCourse.hide();
+        }
+        // If coming from select course
+        else {
+            courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
+            coursePlacesID = i.getStringExtra("coursePlacesID");
+            courseName = i.getStringExtra("courseName");
+            courseLatitude = i.getStringExtra("courseLatitude");
+            courseLongitude = i.getStringExtra("courseLongitude");
+
+            // Only allow functionality if personal round
+            changeCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent selectCourseIntent = new Intent(ConfirmRound.this, PlaySelectCourse.class);
+                    startActivity(selectCourseIntent);
+                }
+            });
+
+            setupView();
+        }
+
+        todaysDate = Calendar.getInstance().getTime();
+        todaysDateString = new SimpleDateFormat("dd/MM/yyyy").format(todaysDate);
+
+        changeTournament.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goBackToPlay = new Intent(ConfirmRound.this, Home.class);
-                startActivity(goBackToPlay);
-                finish();
+                Intent selectTournamentIntent = new Intent(ConfirmRound.this, PlaySelectTournament.class);
+                startActivity(selectTournamentIntent);
             }
         });
 
-        confirmCourse = (FloatingTextButton)findViewById(R.id.confirm_round);
-        confirmCourse.setOnClickListener(new View.OnClickListener() {
+        confirmRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final View view = v;
@@ -87,7 +136,7 @@ public class ConfirmRound extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String roundID = usersRef.child(mAuth.getUid()).child("rounds").push().getKey();
                             usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("courseID").setValue(courseName);
-                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(mDate);
+                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
                             usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
                             usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
 
@@ -108,5 +157,45 @@ public class ConfirmRound extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void setupView() {
+        if (getIntent().hasExtra("tournamentFirebaseKey")) {
+            selectedCourse.setText(tournamentCourseName);
+            selectedTournament.setText(tournamentName);
+        }
+        else {
+            selectedCourse.setText(courseName);
+            selectedTournament.setText("N/A");
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent homeActivity = new Intent(ConfirmRound.this, Home.class);
+            startActivity(homeActivity);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.cancel, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.done) {
+            Intent backToHomeIntent = new Intent(ConfirmRound.this, Home.class);
+            startActivity(backToHomeIntent);
+            finish();
+        }
+        return true;
     }
 }
