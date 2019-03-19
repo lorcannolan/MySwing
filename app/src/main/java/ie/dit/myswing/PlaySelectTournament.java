@@ -110,13 +110,13 @@ public class PlaySelectTournament extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedTournament = (Tournament) parent.getItemAtPosition(position);
-                Intent confirmRoundIntent = new Intent(PlaySelectTournament.this, ConfirmRound.class);
-                confirmRoundIntent.putExtra("tournamentFirebaseKey", selectedTournament.getFirebaseKey());
-                confirmRoundIntent.putExtra("tournamentName", selectedTournament.getName());
-                confirmRoundIntent.putExtra("tournamentCourseName", selectedTournament.getCourseName());
-                confirmRoundIntent.putExtra("tournamentCourseID", selectedTournament.getCourseID());
+                Intent markerSetupIntent = new Intent(PlaySelectTournament.this, TournamentMarkerSetup.class);
+                markerSetupIntent.putExtra("tournamentFirebaseKey", selectedTournament.getFirebaseKey());
+                markerSetupIntent.putExtra("tournamentName", selectedTournament.getName());
+                markerSetupIntent.putExtra("tournamentCourseName", selectedTournament.getCourseName());
+                markerSetupIntent.putExtra("tournamentCourseID", selectedTournament.getCourseID());
 
-                startActivity(confirmRoundIntent);
+                startActivity(markerSetupIntent);
                 finish();
             }
         });

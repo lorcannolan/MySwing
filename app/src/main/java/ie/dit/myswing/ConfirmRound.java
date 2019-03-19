@@ -35,8 +35,8 @@ import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 public class ConfirmRound extends AppCompatActivity {
 
     private EditText enterHandicap;
-    private TextView selectedCourse, selectedTournament;
-    private FloatingActionButton changeCourse, changeTournament;
+    private TextView selectedCourse, selectedTournament, selectedMarker;
+    private FloatingActionButton changeCourse, changeTournament, changeMarker;
     private FloatingTextButton confirmRound;
 
     private FirebaseAuth mAuth;
@@ -44,8 +44,8 @@ public class ConfirmRound extends AppCompatActivity {
     private DatabaseReference coursesRef = FirebaseDatabase.getInstance().getReference().child("courses");
 
     private String tournamentFirebaseKey, tournamentName, tournamentCourseName, tournamentCourseID,
-                    courseLatitude, courseLongitude, courseFirebaseKey, coursePlacesID, courseName,
-                    todaysDateString;
+                    courseLatitude, courseLongitude, tournamentMarkerID, tournamentMarkerName, tournamentMarkerGender,
+                    courseFirebaseKey, coursePlacesID, courseName, todaysDateString;
 
     private Date todaysDate;
 
@@ -58,10 +58,12 @@ public class ConfirmRound extends AppCompatActivity {
 
         changeTournament = (FloatingActionButton) findViewById(R.id.edit_selected_tournament);
         changeCourse = (FloatingActionButton) findViewById(R.id.edit_selected_course);
+        changeMarker = (FloatingActionButton) findViewById(R.id.edit_selected_marker);
 
         enterHandicap = (EditText)findViewById(R.id.enter_handicap);
         selectedCourse = (TextView)findViewById(R.id.selected_course);
         selectedTournament = (TextView)findViewById(R.id.selected_tournament);
+        selectedMarker = (TextView)findViewById(R.id.selected_marker);
 
         confirmRound = (FloatingTextButton)findViewById(R.id.confirm_round);
 
@@ -70,24 +72,20 @@ public class ConfirmRound extends AppCompatActivity {
         Intent i = getIntent();
         // If coming from select tournament
         if (i.hasExtra("tournamentFirebaseKey")) {
-            tournamentFirebaseKey = i.getStringExtra("courseFirebaseKey");
+            tournamentFirebaseKey = i.getStringExtra("tournamentFirebaseKey");
             tournamentName = i.getStringExtra("tournamentName");
             tournamentCourseName = i.getStringExtra("tournamentCourseName");
             tournamentCourseID = i.getStringExtra("tournamentCourseID");
-            coursesRef.child(tournamentCourseID).child("location").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    courseLatitude = dataSnapshot.child("latitude").getValue().toString();
-                    courseLongitude = dataSnapshot.child("longitude").getValue().toString();
-                    setupView();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
-            });
+            courseLatitude = i.getStringExtra("tournamentCourseLatitude");
+            courseLongitude = i.getStringExtra("tournamentCourseLongitude");
+            tournamentMarkerID = i.getStringExtra("tournamentMarkerID");
+            tournamentMarkerName = i.getStringExtra("tournamentMarkerName");
+            tournamentMarkerGender = i.getStringExtra("tournamentMarkerGender");
 
             // If tournament round, don't show edit course button
             changeCourse.hide();
+
+            setupView();
         }
         // If coming from select course
         else {
@@ -106,6 +104,9 @@ public class ConfirmRound extends AppCompatActivity {
                 }
             });
 
+            // If casual round, don't show edit marker button
+            changeMarker.hide();
+
             setupView();
         }
 
@@ -117,6 +118,18 @@ public class ConfirmRound extends AppCompatActivity {
             public void onClick(View v) {
                 Intent selectTournamentIntent = new Intent(ConfirmRound.this, PlaySelectTournament.class);
                 startActivity(selectTournamentIntent);
+            }
+        });
+
+        changeMarker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent selectMarkerIntent = new Intent(ConfirmRound.this, TournamentMarkerSetup.class);
+                selectMarkerIntent.putExtra("tournamentFirebaseKey", tournamentFirebaseKey);
+                selectMarkerIntent.putExtra("tournamentName", tournamentName);
+                selectMarkerIntent.putExtra("tournamentCourseName", tournamentCourseName);
+                selectMarkerIntent.putExtra("tournamentCourseID", tournamentCourseID);
+                startActivity(selectMarkerIntent);
             }
         });
 
@@ -135,20 +148,49 @@ public class ConfirmRound extends AppCompatActivity {
                         @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String roundID = usersRef.child(mAuth.getUid()).child("rounds").push().getKey();
-                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("courseID").setValue(courseName);
-                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
-                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
-                            usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
+                            // If starting a tournament type round
+                            if (getIntent().hasExtra("tournamentFirebaseKey")) {
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("courseID").setValue(tournamentCourseID);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("course name").setValue(tournamentCourseName);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("tournamentID").setValue(tournamentFirebaseKey);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("tournament name").setValue(tournamentName);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("markingID").setValue(tournamentMarkerID);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("marking name").setValue(tournamentMarkerName);
 
-                            Intent startPlayingIntent = new Intent(ConfirmRound.this, PlayMapAndScorecard.class);
-                            startPlayingIntent.putExtra("courseName", courseName);
-                            startPlayingIntent.putExtra("userGender", dataSnapshot.child("tee box").getValue().toString());
-                            startPlayingIntent.putExtra("courseFirebaseKey", courseFirebaseKey);
-                            startPlayingIntent.putExtra("roundID", roundID);
-                            startPlayingIntent.putExtra("courseLatitude", courseLatitude);
-                            startPlayingIntent.putExtra("courseLongitude", courseLongitude);
-                            startActivity(startPlayingIntent);
-                            finish();
+                                Intent startPlayingIntent = new Intent(ConfirmRound.this, PlayMapAndScorecard.class);
+                                startPlayingIntent.putExtra("courseName", tournamentCourseName);
+                                startPlayingIntent.putExtra("userGender", tournamentMarkerGender);
+                                startPlayingIntent.putExtra("markingID", tournamentMarkerID);
+                                startPlayingIntent.putExtra("markingName", tournamentMarkerName);
+                                startPlayingIntent.putExtra("tournamentFirebaseKey", tournamentFirebaseKey);
+                                startPlayingIntent.putExtra("tournamentName", tournamentName);
+                                startPlayingIntent.putExtra("courseFirebaseKey", tournamentCourseID);
+                                startPlayingIntent.putExtra("roundID", roundID);
+                                startPlayingIntent.putExtra("courseLatitude", courseLatitude);
+                                startPlayingIntent.putExtra("courseLongitude", courseLongitude);
+                                startActivity(startPlayingIntent);
+                                finish();
+                            }
+                            else {
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("courseID").setValue(courseFirebaseKey);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("course name").setValue(courseName);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
+
+                                Intent startPlayingIntent = new Intent(ConfirmRound.this, PlayMapAndScorecard.class);
+                                startPlayingIntent.putExtra("courseName", courseName);
+                                startPlayingIntent.putExtra("userGender", dataSnapshot.child("tee box").getValue().toString());
+                                startPlayingIntent.putExtra("courseFirebaseKey", courseFirebaseKey);
+                                startPlayingIntent.putExtra("roundID", roundID);
+                                startPlayingIntent.putExtra("courseLatitude", courseLatitude);
+                                startPlayingIntent.putExtra("courseLongitude", courseLongitude);
+                                startActivity(startPlayingIntent);
+                                finish();
+                            }
                         }
 
                         @Override
@@ -163,10 +205,12 @@ public class ConfirmRound extends AppCompatActivity {
         if (getIntent().hasExtra("tournamentFirebaseKey")) {
             selectedCourse.setText(tournamentCourseName);
             selectedTournament.setText(tournamentName);
+            selectedMarker.setText(tournamentMarkerName);
         }
         else {
             selectedCourse.setText(courseName);
             selectedTournament.setText("N/A");
+            selectedMarker.setText("N/A");
         }
     }
 

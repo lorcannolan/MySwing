@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,9 +50,12 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private String courseName, roundID;
 
     private DatabaseReference holesRef, roundsRef;
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
     private FirebaseAuth mAuth;
 
     private ArrayList<Marker> holeMarkers = new ArrayList<>();
+
+    private String tournamentFirebaseKey, tournamentName, markingUserRoundID;
 
     @Nullable
     @Override
@@ -62,6 +66,11 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         Intent i = getActivity().getIntent();
+        if (i.hasExtra("tournamentFirebaseKey")) {
+            tournamentFirebaseKey = i.getStringExtra("tournamentFirebaseKey");
+            tournamentName = i.getStringExtra("tournamentName");
+            markingUserRoundID = i.getStringExtra("markingID");
+        }
         String courseFirebaseKey = i.getStringExtra("courseFirebaseKey");
         String coursePlacesID = i.getStringExtra("coursePlacesID");
         courseName = i.getStringExtra("courseName");
@@ -76,7 +85,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
         holesRef = FirebaseDatabase.getInstance().getReference().child("courses").child(courseFirebaseKey).child("holes");
         mAuth = FirebaseAuth.getInstance();
-        roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("rounds").child(roundID);
+        if (!i.hasExtra("tournamentFirebaseKey")) {
+            roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("rounds").child(roundID);
+        }
 
         selectHoleSpinner = (Spinner)view.findViewById(R.id.play_choose_hole);
         ArrayAdapter<CharSequence> holeSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.hole_numbers, android.R.layout.simple_spinner_item);
@@ -113,13 +124,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // Button to display/hide course markers
         markersFAB = (FloatingActionButton)view.findViewById(R.id.show_markers);
         markersFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!selectedHole.equalsIgnoreCase("-select hole-") && !holeMarkers.isEmpty()) {
                     for (int i = 0; i < holeMarkers.size(); i++) {
-                        Log.d("MAP", "**************\nVisibility: " + holeMarkers.get(i).isVisible());
                         if (holeMarkers.get(i).isVisible()) {
                             holeMarkers.get(i).setVisible(false);
                         }
@@ -264,35 +275,71 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapLongClick(final LatLng latLng) {
                 if (!selectedHole.equalsIgnoreCase("-select hole-")) {
-                    roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    // Playing tournament and first shot is being recorded for other user so need to get the DB ref to their round
+                    if (roundsRef == null) {
+                        usersRef.child(markingUserRoundID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                boolean started = false;
+                                // check the user has recorded a round
+                                if (dataSnapshot.hasChild("rounds")) {
+                                    for (DataSnapshot data : dataSnapshot.child("rounds").getChildren()) {
+                                        // If the player whose scorecard the current user is marking has begun their round, the round id will be gained
+                                        if (data.hasChild("tournamentID")) {
+                                            if (tournamentFirebaseKey.equals(data.child("tournamentID").getValue().toString())) {
+                                                started = true;
+                                                roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(markingUserRoundID).child("rounds").child(data.getKey());
+                                                addShot(latLng);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (!started) {
+                                    Toast.makeText(getContext(), "The user has not started their round yet", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {}
+                        });
+                    }
+                    else {
+                        addShot(latLng);
+                    }
+                }
+            }
+        });
+    }
+
+    public void addShot(final LatLng latLng) {
+        roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
+                if (!dataSnapshot.child("holes").exists()) {
+                    roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
+                }
+                else {
+                    roundsRef.child("holes").child(selectedHole).child("shots").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
-                            if (!dataSnapshot.child("holes").exists()) {
-                                roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
-                            }
-                            else {
-                                roundsRef.child("holes").child(selectedHole).child("shots").addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        String shotNumber = Long.toString(dataSnapshot.getChildrenCount()) + 1;
-                                        roundsRef.child(roundID).child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                                });
-                            }
+                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount()) + 1;
+                            roundsRef.child(roundID).child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {}
                     });
-                    MarkerOptions courseLocation = new MarkerOptions()
-                            .position(latLng);
-                    myMap.addMarker(courseLocation);
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+
+        MarkerOptions courseLocation = new MarkerOptions()
+                .position(latLng);
+        myMap.addMarker(courseLocation);
     }
 }

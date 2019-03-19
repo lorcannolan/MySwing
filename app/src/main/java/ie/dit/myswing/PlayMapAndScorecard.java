@@ -1,5 +1,7 @@
 package ie.dit.myswing;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -51,9 +53,25 @@ public class PlayMapAndScorecard extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.finish) {
-            Intent backToHomeIntent = new Intent(PlayMapAndScorecard.this, Home.class);
-            startActivity(backToHomeIntent);
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(PlayMapAndScorecard.this);
+            builder.setTitle("Are You Sure You're Finished?");
+            builder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent backToHomeIntent = new Intent(PlayMapAndScorecard.this, Home.class);
+                            startActivity(backToHomeIntent);
+                            finish();
+                        }
+                    });
+            builder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog warning = builder.create();
+            warning.show();
         }
         return true;
     }

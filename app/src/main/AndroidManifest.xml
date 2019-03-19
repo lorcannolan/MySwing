@@ -55,7 +55,9 @@
         <activity android:name=".CreateTournament" />
         <activity android:name=".InvitePlayers" />
         <activity android:name=".PlaySelectCourse" />
-        <activity android:name=".PlaySelectTournament"></activity>
+        <activity android:name=".PlaySelectTournament" />
+        <activity android:name=".TournamentMarkerSetup">
+        </activity>
     </application>
 
 </manifest>

@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:floating_background_color="@color/homeBackground"
-        app:floating_left_icon="@drawable/ic_done_white_24dp"
+        app:floating_left_icon="@drawable/ic_check_box_white_24dp"
         app:floating_title="Confirm Tournament"
         app:floating_title_color="@android:color/white"
         android:layout_centerHorizontal="true"
