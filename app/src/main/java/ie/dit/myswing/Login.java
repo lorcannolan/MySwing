@@ -1,6 +1,8 @@
 package ie.dit.myswing;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,9 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 public class Login extends AppCompatActivity {
 
     private AppCompatButton login, reg;
+    private TextView title;
     private EditText mEmail, mPassword;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -41,6 +47,10 @@ public class Login extends AppCompatActivity {
 
         mEmail = (EditText)findViewById(R.id.email);
         mPassword = (EditText)findViewById(R.id.password);
+
+        title = (TextView) findViewById(R.id.title);
+        Typeface customFont = Typeface.createFromAsset(getAssets(),  "fonts/FontsFree-Net-Proxima-Nova-Bold.otf");
+        title.setTypeface(customFont);
 
         login = (AppCompatButton)findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {

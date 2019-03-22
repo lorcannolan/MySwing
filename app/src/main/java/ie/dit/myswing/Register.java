@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.webkit.WebStorage;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +36,7 @@ import java.util.Calendar;
 
 public class Register extends AppCompatActivity {
 
+    private TextView title;
     private EditText fname, sname, email, pwd, dob, gender;
     private AppCompatButton register;
     private FirebaseAuth mAuth;
@@ -47,6 +50,10 @@ public class Register extends AppCompatActivity {
         getSupportActionBar().hide();
 
         mAuth = FirebaseAuth.getInstance();
+
+        title = (TextView) findViewById(R.id.title);
+        Typeface customFont = Typeface.createFromAsset(getAssets(),  "fonts/FontsFree-Net-Proxima-Nova-Bold.otf");
+        title.setTypeface(customFont);
 
         fname = (EditText)findViewById(R.id.fname);
         sname = (EditText)findViewById(R.id.sname);

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#646464</color>
     <color name="homeBackground">#FF00AB72</color>
+    <color name="startColour">#00ffaa</color>
     <color name="homeBackgroundDark">#006141</color>
     <color name="white">#FFF</color>
     <color name="transparent">#FFFFFFFF</color>

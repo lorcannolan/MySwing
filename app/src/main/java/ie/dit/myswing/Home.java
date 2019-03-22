@@ -1,23 +1,15 @@
 package ie.dit.myswing;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,6 +68,7 @@ public class Home extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         Intent i = getIntent();
         String moveToFragment = i.getStringExtra("fragment");
