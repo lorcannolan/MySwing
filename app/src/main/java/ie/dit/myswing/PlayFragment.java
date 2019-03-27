@@ -1,11 +1,13 @@
 package ie.dit.myswing;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,18 +16,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class PlayFragment extends Fragment {
 
-    private Button button;
+    private Button playButton, discoverButton;
+    private TextView bluetoothStatus;
     private ImageView bluetoothButton;
+
     BluetoothAdapter bluetoothAdapter;
+
+    private ArrayList<BluetoothDevice> allDevices = new ArrayList<>();
+    private DeviceListAdapter deviceListAdapter;
+    private ListView deviceListView;
 
     private static final String TAG = "Play";
 
-    // Create a BroadcastReceiver for ACTION_FOUND
+    // Create a BroadcastReceiver for ACTION_STATE_CHANGED
     private final BroadcastReceiver broadcastReceiver1 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -37,6 +50,9 @@ public class PlayFragment extends Fragment {
                     case BluetoothAdapter.STATE_OFF:
                         Log.d(TAG, "onReceive: STATE OFF");
                         bluetoothButton.setImageResource(R.drawable.ic_bluetooth_off_120dp);
+                        discoverButton.setVisibility(View.INVISIBLE);
+                        allDevices.clear();
+                        deviceListView.setAdapter(null);
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         Log.d(TAG, "mBroadcastReceiver1: STATE TURNING OFF");
@@ -44,10 +60,52 @@ public class PlayFragment extends Fragment {
                     case BluetoothAdapter.STATE_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE ON");
                         bluetoothButton.setImageResource(R.drawable.ic_bluetooth_on_120dp);
+                        discoverButton.setVisibility(View.VISIBLE);
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE TURNING ON");
                         break;
+                }
+            }
+        }
+    };
+
+    // Create a BroadcastReceiver for ACTION_FOUND
+    private final BroadcastReceiver broadcastReceiver2 = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action.equals(BluetoothDevice.ACTION_FOUND)) {
+                BluetoothDevice newDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                allDevices.add(newDevice);
+
+                Log.d(TAG, "***************\n" + newDevice.getName() + ": " + newDevice.getAddress());
+                deviceListAdapter = new DeviceListAdapter(context, R.layout.device_list_row, allDevices);
+                deviceListView.setAdapter(deviceListAdapter);
+                deviceListView.setDivider(null);
+            }
+        }
+    };
+
+    // Create a BroadcastReceiver for ACTION_FOUND
+    private final BroadcastReceiver broadcastReceiver3 = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+                BluetoothDevice newDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                if (newDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    Log.d(TAG, "***************\nBOND_BONDED" );
+                    bluetoothStatus.setText("Connected to " + newDevice.getName());
+                    playButton.setVisibility(View.VISIBLE);
+                }
+                else if (newDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
+                    Log.d(TAG, "***************\nBOND_BONDING");
+                    bluetoothStatus.setText("Connecting to " + newDevice.getName() + "...");
+                }
+                else if (newDevice.getBondState() == BluetoothDevice.BOND_NONE) {
+                    Log.d(TAG, "***************\nBOND_NONE");
                 }
             }
         }
@@ -58,6 +116,8 @@ public class PlayFragment extends Fragment {
         Log.d(TAG, "***************\nonDestroy: called");
         super.onDestroy();
         getActivity().unregisterReceiver(broadcastReceiver1);
+        getActivity().unregisterReceiver(broadcastReceiver2);
+        getActivity().unregisterReceiver(broadcastReceiver3);
     }
 
     @Nullable
@@ -67,8 +127,26 @@ public class PlayFragment extends Fragment {
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        button = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        bluetoothStatus = (TextView) view.findViewById(R.id.bluetooth_status);
+
+        deviceListView = (ListView) view.findViewById(R.id.device_list);
+        deviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                bluetoothAdapter.cancelDiscovery();
+
+                Log.d(TAG, "***************\n" + allDevices.get(position).getName() + ": " + allDevices.get(position).getAddress() + " clicked!");
+
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    Log.d(TAG, "***************\nPairing with " + allDevices.get(position).getName());
+                    allDevices.get(position).createBond();
+                }
+            }
+        });
+
+        playButton = (Button) view.findViewById(R.id.button);
+        playButton.setVisibility(View.INVISIBLE);
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent selectRoundTypeIntent = new Intent(getActivity(), SelectRoundType.class);
@@ -76,13 +154,42 @@ public class PlayFragment extends Fragment {
             }
         });
 
+        discoverButton = (Button) view.findViewById(R.id.discover_devices_button);
+        discoverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "***************\nLooking For Devices");
+                allDevices.clear();
+                deviceListView.setAdapter(null);
+
+                if (bluetoothAdapter.isDiscovering()) {
+                    bluetoothAdapter.cancelDiscovery();
+
+                    checkPermissions();
+
+                    bluetoothAdapter.startDiscovery();
+                    IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                    getActivity().registerReceiver(broadcastReceiver2, discoverDevicesIntent);
+                }
+                if (!bluetoothAdapter.isDiscovering()) {
+                    checkPermissions();
+
+                    bluetoothAdapter.startDiscovery();
+                    IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                    getActivity().registerReceiver(broadcastReceiver2, discoverDevicesIntent);
+                }
+            }
+        });
+
         bluetoothButton = (ImageView) view.findViewById(R.id.bluetooth_image);
         // Set Bluetooth image
         if (bluetoothAdapter.isEnabled()) {
             bluetoothButton.setImageResource(R.drawable.ic_bluetooth_on_120dp);
+            discoverButton.setVisibility(View.VISIBLE);
         }
         else {
             bluetoothButton.setImageResource(R.drawable.ic_bluetooth_off_120dp);
+            discoverButton.setVisibility(View.INVISIBLE);
         }
         bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +215,24 @@ public class PlayFragment extends Fragment {
             }
         });
 
+        // Broadcasts when bond state changes (i.e. pairing)
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        getActivity().registerReceiver(broadcastReceiver3, filter);
+
         return view;
+    }
+
+    public void checkPermissions() {
+        /*
+        Permission check is required for devices running API 23+.
+        Must programmatically check for Bluetooth permissions
+        */
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            int permissionCheck = getActivity().checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
+            permissionCheck += getActivity().checkSelfPermission("Manifest.permission.ACCESS_COURSE_LOCATION");
+            if (permissionCheck != 0) {
+                getActivity().requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+            }
+        }
     }
 }
