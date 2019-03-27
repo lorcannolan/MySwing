@@ -59,6 +59,7 @@ public class PlaySelectTournament extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setTitle("Select Tournament");
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

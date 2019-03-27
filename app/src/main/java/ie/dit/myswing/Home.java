@@ -1,16 +1,20 @@
 package ie.dit.myswing;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +34,7 @@ public class Home extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_play:
                     selectedFragment = new PlayFragment();
-                    getSupportActionBar().setTitle("Select Round Type");
+                    getSupportActionBar().setTitle("Connect Bluetooth Device");
                     break;
                 case R.id.navigation_rounds:
                     selectedFragment = new RoundsFragment();
@@ -75,7 +79,7 @@ public class Home extends AppCompatActivity {
         if (moveToFragment == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new PlayFragment()).commit();
-            getSupportActionBar().setTitle("Select Round Type");
+            getSupportActionBar().setTitle("Connect Bluetooth Device");
         }
         else if (moveToFragment.contentEquals("Play")) {
             navigation.setSelectedItemId(R.id.navigation_play);
@@ -111,6 +115,12 @@ public class Home extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.logout, menu);
+
+        MenuItem item = menu.getItem(0);
+        SpannableString s = new SpannableString(menu.getItem(0).toString());
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        item.setTitle(s);
+
         return true;
     }
 

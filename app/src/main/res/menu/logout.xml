@@ -5,6 +5,6 @@
     <item
         android:id="@+id/logout"
         app:showAsAction="always"
-        android:title="Log Out"
-        />
+        android:title="Log Out">
+    </item>
 </menu>

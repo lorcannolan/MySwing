@@ -103,7 +103,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_remove_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_bluetooth_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -113,10 +113,12 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="006141" />
-                            <entry key="outputName" value="ic_remove_dark_24dp" />
+                            <entry key="color" value="0055ff" />
+                            <entry key="height" value="120" />
+                            <entry key="outputName" value="ic_bluetooth_on_120dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\lorca" />
+                            <entry key="width" value="120" />
                           </map>
                         </option>
                       </PersistentState>
