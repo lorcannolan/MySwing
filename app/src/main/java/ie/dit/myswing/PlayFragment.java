@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class PlayFragment extends Fragment {
 
@@ -111,14 +112,14 @@ public class PlayFragment extends Fragment {
         }
     };
 
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "***************\nonDestroy: called");
-        super.onDestroy();
-        getActivity().unregisterReceiver(broadcastReceiver1);
-        getActivity().unregisterReceiver(broadcastReceiver2);
-        getActivity().unregisterReceiver(broadcastReceiver3);
-    }
+//    @Override
+//    public void onDestroy() {
+//        Log.d(TAG, "***************\nonDestroy: called");
+//        super.onDestroy();
+//        getActivity().unregisterReceiver(broadcastReceiver1);
+//        getActivity().unregisterReceiver(broadcastReceiver2);
+//        getActivity().unregisterReceiver(broadcastReceiver3);
+//    }
 
     @Nullable
     @Override
