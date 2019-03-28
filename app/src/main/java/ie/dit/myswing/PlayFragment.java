@@ -33,6 +33,10 @@ public class PlayFragment extends Fragment {
 
     BluetoothAdapter bluetoothAdapter;
 
+    BluetoothConnectionService bluetoothConnectionService;
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    BluetoothDevice bluetoothDevice;
+
     private ArrayList<BluetoothDevice> allDevices = new ArrayList<>();
     private DeviceListAdapter deviceListAdapter;
     private ListView deviceListView;
@@ -100,6 +104,7 @@ public class PlayFragment extends Fragment {
                     Log.d(TAG, "***************\nBOND_BONDED" );
                     bluetoothStatus.setText("Connected to " + newDevice.getName());
                     playButton.setVisibility(View.VISIBLE);
+                    bluetoothDevice = newDevice;
                 }
                 else if (newDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
                     Log.d(TAG, "***************\nBOND_BONDING");
@@ -141,6 +146,9 @@ public class PlayFragment extends Fragment {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     Log.d(TAG, "***************\nPairing with " + allDevices.get(position).getName());
                     allDevices.get(position).createBond();
+
+                    bluetoothDevice = allDevices.get(position);
+                    bluetoothConnectionService = new BluetoothConnectionService(getContext());
                 }
             }
         });
@@ -150,8 +158,9 @@ public class PlayFragment extends Fragment {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent selectRoundTypeIntent = new Intent(getActivity(), SelectRoundType.class);
-                startActivity(selectRoundTypeIntent);
+//                Intent selectRoundTypeIntent = new Intent(getActivity(), SelectRoundType.class);
+//                startActivity(selectRoundTypeIntent);
+                startConnection();
             }
         });
 
@@ -221,6 +230,20 @@ public class PlayFragment extends Fragment {
         getActivity().registerReceiver(broadcastReceiver3, filter);
 
         return view;
+    }
+
+    // Start connection. App will crash if pairing not complete first
+    public void startConnection() {
+        startBTConnection(bluetoothDevice, MY_UUID);
+    }
+
+    /*
+        Start receiving data input from Arduino.
+    */
+    public void startBTConnection(BluetoothDevice bluetoothDevice1, UUID uuid) {
+        Log.d(TAG, "***************\nstartBTConnection: Initializing RFCOM Bluetooth Connection.");
+
+        bluetoothConnectionService.startClient(bluetoothDevice1, uuid);
     }
 
     public void checkPermissions() {
