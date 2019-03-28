@@ -218,6 +218,7 @@ public class BluetoothConnectionService {
                     bytes = in.read(buffer);
                     String incomingMessage = new String(buffer, 0, bytes);
                     Log.d(TAG, "***********\nInputStream: " + incomingMessage);
+                    //Log.d(TAG, "***********\nInputStream: " + incomingMessage);
                 }
                 catch (IOException e) {
                     Log.d(TAG, "***********\nInputStream: Error reading inputStream. " + e.getMessage());

@@ -7,8 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,9 @@ public class PlayFragment extends Fragment {
     private ListView deviceListView;
 
     private static final String TAG = "Play";
+
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
 
     // Create a BroadcastReceiver for ACTION_STATE_CHANGED
     private final BroadcastReceiver broadcastReceiver1 = new BroadcastReceiver() {
@@ -105,6 +110,9 @@ public class PlayFragment extends Fragment {
                     bluetoothStatus.setText("Connected to " + newDevice.getName());
                     playButton.setVisibility(View.VISIBLE);
                     bluetoothDevice = newDevice;
+
+                    editor.putString("BT Device Address", bluetoothDevice.getAddress());
+                    editor.apply();
                 }
                 else if (newDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
                     Log.d(TAG, "***************\nBOND_BONDING");
@@ -120,7 +128,7 @@ public class PlayFragment extends Fragment {
 //    @Override
 //    public void onDestroy() {
 //        Log.d(TAG, "***************\nonDestroy: called");
-//        super.onDestroy();
+////        super.onDestroy();
 //        getActivity().unregisterReceiver(broadcastReceiver1);
 //        getActivity().unregisterReceiver(broadcastReceiver2);
 //        getActivity().unregisterReceiver(broadcastReceiver3);
@@ -134,6 +142,12 @@ public class PlayFragment extends Fragment {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         bluetoothStatus = (TextView) view.findViewById(R.id.bluetooth_status);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = prefs.edit();
+        editor.putString("BT Device Address", "");
+        editor.apply();
+        Log.d(TAG, "***************\nBT Device Address: " + prefs.getString("BT Device Address", ""));
 
         deviceListView = (ListView) view.findViewById(R.id.device_list);
         deviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,9 +172,8 @@ public class PlayFragment extends Fragment {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent selectRoundTypeIntent = new Intent(getActivity(), SelectRoundType.class);
-//                startActivity(selectRoundTypeIntent);
-                startConnection();
+                Intent selectRoundTypeIntent = new Intent(getActivity(), SelectRoundType.class);
+                startActivity(selectRoundTypeIntent);
             }
         });
 
