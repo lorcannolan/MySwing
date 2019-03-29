@@ -31,9 +31,18 @@ public class BluetoothConnectionService {
     private UUID deviceUUID;
     ProgressBar progressBar;
 
+    private PlayMapAndScorecard parentActivity;
+
     public BluetoothConnectionService(Context context) {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         this.context = context;
+        start();
+    }
+
+    public BluetoothConnectionService(Context context, PlayMapAndScorecard playMapAndScorecard) {
+        this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        this.context = context;
+        this.parentActivity = playMapAndScorecard;
         start();
     }
 
@@ -186,7 +195,6 @@ public class BluetoothConnectionService {
     private class ConnectedThread extends Thread {
         private final BluetoothSocket socket;
         private final InputStream in;
-        private final OutputStream out;
 
         public ConnectedThread(BluetoothSocket bluetoothSocket) {
             Log.d(TAG, "ConnectedThread: Starting\n--------Progress Dialog Finish--------");
@@ -197,14 +205,12 @@ public class BluetoothConnectionService {
 
             try {
                 tmpIn = socket.getInputStream();
-                tmpOut = socket.getOutputStream();
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
 
             in = tmpIn;
-            out = tmpOut;
         }
 
         public void run() {
@@ -217,11 +223,19 @@ public class BluetoothConnectionService {
                 try {
                     bytes = in.read(buffer);
                     String incomingMessage = new String(buffer, 0, bytes);
-                    Log.d(TAG, "***********\nInputStream: " + incomingMessage);
+//                    Log.d(TAG, "***********\nInputStream: " + incomingMessage);
+//                    for (int i = 0; i < incomingMessage.length(); i++) {
+//                        Log.d(TAG, "***********\nInputStream: " + incomingMessage.charAt(i) + " - Checking Chars");
+//                    }
+                    if (incomingMessage.equals("Shot")) {
+                        Log.d(TAG, "***********\nAdd shot called");
+                        parentActivity.addShot();
+                    }
                     //Log.d(TAG, "***********\nInputStream: " + incomingMessage);
                 }
                 catch (IOException e) {
                     Log.d(TAG, "***********\nInputStream: Error reading inputStream. " + e.getMessage());
+                    parentActivity.error();
                     break;
                 }
             }

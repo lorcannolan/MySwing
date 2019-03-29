@@ -168,7 +168,7 @@ public class PlayFragment extends Fragment {
         });
 
         playButton = (Button) view.findViewById(R.id.button);
-        playButton.setVisibility(View.INVISIBLE);
+        playButton.setVisibility(View.VISIBLE);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

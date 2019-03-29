@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -56,6 +57,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<Marker> holeMarkers = new ArrayList<>();
 
     private String tournamentFirebaseKey, tournamentName, markingUserRoundID;
+
+    private DataSnapshot holesData;
 
     @Nullable
     @Override
@@ -112,6 +115,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             displayMarkers(dataSnapshot);
+                            displayShotMarkers(selectedHole);
                         }
 
                         @Override
@@ -267,6 +271,100 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    public void displayShotMarkers(final String selectedHole) {
+        roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int totalShots = (int) dataSnapshot.getChildrenCount();
+                if (totalShots > 0) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        LatLng shotLocation = new LatLng(
+                                Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
+                                Double.parseDouble(data.child("location").child("longitude").getValue().toString())
+                        );
+                        String ordinalIndicator = "";
+                        if (data.getKey().equals("1")) {
+                            ordinalIndicator = "st";
+                        }
+                        else if (data.getKey().equals("2")) {
+                            ordinalIndicator = "nd";
+                        }
+                        else if (data.getKey().equals("3")) {
+                            ordinalIndicator = "rd";
+                        }
+                        else  {
+                            ordinalIndicator = "th";
+                        }
+                        MarkerOptions shotMarker = new MarkerOptions()
+                                .position(shotLocation)
+                                .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot");
+                        myMap.addMarker(shotMarker);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    public void checkCurrentHole(final Location lastKnownLocation) {
+        if (holesData == null) {
+            holesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    holesData = dataSnapshot;
+                    Log.d("PlayMapFragment", "***************\nCalling checkCurrentHole (data null)");
+                    realCheckCurrentHole(lastKnownLocation);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        else {
+            Log.d("PlayMapFragment", "***************\nCalling checkCurrentHole (not null)");
+            realCheckCurrentHole(lastKnownLocation);
+        }
+    }
+
+    public void realCheckCurrentHole(Location lastKnownLocation) {
+        Location teeBox = new Location("teeBox");
+        if (selectedHole.equalsIgnoreCase("-select hole-")) {
+            Log.d("PlayMapFragment", "***************\nGetting tee box location (1st hole)");
+            teeBox.setLatitude(Double.parseDouble(holesData.child("1").child("mens tee box").child("latitude").getValue().toString()));
+            teeBox.setLongitude(Double.parseDouble(holesData.child("1").child("mens tee box").child("longitude").getValue().toString()));
+            checkTeeBoxDistance(lastKnownLocation, teeBox, 1);
+        }
+        else if (!selectedHole.equals("18")) {
+            Log.d("PlayMapFragment", "***************\nGetting tee box location (other holes)");
+            int nextHole = Integer.parseInt(selectedHole);
+            nextHole += 1;
+            teeBox.setLatitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child("mens tee box").child("latitude").getValue().toString()));
+            teeBox.setLongitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child("mens tee box").child("longitude").getValue().toString()));
+            checkTeeBoxDistance(lastKnownLocation, teeBox, nextHole);
+        }
+    }
+
+    public void checkTeeBoxDistance(Location lastKnownLocation, Location nextTeeBoxLocation, int position) {
+        Log.d("PlayMapFragment", "***************\nGetting distance");
+        float[] results = new float[3];
+        Location.distanceBetween(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                nextTeeBoxLocation.getLatitude(), nextTeeBoxLocation.getLongitude(),
+                results);
+        Log.d("PlayMapFragment", "***************\nDistance: " + results[0]);
+        if (results[0] < 10) {
+            selectHoleSpinner.setSelection(position);
+        }
+    }
+
+    public void addMarker(LatLng latLng) {
+        myMap.clear();
+        MarkerOptions shotMarker = new MarkerOptions()
+                .position(latLng);
+        myMap.addMarker(shotMarker);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
@@ -274,42 +372,46 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         myMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                if (!selectedHole.equalsIgnoreCase("-select hole-")) {
-                    // Playing tournament and first shot is being recorded for other user so need to get the DB ref to their round
-                    if (roundsRef == null) {
-                        usersRef.child(markingUserRoundID).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                boolean started = false;
-                                // check the user has recorded a round
-                                if (dataSnapshot.hasChild("rounds")) {
-                                    for (DataSnapshot data : dataSnapshot.child("rounds").getChildren()) {
-                                        // If the player whose scorecard the current user is marking has begun their round, the round id will be gained
-                                        if (data.hasChild("tournamentID")) {
-                                            if (tournamentFirebaseKey.equals(data.child("tournamentID").getValue().toString())) {
-                                                started = true;
-                                                roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(markingUserRoundID).child("rounds").child(data.getKey());
-                                                addShot(latLng);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (!started) {
-                                    Toast.makeText(getContext(), "The user has not started their round yet", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {}
-                        });
-                    }
-                    else {
-                        addShot(latLng);
-                    }
-                }
+                prepareAddShot(latLng);
             }
         });
+    }
+
+    public void prepareAddShot(final LatLng latLng) {
+        if (!selectedHole.equalsIgnoreCase("-select hole-")) {
+            // Playing tournament and first shot is being recorded for other user so need to get the DB ref to their round
+            if (roundsRef == null) {
+                usersRef.child(markingUserRoundID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        boolean started = false;
+                        // check the user has recorded a round
+                        if (dataSnapshot.hasChild("rounds")) {
+                            for (DataSnapshot data : dataSnapshot.child("rounds").getChildren()) {
+                                // If the player whose scorecard the current user is marking has begun their round, the round id will be gained
+                                if (data.hasChild("tournamentID")) {
+                                    if (tournamentFirebaseKey.equals(data.child("tournamentID").getValue().toString())) {
+                                        started = true;
+                                        roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(markingUserRoundID).child("rounds").child(data.getKey());
+                                        addShot(latLng);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (!started) {
+                            Toast.makeText(getContext(), "The user has not started their round yet", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
+            else {
+                addShot(latLng);
+            }
+        }
     }
 
     public void addShot(final LatLng latLng) {
@@ -321,11 +423,11 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
                 }
                 else {
-                    roundsRef.child("holes").child(selectedHole).child("shots").addValueEventListener(new ValueEventListener() {
+                    roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount()) + 1;
-                            roundsRef.child(roundID).child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
+                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount() + 1);
+                            roundsRef.child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
                         }
 
                         @Override

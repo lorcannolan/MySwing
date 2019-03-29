@@ -1,13 +1,19 @@
 package ie.dit.myswing;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +21,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Set;
 import java.util.UUID;
@@ -27,6 +43,9 @@ public class PlayMapAndScorecard extends AppCompatActivity {
     private TabPageAdapter mPageAdapter;
     private ViewPager mViewPager;
 
+    private PlayMapFragment playMapFragment;
+    private PlayScorecardFragment playScorecardFragment;
+
     private String bluetoothDeviceAddress;
     /*
         UUID taken from below source:
@@ -38,17 +57,28 @@ public class PlayMapAndScorecard extends AppCompatActivity {
 
     BluetoothConnectionService bluetoothConnectionService;
 
+    private static final long UPDATE_INTERVAL = 4000;
+    private static final long FASTEST_INTERVAL = 2000;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private FusedLocationProviderClient fusedLocationProviderClient2;
+
+    private Location lastKnownLocation, shotLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_map_and_scorecard);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationProviderClient2 = LocationServices.getFusedLocationProviderClient(this);
 
         mViewPager = (ViewPager) findViewById(R.id.play_tab_container);
 
         mPageAdapter = new TabPageAdapter(getSupportFragmentManager());
         setupViewPager(mViewPager);
 
-        tabLayout = (TabLayout)findViewById(R.id.play_tab_navigation);
+        tabLayout = (TabLayout) findViewById(R.id.play_tab_navigation);
         tabLayout.setupWithViewPager(mViewPager);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -69,13 +99,96 @@ public class PlayMapAndScorecard extends AppCompatActivity {
                     if (bluetoothDeviceAddress.equals(device.getAddress())) {
                         Log.d(TAG, "***************\nDevice Name: " + device.getName() + "\nDevice Address: " + device.getAddress() + "\n");
                         bluetoothDevice = device;
-                        bluetoothConnectionService = new BluetoothConnectionService(this);
+                        bluetoothConnectionService = new BluetoothConnectionService(this, PlayMapAndScorecard.this);
                         startBTConnection(bluetoothDevice, MY_UUID);
                     }
                 }
             }
         }
 
+        getLocation();
+
+    }
+
+    // Method constantly runs to receive location updates
+    public void getLocation() {
+        // LocationRequest is used to constantly retrieve user's location at an interval specified
+        LocationRequest locationRequestHighAccuracy = new LocationRequest();
+        locationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequestHighAccuracy.setInterval(UPDATE_INTERVAL);
+        locationRequestHighAccuracy.setFastestInterval(FASTEST_INTERVAL);
+
+        // LocationCallback method gets called every 3 seconds
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient2.requestLocationUpdates(locationRequestHighAccuracy, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        Location location = locationResult.getLastLocation();
+//                        Location court = new Location("court");
+//                        court.setLatitude(53.508444);
+//                        court.setLongitude(-6.403400);
+//
+//                        float[] results = new float[3];
+//                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+//                                                    court.getLatitude(), court.getLongitude(),
+//                                                    results);
+
+                        if (location != null) {
+                            //Log.d(TAG, "***********\nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude());
+//                            Log.d(TAG, "***********\n" + results[0] + " meters from Basketball Court");
+//                            playMapFragment.addMarker(new LatLng(
+//                                    location.getLatitude(),
+//                                    location.getLongitude()
+//                            ));
+                            lastKnownLocation = location;
+
+                            if (shotLocation != null) {
+                                float[] results = new float[3];
+                                Location.distanceBetween(shotLocation.getLatitude(), shotLocation.getLongitude(),
+                                        lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                                        results);
+                                Toast.makeText(PlayMapAndScorecard.this, "" + results[0], Toast.LENGTH_LONG).show();
+                                if (results[0] > 20) {
+                                    // add shot once the player has walked 25 metres away from their ball
+                                    playMapFragment.prepareAddShot(new LatLng(
+                                            shotLocation.getLatitude(),
+                                            shotLocation.getLongitude()
+                                    ));
+                                    Toast.makeText(PlayMapAndScorecard.this, "Shot added", Toast.LENGTH_LONG).show();
+                                    shotLocation = null;
+                                }
+                            }
+
+                            Log.d(TAG, "***************\nCalling checkCurrentHole");
+                            playMapFragment.checkCurrentHole(lastKnownLocation);
+
+                        }
+                    }
+                },
+                Looper.myLooper());
+    }
+
+    public void error() {
+        Toast.makeText(this, "Stream input error", Toast.LENGTH_LONG).show();
+    }
+
+    public void addShot() {
+        Log.d(TAG, "***********\nAdd shot called");
+
+        // get last known location
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful()) {
+                    shotLocation = task.getResult();
+                }
+            }
+        });
     }
 
     /*
@@ -89,8 +202,10 @@ public class PlayMapAndScorecard extends AppCompatActivity {
 
     public void setupViewPager (ViewPager viewPager) {
         TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PlayMapFragment(), "Map");
-        adapter.addFragment(new PlayScorecardFragment(), "Scorecard");
+        playMapFragment = new PlayMapFragment();
+        playScorecardFragment = new PlayScorecardFragment();
+        adapter.addFragment(playMapFragment, "Map");
+        adapter.addFragment(playScorecardFragment, "Scorecard");
         viewPager.setAdapter(adapter);
     }
 
