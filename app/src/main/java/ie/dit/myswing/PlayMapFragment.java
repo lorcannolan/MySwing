@@ -86,6 +86,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 Double.parseDouble(courseLongitude)
         );
 
+        holeScore = (TextView) view.findViewById(R.id.score_number);
+
         holesRef = FirebaseDatabase.getInstance().getReference().child("courses").child(courseFirebaseKey).child("holes");
         mAuth = FirebaseAuth.getInstance();
         if (!i.hasExtra("tournamentFirebaseKey")) {
@@ -276,6 +278,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int totalShots = (int) dataSnapshot.getChildrenCount();
+                holeScore.setText(totalShots + "");
                 if (totalShots > 0) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         LatLng shotLocation = new LatLng(
@@ -419,6 +422,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
+                int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
+                holeScore.setText(Integer.toString(currentHoleScore));
                 if (!dataSnapshot.child("holes").exists()) {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
                 }
