@@ -17,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,8 +46,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap myMap;
 
     private TextView holeScore, holePutts;
+    private ImageView addPutt, removePutt;
+    private int holePuttsInt;
     private Spinner selectHoleSpinner;
-    private FloatingActionButton markersFAB;
+    private FloatingActionButton markersFAB, infoFAB;
     private String selectedHole;
     private LatLng courseLatLng;
     private String courseName, roundID;
@@ -59,6 +63,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private String tournamentFirebaseKey, tournamentName, markingUserRoundID;
 
     private DataSnapshot holesData;
+
+    private Location lastKnownLocation, frontLocation, middleLocation, backLocation;
 
     @Nullable
     @Override
@@ -94,6 +100,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("rounds").child(roundID);
         }
 
+        // Button to display hole distances, etc
+        infoFAB = (FloatingActionButton) view.findViewById(R.id.play_information);
+        infoFAB.setVisibility(View.INVISIBLE);
+
         selectHoleSpinner = (Spinner)view.findViewById(R.id.play_choose_hole);
         ArrayAdapter<CharSequence> holeSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.hole_numbers, android.R.layout.simple_spinner_item);
         holeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -104,6 +114,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 selectedHole = parent.getItemAtPosition(position).toString();
                 if (selectedHole.equalsIgnoreCase("-select hole-")) {
                     myMap.clear();
+                    infoFAB.setVisibility(View.INVISIBLE);
                     myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(courseLatLng, 15f));
                     MarkerOptions courseLocation = new MarkerOptions()
                             .position(courseLatLng)
@@ -113,6 +124,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 else {
                     myMap.clear();
+                    infoFAB.setVisibility(View.VISIBLE);
                     holesRef.child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -148,7 +160,76 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        infoFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoDialog();
+            }
+        });
+
+        holePutts = (TextView) view.findViewById(R.id.putts_number);
+
+        addPutt = (ImageView) view.findViewById(R.id.putt_plus);
+        addPutt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!selectedHole.equalsIgnoreCase("-select hole-")) {
+                    holePuttsInt += 1;
+                    holePutts.setText(holePuttsInt + "");
+                    addPuttShot(lastKnownLocation);
+                }
+            }
+        });
+
+        removePutt = (ImageView) view.findViewById(R.id.putt_minus);
+        removePutt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!selectedHole.equalsIgnoreCase("-select hole-") ) {
+
+                }
+            }
+        });
+
         return view;
+    }
+
+    public void showInfoDialog() {
+        // Distance between user and front of hole
+        float[] frontResults = new float[3];
+        Location.distanceBetween(frontLocation.getLatitude(), frontLocation.getLongitude(),
+                lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                frontResults);
+
+        // Distance between user and middle of hole
+        float[] middleResults = new float[3];
+        Location.distanceBetween(middleLocation.getLatitude(), middleLocation.getLongitude(),
+                lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                middleResults);
+
+        // Distance between user and back of hole
+        float[] backResults = new float[3];
+        Location.distanceBetween(backLocation.getLatitude(), backLocation.getLongitude(),
+                lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                backResults);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Yardage");
+        builder.setMessage("Front of Green:\t\t\t\t" + (int)frontResults[0] + "m\n\n" +
+                            "Middle of Green:\t\t\t" + (int)middleResults[0] + "m\n\n" +
+                            "Back of Green:\t\t\t\t\t" + (int)backResults[0] + "m");
+        builder.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog infoDialog = builder.create();
+        infoDialog.show();
+    }
+
+    public void setLastKnownLocation(Location lastKnownLocation) {
+        this.lastKnownLocation = lastKnownLocation;
     }
 
     public void displayMarkers(DataSnapshot dataSnapshot) {
@@ -157,7 +238,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             Information relating to LatLngBounds was found here:
                 - https://stackoverflow.com/questions/15540220/google-map-camera-position-on-multiple-markers
             LatLngBounds enables camera to zoom to markers and display all markers within the bounds of the screen.
-         */
+        */
         if (!holeMarkers.isEmpty()) {
             holeMarkers.clear();
         }
@@ -200,10 +281,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             holeMarkers.add(marker);
         }
 
+        frontLocation = new Location("");
+        frontLocation.setLatitude(Double.parseDouble(dataSnapshot.child("front green").child("latitude").getValue().toString()));
+        frontLocation.setLongitude(Double.parseDouble(dataSnapshot.child("front green").child("longitude").getValue().toString()));
         // Front of Green Marker
         LatLng frontOfGreen = new LatLng(
-                Double.parseDouble(dataSnapshot.child("front green").child("latitude").getValue().toString()),
-                Double.parseDouble(dataSnapshot.child("front green").child("longitude").getValue().toString())
+                frontLocation.getLatitude(),
+                frontLocation.getLongitude()
         );
         if (!frontOfGreen.equals(courseLatLng)) {
             mapBoundsBuilder.include(frontOfGreen);
@@ -218,10 +302,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             holeMarkers.add(marker);
         }
 
+        middleLocation = new Location("");
+        middleLocation.setLatitude(Double.parseDouble(dataSnapshot.child("middle green").child("latitude").getValue().toString()));
+        middleLocation.setLongitude(Double.parseDouble(dataSnapshot.child("middle green").child("longitude").getValue().toString()));
         // Middle of Green Marker
         LatLng middleOfGreen = new LatLng(
-                Double.parseDouble(dataSnapshot.child("middle green").child("latitude").getValue().toString()),
-                Double.parseDouble(dataSnapshot.child("middle green").child("longitude").getValue().toString())
+                middleLocation.getLatitude(),
+                middleLocation.getLongitude()
         );
         if (!middleOfGreen.equals(courseLatLng)) {
             mapBoundsBuilder.include(middleOfGreen);
@@ -236,10 +323,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             holeMarkers.add(marker);
         }
 
+        backLocation = new Location("");
+        backLocation.setLatitude(Double.parseDouble(dataSnapshot.child("back green").child("latitude").getValue().toString()));
+        backLocation.setLongitude(Double.parseDouble(dataSnapshot.child("back green").child("longitude").getValue().toString()));
         // Back of Green Marker
         LatLng backOfGreen = new LatLng(
-                Double.parseDouble(dataSnapshot.child("back green").child("latitude").getValue().toString()),
-                Double.parseDouble(dataSnapshot.child("back green").child("longitude").getValue().toString())
+                backLocation.getLatitude(),
+                backLocation.getLongitude()
         );
         if (!backOfGreen.equals(courseLatLng)) {
             mapBoundsBuilder.include(backOfGreen);
@@ -274,13 +364,21 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void displayShotMarkers(final String selectedHole) {
-        roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
+        roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int totalShots = (int) dataSnapshot.getChildrenCount();
+                if (dataSnapshot.hasChild("putts")) {
+                    holePutts.setText(dataSnapshot.child("putts").getChildrenCount() + "");
+                    holePuttsInt = (int) dataSnapshot.child("putts").getChildrenCount();
+                }
+                else {
+                    holePuttsInt = 0;
+                }
+
+                int totalShots = (int) dataSnapshot.child("shots").getChildrenCount();
                 holeScore.setText(totalShots + "");
                 if (totalShots > 0) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
                         LatLng shotLocation = new LatLng(
                                 Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
                                 Double.parseDouble(data.child("location").child("longitude").getValue().toString())
@@ -378,6 +476,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 prepareAddShot(latLng);
             }
         });
+        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String[] titleString = marker.getTitle().split(" ");
+                int shotNumber = Integer.parseInt(String.valueOf(titleString[1].charAt(0)));
+                Toast.makeText(getContext(), "" + shotNumber, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 
     public void prepareAddShot(final LatLng latLng) {
@@ -424,6 +531,26 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
                 holeScore.setText(Integer.toString(currentHoleScore));
+
+                // Adding map marker
+                String ordinalIndicator = "";
+                if (currentHoleScore == 1) {
+                    ordinalIndicator = "st";
+                }
+                else if (currentHoleScore == 2) {
+                    ordinalIndicator = "nd";
+                }
+                else if (currentHoleScore == 3) {
+                    ordinalIndicator = "rd";
+                }
+                else  {
+                    ordinalIndicator = "th";
+                }
+                MarkerOptions shotMarker = new MarkerOptions()
+                        .position(latLng)
+                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot");
+                myMap.addMarker(shotMarker);
+
                 if (!dataSnapshot.child("holes").exists()) {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
                 }
@@ -444,9 +571,61 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+    }
 
-        MarkerOptions courseLocation = new MarkerOptions()
-                .position(latLng);
-        myMap.addMarker(courseLocation);
+    public void addPuttShot(final Location lastKnownLocation) {
+        roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
+                int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
+                holeScore.setText(Integer.toString(currentHoleScore));
+
+                // Adding map marker
+                String ordinalIndicator = "";
+                if (currentHoleScore == 1) {
+                    ordinalIndicator = "st";
+                }
+                else if (currentHoleScore == 2) {
+                    ordinalIndicator = "nd";
+                }
+                else if (currentHoleScore == 3) {
+                    ordinalIndicator = "rd";
+                }
+                else  {
+                    ordinalIndicator = "th";
+                }
+
+                final LatLng latLng = new LatLng(
+                        lastKnownLocation.getLatitude(),
+                        lastKnownLocation.getLongitude()
+                );
+
+                MarkerOptions shotMarker = new MarkerOptions()
+                        .position(latLng)
+                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot");
+                myMap.addMarker(shotMarker);
+
+                if (!dataSnapshot.child("holes").exists()) {
+                    roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
+                }
+                else {
+                    roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount() + 1);
+                            roundsRef.child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
+                            roundsRef.child("holes").child(selectedHole).child("putts").child(shotNumber).child("location").setValue(latLng);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
     }
 }

@@ -57,8 +57,8 @@ public class PlayMapAndScorecard extends AppCompatActivity {
 
     BluetoothConnectionService bluetoothConnectionService;
 
-    private static final long UPDATE_INTERVAL = 4000;
-    private static final long FASTEST_INTERVAL = 2000;
+    private static final long UPDATE_INTERVAL = 3000;
+    private static final long FASTEST_INTERVAL = 1500;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private FusedLocationProviderClient fusedLocationProviderClient2;
@@ -126,23 +126,11 @@ public class PlayMapAndScorecard extends AppCompatActivity {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         Location location = locationResult.getLastLocation();
-//                        Location court = new Location("court");
-//                        court.setLatitude(53.508444);
-//                        court.setLongitude(-6.403400);
-//
-//                        float[] results = new float[3];
-//                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
-//                                                    court.getLatitude(), court.getLongitude(),
-//                                                    results);
 
                         if (location != null) {
-                            //Log.d(TAG, "***********\nLatitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude());
-//                            Log.d(TAG, "***********\n" + results[0] + " meters from Basketball Court");
-//                            playMapFragment.addMarker(new LatLng(
-//                                    location.getLatitude(),
-//                                    location.getLongitude()
-//                            ));
                             lastKnownLocation = location;
+
+                            playMapFragment.setLastKnownLocation(lastKnownLocation);
 
                             if (shotLocation != null) {
                                 float[] results = new float[3];
@@ -168,6 +156,10 @@ public class PlayMapAndScorecard extends AppCompatActivity {
                     }
                 },
                 Looper.myLooper());
+    }
+
+    public Location getLastKnownLocation() {
+        return lastKnownLocation;
     }
 
     public void error() {

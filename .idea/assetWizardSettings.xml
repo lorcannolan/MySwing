@@ -103,7 +103,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_circle_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_info_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -113,8 +113,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="00ab72" />
-                            <entry key="outputName" value="ic_add_circle_green_24dp" />
+                            <entry key="color" value="282828" />
+                            <entry key="outputName" value="ic_info_black_24dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\lorca" />
                           </map>

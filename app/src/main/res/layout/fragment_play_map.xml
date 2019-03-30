@@ -52,6 +52,19 @@
         app:backgroundTint="@color/quantum_grey"
         app:srcCompat="@drawable/ic_action_location_flag"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/play_information"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/show_markers"
+        app:backgroundTint="@color/quantum_grey"
+        app:srcCompat="@drawable/ic_info_black_24dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
