@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,12 +17,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +54,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap myMap;
 
     private TextView holeScore, holePutts;
-    private ImageView addPutt, removePutt;
+    private ImageView addPutt, deleteImage;
     private int holePuttsInt;
     private Spinner selectHoleSpinner;
     private FloatingActionButton markersFAB, infoFAB;
@@ -107,6 +111,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         );
 
         holeScore = (TextView) view.findViewById(R.id.score_number);
+
+        deleteImage = (ImageView) view.findViewById(R.id.delete_marker);
+        deleteImage.setVisibility(View.INVISIBLE);
 
         holesRef = FirebaseDatabase.getInstance().getReference().child("courses").child(courseFirebaseKey).child("holes");
         mAuth = FirebaseAuth.getInstance();
@@ -195,16 +202,6 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        removePutt = (ImageView) view.findViewById(R.id.putt_minus);
-        removePutt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!selectedHole.equalsIgnoreCase("-select hole-") ) {
-
-                }
-            }
-        });
-
         return view;
     }
 
@@ -271,7 +268,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     .position(mensTeeBox)
                     .title(selectedHole + ". Men's Tee Box")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .draggable(true)
+                    .draggable(false)
                     .visible(false);
             marker = myMap.addMarker(mensTeeBoxMarker);
             holeMarkers.add(marker);
@@ -289,7 +286,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     .position(ladiesTeeBox)
                     .title(selectedHole + ". Ladies Tee Box")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-                    .draggable(true)
+                    .draggable(false)
                     .visible(false);
             marker = myMap.addMarker(ladiesTeeBoxMarker);
             holeMarkers.add(marker);
@@ -310,7 +307,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     .position(frontOfGreen)
                     .title(selectedHole + ". Front of Green")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .draggable(true)
+                    .draggable(false)
                     .visible(false);
             marker = myMap.addMarker(frontOfGreenMarker);
             holeMarkers.add(marker);
@@ -331,7 +328,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     .position(middleOfGreen)
                     .title(selectedHole + ". Middle of Green")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-                    .draggable(true)
+                    .draggable(false)
                     .visible(false);
             marker = myMap.addMarker(middleOfGreenMarker);
             holeMarkers.add(marker);
@@ -352,7 +349,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     .position(backOfGreen)
                     .title(selectedHole + ". Back of Green")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    .draggable(true)
+                    .draggable(false)
                     .visible(false);
             marker = myMap.addMarker(backOfGreenMarker);
             holeMarkers.add(marker);
@@ -414,7 +411,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         MarkerOptions shotMarker = new MarkerOptions()
                                 .position(shotLocation)
                                 .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
-                                .snippet("")
+                                .snippet("Press to change to Putt.\nPress and hold to Delete.")
+                                .draggable(true)
                                 .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
                         myMap.addMarker(shotMarker);
                     }
@@ -442,7 +440,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                             MarkerOptions puttMarker = new MarkerOptions()
                                     .position(puttLocation)
                                     .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
-                                    .snippet("Putt")
+                                    .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
+                                    .draggable(true)
                                     .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
                             myMap.addMarker(puttMarker);
                         }
@@ -522,14 +521,67 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 prepareAddShot(latLng);
             }
         });
-        myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        myMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
-            public boolean onMarkerClick(final Marker marker) {
+            public void onMarkerDragStart(Marker marker) {
+                deleteImage.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                deleteImage.setVisibility(View.INVISIBLE);
+
+                String[] title = marker.getTitle().split(" ");
+                int shotNumber = Integer.parseInt(String.valueOf(title[1].charAt(0)));
+                if (marker.getSnippet().contains("Shot")) {
+                    roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
+                }
+                else if (marker.getSnippet().contains("Putt")){
+                    roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
+                }
+            }
+        });
+        myMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                LinearLayout info = new LinearLayout(getContext());
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(getContext());
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(getContext());
+                snippet.setTextColor(Color.GRAY);
+                snippet.setGravity(Gravity.CENTER);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
+        myMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(final Marker marker) {
                 String[] titleString = marker.getTitle().split(" ");
                 final int shotNumber = Integer.parseInt(String.valueOf(titleString[1].charAt(0)));
 
-                // Option to set shot as putt
-                if (!marker.getSnippet().contains("Putt")) {
+                // change shot type to putt
+                if (marker.getSnippet().contains("Putt")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Set shot as putt?");
                     builder.setPositiveButton("Yes",
@@ -540,7 +592,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
                                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(puttIcon));
                                     holePuttsInt++;
-                                    marker.setSnippet("Putt");
+                                    marker.setSnippet("Press to change to Golf Shot.\nPress and hold to Delete.");
                                     marker.hideInfoWindow();
                                     marker.showInfoWindow();
                                     holePutts.setText(holePuttsInt + "");
@@ -556,10 +608,103 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     AlertDialog chooselocationType = builder.create();
                     chooselocationType.show();
                 }
+                // change shot type to regular shot
+                else if (marker.getSnippet().contains("Shot")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Set shot as Golf Shot?");
+                    builder.setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(shotNumber)).removeValue();
+                                    roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
+                                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(shotIcon));
+                                    holePuttsInt--;
+                                    marker.setSnippet("Press to change to Putt.\nPress and hold to Delete.");
+                                    marker.hideInfoWindow();
+                                    marker.showInfoWindow();
+                                    holePutts.setText(holePuttsInt + "");
+                                }
+                            });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                marker.showInfoWindow();
+                    AlertDialog chooselocationType = builder.create();
+                    chooselocationType.show();
+                }
+            }
+        });
+        myMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(final Marker marker) {
+                String[] titleString = marker.getTitle().split(" ");
+                final int shotNumber = Integer.parseInt(String.valueOf(titleString[1].charAt(0)));
 
-                return true;
+                // delete shot
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Remove Shot?");
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) - 1;
+                                holeScore.setText(Integer.toString(currentHoleScore));
+                                roundsRef.child("score").setValue(currentHoleScore);
+
+                                if (marker.getSnippet().contains("Putt")) {
+                                    roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).removeValue();
+                                }
+                                else if (marker.getSnippet().contains("Shot")) {
+                                    roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(shotNumber)).removeValue();
+                                    holePuttsInt--;
+                                    holePutts.setText(holePuttsInt + "");
+                                }
+
+                                roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.hasChild("shots")) {
+                                            for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
+                                                if (Integer.parseInt(data.getKey()) > shotNumber) {
+                                                    String oldKey = data.getKey();
+                                                    String newKey = Integer.toString(Integer.parseInt(oldKey) - 1);
+                                                    roundsRef.child("holes").child(selectedHole).child("shots").child(oldKey).removeValue();
+                                                    roundsRef.child("holes").child(selectedHole).child("shots").child(newKey).setValue(data.getValue());
+                                                }
+                                            }
+                                        }
+                                        if (dataSnapshot.hasChild("putts")) {
+                                            for (DataSnapshot data : dataSnapshot.child("putts").getChildren()) {
+                                                if (Integer.parseInt(data.getKey()) > shotNumber) {
+                                                    String oldKey = data.getKey();
+                                                    String newKey = Integer.toString(Integer.parseInt(oldKey) - 1);
+                                                    roundsRef.child("holes").child(selectedHole).child("putts").child(oldKey).removeValue();
+                                                    roundsRef.child("holes").child(selectedHole).child("putts").child(newKey).setValue(data.getValue());
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                });
+
+                                marker.remove();
+                            }
+                        });
+                builder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog chooselocationType = builder.create();
+                chooselocationType.show();
             }
         });
     }
@@ -626,7 +771,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
                         .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot")
-                        .snippet("")
+                        .snippet("Press to change to Putt.\nPress and hold to Delete.")
+                        .draggable(true)
                         .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
                 myMap.addMarker(shotMarker);
 
@@ -634,16 +780,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
                 }
                 else {
-                    roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount() + 1);
-                            roundsRef.child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
+                    roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(currentHoleScore)).child("location").setValue(latLng);
                 }
             }
 
@@ -683,7 +820,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
                         .title(selectedHole + ". " + currentHoleScore + ordinalIndicatorShot + " Shot")
-                        .snippet("Putt")
+                        .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
+                        .draggable(true)
                         .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
                 myMap.addMarker(shotMarker);
 
