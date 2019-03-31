@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +40,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -66,6 +70,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
     private Location lastKnownLocation, frontLocation, middleLocation, backLocation;
 
+    private Bitmap shotIcon, puttIcon;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +79,14 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.play_map);
         mapFragment.getMapAsync(this);
+
+        BitmapDrawable shotBitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.golf_shot_icon);
+        Bitmap shotBitmap = shotBitmapDrawable.getBitmap();
+        shotIcon = Bitmap.createScaledBitmap(shotBitmap, 100, 100, false);
+
+        BitmapDrawable puttBitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.golf_putt_icon);
+        Bitmap puttBitmap = puttBitmapDrawable.getBitmap();
+        puttIcon = Bitmap.createScaledBitmap(puttBitmap, 100, 100, false);
 
         Intent i = getActivity().getIntent();
         if (i.hasExtra("tournamentFirebaseKey")) {
@@ -372,10 +386,11 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                     holePuttsInt = (int) dataSnapshot.child("putts").getChildrenCount();
                 }
                 else {
+                    holePutts.setText("0");
                     holePuttsInt = 0;
                 }
 
-                int totalShots = (int) dataSnapshot.child("shots").getChildrenCount();
+                int totalShots = (int) dataSnapshot.child("shots").getChildrenCount() + holePuttsInt;
                 holeScore.setText(totalShots + "");
                 if (totalShots > 0) {
                     for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
@@ -398,8 +413,39 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         }
                         MarkerOptions shotMarker = new MarkerOptions()
                                 .position(shotLocation)
-                                .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot");
+                                .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
+                                .snippet("")
+                                .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
                         myMap.addMarker(shotMarker);
+                    }
+
+                    if (holePuttsInt > 0) {
+                        for (DataSnapshot data : dataSnapshot.child("putts").getChildren()) {
+                            LatLng puttLocation = new LatLng(
+                                    Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
+                                    Double.parseDouble(data.child("location").child("longitude").getValue().toString())
+                            );
+                            String ordinalIndicator = "";
+                            if (data.getKey().equals("1")) {
+                                ordinalIndicator = "st";
+                            }
+                            else if (data.getKey().equals("2")) {
+                                ordinalIndicator = "nd";
+                            }
+                            else if (data.getKey().equals("3")) {
+                                ordinalIndicator = "rd";
+                            }
+                            else  {
+                                ordinalIndicator = "th";
+                            }
+
+                            MarkerOptions puttMarker = new MarkerOptions()
+                                    .position(puttLocation)
+                                    .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
+                                    .snippet("Putt")
+                                    .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
+                            myMap.addMarker(puttMarker);
+                        }
                     }
                 }
             }
@@ -478,10 +524,41 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         });
         myMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(final Marker marker) {
                 String[] titleString = marker.getTitle().split(" ");
-                int shotNumber = Integer.parseInt(String.valueOf(titleString[1].charAt(0)));
-                Toast.makeText(getContext(), "" + shotNumber, Toast.LENGTH_SHORT).show();
+                final int shotNumber = Integer.parseInt(String.valueOf(titleString[1].charAt(0)));
+
+                // Option to set shot as putt
+                if (!marker.getSnippet().contains("Putt")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Set shot as putt?");
+                    builder.setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).removeValue();
+                                    roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
+                                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(puttIcon));
+                                    holePuttsInt++;
+                                    marker.setSnippet("Putt");
+                                    marker.hideInfoWindow();
+                                    marker.showInfoWindow();
+                                    holePutts.setText(holePuttsInt + "");
+                                }
+                            });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog chooselocationType = builder.create();
+                    chooselocationType.show();
+                }
+
+                marker.showInfoWindow();
+
                 return true;
             }
         });
@@ -548,7 +625,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
-                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot");
+                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot")
+                        .snippet("")
+                        .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
                 myMap.addMarker(shotMarker);
 
                 if (!dataSnapshot.child("holes").exists()) {
@@ -582,18 +661,18 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker
-                String ordinalIndicator = "";
+                String ordinalIndicatorShot = "";
                 if (currentHoleScore == 1) {
-                    ordinalIndicator = "st";
+                    ordinalIndicatorShot = "st";
                 }
                 else if (currentHoleScore == 2) {
-                    ordinalIndicator = "nd";
+                    ordinalIndicatorShot = "nd";
                 }
                 else if (currentHoleScore == 3) {
-                    ordinalIndicator = "rd";
+                    ordinalIndicatorShot = "rd";
                 }
                 else  {
-                    ordinalIndicator = "th";
+                    ordinalIndicatorShot = "th";
                 }
 
                 final LatLng latLng = new LatLng(
@@ -603,24 +682,16 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
-                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot");
+                        .title(selectedHole + ". " + currentHoleScore + ordinalIndicatorShot + " Shot")
+                        .snippet("Putt")
+                        .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
                 myMap.addMarker(shotMarker);
 
                 if (!dataSnapshot.child("holes").exists()) {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
                 }
                 else {
-                    roundsRef.child("holes").child(selectedHole).child("shots").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String shotNumber = Long.toString(dataSnapshot.getChildrenCount() + 1);
-                            roundsRef.child("holes").child(selectedHole).child("shots").child(shotNumber).child("location").setValue(latLng);
-                            roundsRef.child("holes").child(selectedHole).child("putts").child(shotNumber).child("location").setValue(latLng);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
+                    roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(currentHoleScore)).child("location").setValue(latLng);
                 }
             }
 
