@@ -60,7 +60,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private FloatingActionButton markersFAB, infoFAB;
     private String selectedHole;
     private LatLng courseLatLng;
-    private String courseName, roundID;
+    private String courseName, roundID, userGender;
 
     private DatabaseReference holesRef, roundsRef;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -69,7 +69,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<Marker> holeMarkers = new ArrayList<>();
     private ArrayList<Marker> shotMarkers = new ArrayList<>();
 
-    private String tournamentFirebaseKey, tournamentName, markingUserRoundID;
+    private String tournamentFirebaseKey, tournamentName, markingUserRoundID, firebaseTeeBoxPath;
 
     private DataSnapshot holesData;
 
@@ -105,6 +105,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         String courseLatitude = i.getStringExtra("courseLatitude");
         String courseLongitude = i.getStringExtra("courseLongitude");
         roundID = i.getStringExtra("roundID");
+        userGender = i.getStringExtra("userGender");
+
+        firebaseTeeBoxPath = "";
+        if (userGender.equalsIgnoreCase("ladies")) {
+            firebaseTeeBoxPath = "ladies tee box";
+        }
+        else {
+            firebaseTeeBoxPath = "mens tee box";
+        }
 
         courseLatLng = new LatLng(
                 Double.parseDouble(courseLatitude),
@@ -153,7 +162,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             displayMarkers(dataSnapshot);
                             displayShotMarkers(selectedHole);
-                            holePar.setText(dataSnapshot.child("mens par").getValue().toString());
+                            if (firebaseTeeBoxPath.contains("mens")) {
+                                holePar.setText(dataSnapshot.child("mens par").getValue().toString());
+                            }
+                            else {
+                                holePar.setText(dataSnapshot.child("ladies par").getValue().toString());
+                            }
+
                         }
 
                         @Override
@@ -461,16 +476,16 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         Location teeBox = new Location("teeBox");
         if (selectedHole.equalsIgnoreCase("-select hole-")) {
             Log.d("PlayMapFragment", "***************\nGetting tee box location (1st hole)");
-            teeBox.setLatitude(Double.parseDouble(holesData.child("1").child("mens tee box").child("latitude").getValue().toString()));
-            teeBox.setLongitude(Double.parseDouble(holesData.child("1").child("mens tee box").child("longitude").getValue().toString()));
+            teeBox.setLatitude(Double.parseDouble(holesData.child("1").child(firebaseTeeBoxPath).child("latitude").getValue().toString()));
+            teeBox.setLongitude(Double.parseDouble(holesData.child("1").child(firebaseTeeBoxPath).child("longitude").getValue().toString()));
             checkTeeBoxDistance(lastKnownLocation, teeBox, 1);
         }
         else if (!selectedHole.equals("18")) {
             Log.d("PlayMapFragment", "***************\nGetting tee box location (other holes)");
             int nextHole = Integer.parseInt(selectedHole);
             nextHole += 1;
-            teeBox.setLatitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child("mens tee box").child("latitude").getValue().toString()));
-            teeBox.setLongitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child("mens tee box").child("longitude").getValue().toString()));
+            teeBox.setLatitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child(firebaseTeeBoxPath).child("latitude").getValue().toString()));
+            teeBox.setLongitude(Double.parseDouble(holesData.child(Integer.toString(nextHole)).child(firebaseTeeBoxPath).child("longitude").getValue().toString()));
             checkTeeBoxDistance(lastKnownLocation, teeBox, nextHole);
         }
     }
@@ -515,7 +530,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             }
 
             @Override
-            public void onMarkerDragEnd(Marker marker) {
+            public void onMarkerDragEnd(final Marker marker) {
                 String[] title = marker.getTitle().split(" ");
                 int shotNumber = Integer.parseInt(String.valueOf(title[1].charAt(0)));
                 if (marker.getSnippet().contains("Shot")) {
@@ -523,6 +538,27 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 }
                 else if (marker.getSnippet().contains("Putt")){
                     roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).child("location").setValue(marker.getPosition());
+                }
+
+                // Reset drive distance
+                if (shotNumber == 2 || shotNumber == 1) {
+                    // Only reset distance if more than one shot taken on that hole
+                    if (shotMarkers.size() > 1) {
+                        Location firstShotLocation = new Location("");
+                        firstShotLocation.setLatitude(shotMarkers.get(0).getPosition().latitude);
+                        firstShotLocation.setLongitude(shotMarkers.get(0).getPosition().longitude);
+
+                        Location secondShotLocation = new Location("");
+                        secondShotLocation.setLatitude(shotMarkers.get(1).getPosition().latitude);
+                        secondShotLocation.setLongitude(shotMarkers.get(1).getPosition().longitude);
+
+                        float[] driveDistance = new float[3];
+                        Location.distanceBetween(firstShotLocation.getLatitude(), firstShotLocation.getLongitude(),
+                                secondShotLocation.getLatitude(), secondShotLocation.getLongitude(),
+                                driveDistance);
+
+                        roundsRef.child("holes").child(selectedHole).child("drive distance").setValue((int)driveDistance[0]);
+                    }
                 }
             }
         });
@@ -679,6 +715,28 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     }
                                 }
 
+                                // Set drive distance to 0 if only one shot remaining on screen
+                                if (shotMarkers.size() < 2) {
+                                    roundsRef.child("holes").child(selectedHole).child("drive distance").setValue(0);
+                                }
+                                // Reset drive distance of hole if 1st shot is deleted
+                                else {
+                                    Location firstShotLocation = new Location("");
+                                    firstShotLocation.setLatitude(shotMarkers.get(0).getPosition().latitude);
+                                    firstShotLocation.setLongitude(shotMarkers.get(0).getPosition().longitude);
+
+                                    Location secondShotLocation = new Location("");
+                                    secondShotLocation.setLatitude(shotMarkers.get(1).getPosition().latitude);
+                                    secondShotLocation.setLongitude(shotMarkers.get(1).getPosition().longitude);
+
+                                    float[] driveDistance = new float[3];
+                                    Location.distanceBetween(firstShotLocation.getLatitude(), firstShotLocation.getLongitude(),
+                                            secondShotLocation.getLatitude(), secondShotLocation.getLongitude(),
+                                            driveDistance);
+
+                                    roundsRef.child("holes").child(selectedHole).child("drive distance").setValue((int)driveDistance[0]);
+                                }
+
                                 roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -777,6 +835,33 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 // Adding map marker
                 String ordinalIndicator = getOrdinalIndicator(currentHoleScore);
 
+                if (currentHoleScore == 2) {
+                    Double latitude = (double)0;
+                    Double longitude = (double)0;
+                    if (dataSnapshot.child("holes").child(selectedHole).child("shots").hasChild("1")) {
+                        latitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("shots").child("1").child("location").child("latitude").getValue().toString());
+                        longitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("shots").child("1").child("location").child("longitude").getValue().toString());
+                    }
+                    else if (dataSnapshot.child("holes").child(selectedHole).child("putts").hasChild("1")){
+                        latitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("putts").child("1").child("location").child("latitude").getValue().toString());
+                        longitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("putts").child("1").child("location").child("longitude").getValue().toString());
+                    }
+                    Location firstShotLocation = new Location("");
+                    firstShotLocation.setLatitude(latitude);
+                    firstShotLocation.setLongitude(longitude);
+
+                    Location secondShotLocation = new Location("");
+                    secondShotLocation.setLatitude(latLng.latitude);
+                    secondShotLocation.setLongitude(latLng.longitude);
+
+                    float[] driveDistance = new float[3];
+                    Location.distanceBetween(firstShotLocation.getLatitude(), firstShotLocation.getLongitude(),
+                            secondShotLocation.getLatitude(), secondShotLocation.getLongitude(),
+                            driveDistance);
+
+                    roundsRef.child("holes").child(selectedHole).child("drive distance").setValue((int)driveDistance[0]);
+                }
+
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
                         .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot")
@@ -815,6 +900,33 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         lastKnownLocation.getLatitude(),
                         lastKnownLocation.getLongitude()
                 );
+
+                if (currentHoleScore == 2) {
+                    Double latitude = (double)0;
+                    Double longitude = (double)0;
+                    if (dataSnapshot.child("holes").child(selectedHole).child("shots").hasChild("1")) {
+                        latitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("shots").child("1").child("location").child("latitude").getValue().toString());
+                        longitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("shots").child("1").child("location").child("longitude").getValue().toString());
+                    }
+                    else if (dataSnapshot.child("holes").child(selectedHole).child("putts").hasChild("1")){
+                        latitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("putts").child("1").child("location").child("latitude").getValue().toString());
+                        longitude = Double.parseDouble(dataSnapshot.child("holes").child(selectedHole).child("putts").child("1").child("location").child("longitude").getValue().toString());
+                    }
+                    Location firstShotLocation = new Location("");
+                    firstShotLocation.setLatitude(latitude);
+                    firstShotLocation.setLongitude(longitude);
+
+                    Location secondShotLocation = new Location("");
+                    secondShotLocation.setLatitude(latLng.latitude);
+                    secondShotLocation.setLongitude(latLng.longitude);
+
+                    float[] driveDistance = new float[3];
+                    Location.distanceBetween(firstShotLocation.getLatitude(), firstShotLocation.getLongitude(),
+                            secondShotLocation.getLatitude(), secondShotLocation.getLongitude(),
+                            driveDistance);
+
+                    roundsRef.child("holes").child(selectedHole).child("drive distance").setValue((int)driveDistance[0]);
+                }
 
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
