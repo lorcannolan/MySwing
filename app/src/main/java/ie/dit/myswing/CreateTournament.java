@@ -51,6 +51,7 @@ public class CreateTournament extends AppCompatActivity {
         setContentView(R.layout.activity_create_tournament);
 
         getSupportActionBar().setTitle("Create Tournament");
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         mAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());

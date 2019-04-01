@@ -18,7 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 
@@ -104,38 +108,50 @@ public class InvitedTournamentsFragment extends Fragment {
                     }
                     numberOfTournaments = dataSnapshot.getChildrenCount();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Tournament tournament = new Tournament(
-                                data.getKey(),
-                                data.child("name").getValue().toString(),
-                                data.child("course").getValue().toString(),
-                                data.child("date").getValue().toString()
-                        );
-                        if (data.hasChild("club")) {
-                            // If the current user is a member of the club, show tournament
-                            if (userClub.equals(data.child("club").getValue().toString())) {
-                                tournament.setClub(data.child("club").getValue().toString());
-                                addTournaments(tournament);
-                            }
-                        }
-                        else if (data.hasChild("society")) {
-                            // If the current user is a member of the society, show tournament
-                            if (userSociety.equals(data.child("society").getValue().toString())) {
-                                tournament.setSociety(data.child("society").getValue().toString());
-                                addTournaments(tournament);
-                            }
-                        }
-                        else if (data.hasChild("invited")) {
-                            int i = 0;
-                            long numberOfInvitedUsers = data.child("invited").getChildrenCount();
-                            String[] invitedUserIDs = new String[(int)numberOfInvitedUsers];
-                            // If the current user is in the list of invited users, show tournament
-                            for (DataSnapshot invitedInstance : data.child("invited").getChildren()) {
-                                if (invitedInstance.child("userID").getValue().toString().equals(mAuth.getCurrentUser().getUid())) {
-                                    tournament.setInvited(invitedUserIDs);
-                                    addTournaments(tournament);
-                                    break;
+                        Calendar today = Calendar.getInstance();
+                        today.set(android.icu.util.Calendar.HOUR_OF_DAY, 0);
+                        today.set(android.icu.util.Calendar.MINUTE, 0);
+                        today.set(android.icu.util.Calendar.SECOND, 0);
+                        today.set(android.icu.util.Calendar.MILLISECOND, 0);
+                        try {
+                            Date tournamentDate = new SimpleDateFormat("dd/MM/yyyy").parse(data.child("date").getValue().toString());
+                            // Only show tournaments that are occurring today
+                            if (tournamentDate.after(today.getTime()) || tournamentDate.equals(today.getTime())) {
+                                Tournament tournament = new Tournament(
+                                        data.getKey(),
+                                        data.child("name").getValue().toString(),
+                                        data.child("course").getValue().toString(),
+                                        data.child("date").getValue().toString()
+                                );
+                                if (data.hasChild("club")) {
+                                    // If the current user is a member of the club, show tournament
+                                    if (userClub.equals(data.child("club").getValue().toString())) {
+                                        tournament.setClub(data.child("club").getValue().toString());
+                                        addTournaments(tournament);
+                                    }
+                                } else if (data.hasChild("society")) {
+                                    // If the current user is a member of the society, show tournament
+                                    if (userSociety.equals(data.child("society").getValue().toString())) {
+                                        tournament.setSociety(data.child("society").getValue().toString());
+                                        addTournaments(tournament);
+                                    }
+                                } else if (data.hasChild("invited")) {
+                                    int i = 0;
+                                    long numberOfInvitedUsers = data.child("invited").getChildrenCount();
+                                    String[] invitedUserIDs = new String[(int) numberOfInvitedUsers];
+                                    // If the current user is in the list of invited users, show tournament
+                                    for (DataSnapshot invitedInstance : data.child("invited").getChildren()) {
+                                        if (invitedInstance.child("userID").getValue().toString().equals(mAuth.getCurrentUser().getUid())) {
+                                            tournament.setInvited(invitedUserIDs);
+                                            addTournaments(tournament);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
+                        }
+                        catch (ParseException e) {
+                            e.printStackTrace();
                         }
                     }
                     if (tournamentList.size() == 0) {

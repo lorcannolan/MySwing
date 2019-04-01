@@ -399,19 +399,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                 Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
                                 Double.parseDouble(data.child("location").child("longitude").getValue().toString())
                         );
-                        String ordinalIndicator = "";
-                        if (data.getKey().equals("1")) {
-                            ordinalIndicator = "st";
-                        }
-                        else if (data.getKey().equals("2")) {
-                            ordinalIndicator = "nd";
-                        }
-                        else if (data.getKey().equals("3")) {
-                            ordinalIndicator = "rd";
-                        }
-                        else  {
-                            ordinalIndicator = "th";
-                        }
+                        String ordinalIndicator = getOrdinalIndicator(Integer.parseInt(data.getKey()));
+
                         MarkerOptions shotMarker = new MarkerOptions()
                                 .position(shotLocation)
                                 .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
@@ -428,19 +417,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
                                     Double.parseDouble(data.child("location").child("longitude").getValue().toString())
                             );
-                            String ordinalIndicator = "";
-                            if (data.getKey().equals("1")) {
-                                ordinalIndicator = "st";
-                            }
-                            else if (data.getKey().equals("2")) {
-                                ordinalIndicator = "nd";
-                            }
-                            else if (data.getKey().equals("3")) {
-                                ordinalIndicator = "rd";
-                            }
-                            else  {
-                                ordinalIndicator = "th";
-                            }
+                            String ordinalIndicator = getOrdinalIndicator(Integer.parseInt(data.getKey()));
 
                             MarkerOptions puttMarker = new MarkerOptions()
                                     .position(puttLocation)
@@ -599,6 +576,22 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     marker.hideInfoWindow();
                                     marker.showInfoWindow();
                                     holePutts.setText(holePuttsInt + "");
+                                    roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.hasChild("total putts")) {
+                                                roundsRef.child("total putts").setValue(Integer.parseInt(dataSnapshot.child("total putts").getValue().toString()) + 1);
+                                            }
+                                            else {
+                                                roundsRef.child("total putts").setValue(1);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
                             });
                     builder.setNegativeButton("Cancel",
@@ -627,6 +620,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     marker.hideInfoWindow();
                                     marker.showInfoWindow();
                                     holePutts.setText(holePuttsInt + "");
+                                    roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            roundsRef.child("total putts").setValue(Integer.parseInt(dataSnapshot.child("total putts").getValue().toString()) - 1);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                    });
                                 }
                             });
                     builder.setNegativeButton("Cancel",
@@ -656,7 +658,6 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                             public void onClick(DialogInterface dialog, int which) {
                                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) - 1;
                                 holeScore.setText(Integer.toString(currentHoleScore));
-                                roundsRef.child("score").setValue(currentHoleScore);
 
                                 if (marker.getSnippet().contains("Putt")) {
                                     roundsRef.child("holes").child(selectedHole).child("shots").child(Integer.toString(shotNumber)).removeValue();
@@ -672,29 +673,17 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     String[] thisMarkerTitleString = m.getTitle().split(" ");
                                     int thisMarkerShotNumber = Integer.parseInt(String.valueOf(thisMarkerTitleString[1].charAt(0)));
                                     if (thisMarkerShotNumber > shotNumber) {
-                                        String ordinalIndicator = "";
                                         thisMarkerShotNumber--;
-                                        if (thisMarkerShotNumber == 1) {
-                                            ordinalIndicator = "st";
-                                        }
-                                        else if (thisMarkerShotNumber == 2) {
-                                            ordinalIndicator = "nd";
-                                        }
-                                        else if (thisMarkerShotNumber == 3) {
-                                            ordinalIndicator = "rd";
-                                        }
-                                        else  {
-                                            ordinalIndicator = "th";
-                                        }
+                                        String ordinalIndicator = getOrdinalIndicator(thisMarkerShotNumber);
                                         m.setTitle(selectedHole + ". " + thisMarkerShotNumber + ordinalIndicator + " Shot");
                                     }
                                 }
 
-                                roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
+                                roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.hasChild("shots")) {
-                                            for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
+                                        if (dataSnapshot.child("holes").child(selectedHole).hasChild("shots")) {
+                                            for (DataSnapshot data : dataSnapshot.child("holes").child(selectedHole).child("shots").getChildren()) {
                                                 if (Integer.parseInt(data.getKey()) > shotNumber) {
                                                     String oldKey = data.getKey();
                                                     String newKey = Integer.toString(Integer.parseInt(oldKey) - 1);
@@ -703,8 +692,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                                 }
                                             }
                                         }
-                                        if (dataSnapshot.hasChild("putts")) {
-                                            for (DataSnapshot data : dataSnapshot.child("putts").getChildren()) {
+                                        if (dataSnapshot.child("holes").child(selectedHole).hasChild("putts")) {
+                                            for (DataSnapshot data : dataSnapshot.child("holes").child(selectedHole).child("putts").getChildren()) {
                                                 if (Integer.parseInt(data.getKey()) > shotNumber) {
                                                     String oldKey = data.getKey();
                                                     String newKey = Integer.toString(Integer.parseInt(oldKey) - 1);
@@ -712,6 +701,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                                     roundsRef.child("holes").child(selectedHole).child("putts").child(newKey).setValue(data.getValue());
                                                 }
                                             }
+                                        }
+                                        roundsRef.child("score").setValue((Integer.parseInt(dataSnapshot.child("score").getValue().toString()) - 1) + "");
+                                        if (marker.getSnippet().contains("Shot")) {
+                                            roundsRef.child("total putts").setValue(Integer.parseInt(dataSnapshot.child("total putts").getValue().toString()) - 1);
                                         }
                                     }
 
@@ -782,19 +775,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker
-                String ordinalIndicator = "";
-                if (currentHoleScore == 1) {
-                    ordinalIndicator = "st";
-                }
-                else if (currentHoleScore == 2) {
-                    ordinalIndicator = "nd";
-                }
-                else if (currentHoleScore == 3) {
-                    ordinalIndicator = "rd";
-                }
-                else  {
-                    ordinalIndicator = "th";
-                }
+                String ordinalIndicator = getOrdinalIndicator(currentHoleScore);
+
                 MarkerOptions shotMarker = new MarkerOptions()
                         .position(latLng)
                         .title(selectedHole + ". " + currentHoleScore + ordinalIndicator + " Shot")
@@ -827,19 +809,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker
-                String ordinalIndicatorShot = "";
-                if (currentHoleScore == 1) {
-                    ordinalIndicatorShot = "st";
-                }
-                else if (currentHoleScore == 2) {
-                    ordinalIndicatorShot = "nd";
-                }
-                else if (currentHoleScore == 3) {
-                    ordinalIndicatorShot = "rd";
-                }
-                else  {
-                    ordinalIndicatorShot = "th";
-                }
+                String ordinalIndicatorShot = getOrdinalIndicator(currentHoleScore);
 
                 final LatLng latLng = new LatLng(
                         lastKnownLocation.getLatitude(),
@@ -861,10 +831,32 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 else {
                     roundsRef.child("holes").child(selectedHole).child("putts").child(Integer.toString(currentHoleScore)).child("location").setValue(latLng);
                 }
+
+                if (dataSnapshot.hasChild("total putts")) {
+                    roundsRef.child("total putts").setValue(Integer.parseInt(dataSnapshot.child("total putts").getValue().toString()) + 1);
+                }
+                else {
+                    roundsRef.child("total putts").setValue(1);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+    }
+
+    public String getOrdinalIndicator(int number) {
+        if (number == 1) {
+            return "st";
+        }
+        else if (number == 2) {
+            return "nd";
+        }
+        else if (number == 3) {
+            return "rd";
+        }
+        else  {
+            return "th";
+        }
     }
 }
