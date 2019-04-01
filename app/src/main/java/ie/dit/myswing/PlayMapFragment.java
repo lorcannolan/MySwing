@@ -53,8 +53,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap myMap;
 
-    private TextView holeScore, holePutts;
-    private ImageView addPutt, deleteImage;
+    private TextView holeScore, holePutts, holePar;
+    private ImageView addPutt;
     private int holePuttsInt;
     private Spinner selectHoleSpinner;
     private FloatingActionButton markersFAB, infoFAB;
@@ -67,6 +67,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseAuth mAuth;
 
     private ArrayList<Marker> holeMarkers = new ArrayList<>();
+    private ArrayList<Marker> shotMarkers = new ArrayList<>();
 
     private String tournamentFirebaseKey, tournamentName, markingUserRoundID;
 
@@ -111,9 +112,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         );
 
         holeScore = (TextView) view.findViewById(R.id.score_number);
-
-        deleteImage = (ImageView) view.findViewById(R.id.delete_marker);
-        deleteImage.setVisibility(View.INVISIBLE);
+        holePar = (TextView) view.findViewById(R.id.par_number);
 
         holesRef = FirebaseDatabase.getInstance().getReference().child("courses").child(courseFirebaseKey).child("holes");
         mAuth = FirebaseAuth.getInstance();
@@ -142,15 +141,19 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                             .title(courseName)
                             .draggable(false);
                     myMap.addMarker(courseLocation);
+                    holePar.setText("");
+                    holeScore.setText("");
                 }
                 else {
                     myMap.clear();
                     infoFAB.setVisibility(View.VISIBLE);
+                    shotMarkers.clear();
                     holesRef.child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             displayMarkers(dataSnapshot);
                             displayShotMarkers(selectedHole);
+                            holePar.setText(dataSnapshot.child("mens par").getValue().toString());
                         }
 
                         @Override
@@ -390,6 +393,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 int totalShots = (int) dataSnapshot.child("shots").getChildrenCount() + holePuttsInt;
                 holeScore.setText(totalShots + "");
                 if (totalShots > 0) {
+                    Marker marker;
                     for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
                         LatLng shotLocation = new LatLng(
                                 Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
@@ -414,7 +418,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                 .snippet("Press to change to Putt.\nPress and hold to Delete.")
                                 .draggable(true)
                                 .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
-                        myMap.addMarker(shotMarker);
+                        marker = myMap.addMarker(shotMarker);
+                        shotMarkers.add(marker);
                     }
 
                     if (holePuttsInt > 0) {
@@ -443,7 +448,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
                                     .draggable(true)
                                     .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
-                            myMap.addMarker(puttMarker);
+                            marker = myMap.addMarker(puttMarker);
+                            shotMarkers.add(marker);
                         }
                     }
                 }
@@ -524,7 +530,6 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         myMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
-                deleteImage.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -534,8 +539,6 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onMarkerDragEnd(Marker marker) {
-                deleteImage.setVisibility(View.INVISIBLE);
-
                 String[] title = marker.getTitle().split(" ");
                 int shotNumber = Integer.parseInt(String.valueOf(title[1].charAt(0)));
                 if (marker.getSnippet().contains("Shot")) {
@@ -664,6 +667,29 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     holePutts.setText(holePuttsInt + "");
                                 }
 
+                                shotMarkers.remove(marker);
+                                for (Marker m : shotMarkers) {
+                                    String[] thisMarkerTitleString = m.getTitle().split(" ");
+                                    int thisMarkerShotNumber = Integer.parseInt(String.valueOf(thisMarkerTitleString[1].charAt(0)));
+                                    if (thisMarkerShotNumber > shotNumber) {
+                                        String ordinalIndicator = "";
+                                        thisMarkerShotNumber--;
+                                        if (thisMarkerShotNumber == 1) {
+                                            ordinalIndicator = "st";
+                                        }
+                                        else if (thisMarkerShotNumber == 2) {
+                                            ordinalIndicator = "nd";
+                                        }
+                                        else if (thisMarkerShotNumber == 3) {
+                                            ordinalIndicator = "rd";
+                                        }
+                                        else  {
+                                            ordinalIndicator = "th";
+                                        }
+                                        m.setTitle(selectedHole + ". " + thisMarkerShotNumber + ordinalIndicator + " Shot");
+                                    }
+                                }
+
                                 roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -750,6 +776,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Marker marker;
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
                 holeScore.setText(Integer.toString(currentHoleScore));
@@ -774,7 +801,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         .snippet("Press to change to Putt.\nPress and hold to Delete.")
                         .draggable(true)
                         .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
-                myMap.addMarker(shotMarker);
+                marker = myMap.addMarker(shotMarker);
+                shotMarkers.add(marker);
 
                 if (!dataSnapshot.child("holes").exists()) {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);
@@ -793,6 +821,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Marker marker;
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
                 holeScore.setText(Integer.toString(currentHoleScore));
@@ -823,7 +852,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
                         .draggable(true)
                         .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
-                myMap.addMarker(shotMarker);
+                marker = myMap.addMarker(shotMarker);
+                shotMarkers.add(marker);
 
                 if (!dataSnapshot.child("holes").exists()) {
                     roundsRef.child("holes").child(selectedHole).child("shots").child("1").child("location").setValue(latLng);

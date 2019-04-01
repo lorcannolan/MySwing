@@ -92,8 +92,25 @@ public class PlayScorecardAdapter extends ArrayAdapter<String> {
                 else {
                     String holeNumber = getItem(mPosition);
                     if (dataSnapshot.child("holes").child(holeNumber).exists()) {
-                        String holeShots = Long.toString(dataSnapshot.child("holes").child(holeNumber).child("shots").getChildrenCount());
-                        holeScoreText.setText(holeShots);
+                        int holeShotTotal;
+                        String holeShots, holePutts;
+
+                        // Count Shots
+                        if (dataSnapshot.child("holes").child(holeNumber).hasChild("shots")) {
+                            holeShots = Long.toString(dataSnapshot.child("holes").child(holeNumber).child("shots").getChildrenCount());
+                        }
+                        else {
+                            holeShots = "0";
+                        }
+                        // Count Putts
+                        if (dataSnapshot.child("holes").child(holeNumber).hasChild("putts")) {
+                            holePutts = Long.toString(dataSnapshot.child("holes").child(holeNumber).child("putts").getChildrenCount());
+                        }
+                        else {
+                            holePutts = "0";
+                        }
+
+                        holeScoreText.setText((Integer.parseInt(holeShots) + Integer.parseInt(holePutts)) + "");
                     }
                     else {
                         holeScoreText.setText("0");
