@@ -9,8 +9,9 @@ public class Round {
     private int handicap;
     private int score;
     private int totalPutts;
+    private int toPar;
 
-    public Round (String firebaseRoundID, String courseName, String courseID, String date, int handicap, int score, int totalPutts) {
+    public Round (String firebaseRoundID, String courseName, String courseID, String date, int handicap, int score, int totalPutts, int toPar) {
         this.firebaseRoundID = firebaseRoundID;
         this.courseName = courseName;
         this.courseID = courseID;
@@ -18,6 +19,7 @@ public class Round {
         this.handicap = handicap;
         this.score = score;
         this.totalPutts = totalPutts;
+        this.toPar = toPar;
     }
 
     public String getFirebaseRoundID() {
@@ -74,5 +76,13 @@ public class Round {
 
     public void setTotalPutts(int totalPutts) {
         this.totalPutts = totalPutts;
+    }
+
+    public int getToPar() {
+        return toPar;
+    }
+
+    public void setToPar(int toPar) {
+        this.toPar = toPar;
     }
 }

@@ -1,12 +1,15 @@
 package ie.dit.myswing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RoundsFragment extends Fragment {
 
@@ -28,6 +32,8 @@ public class RoundsFragment extends Fragment {
     private TextView empty;
 
     FirebaseAuth mAuth;
+
+    private Round selectedRound;
 
     @Nullable
     @Override
@@ -60,7 +66,8 @@ public class RoundsFragment extends Fragment {
                                 data.child("date").getValue().toString(),
                                 Integer.parseInt(data.child("handicap").getValue().toString()),
                                 Integer.parseInt(data.child("score").getValue().toString()),
-                                Integer.parseInt(data.child("total putts").getValue().toString())
+                                Integer.parseInt(data.child("total putts").getValue().toString()),
+                                Integer.parseInt(data.child("to par").getValue().toString())
                         );
                         roundList.add(round);
                         numberOfRounds -= 1;
@@ -82,6 +89,25 @@ public class RoundsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        roundListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedRound = (Round) parent.getItemAtPosition(position);
+                Intent viewRoundIntent = new Intent(getActivity(), SelectedRound.class);
+                viewRoundIntent.putExtra("roundFirebaseKey", selectedRound.getFirebaseRoundID());
+                viewRoundIntent.putExtra("courseName", selectedRound.getCourseName());
+                viewRoundIntent.putExtra("roundDate", selectedRound.getDate());
+                viewRoundIntent.putExtra("courseID", selectedRound.getCourseID());
+                viewRoundIntent.putExtra("totalPutts", selectedRound.getTotalPutts());
+                viewRoundIntent.putExtra("handicap", selectedRound.getHandicap());
+                viewRoundIntent.putExtra("score", selectedRound.getScore());
+                viewRoundIntent.putExtra("toPar", selectedRound.getToPar());
+
+                startActivity(viewRoundIntent);
+                //getActivity().finish();
+            }
         });
 
         return view;

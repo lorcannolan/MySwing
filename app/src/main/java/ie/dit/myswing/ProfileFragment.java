@@ -42,6 +42,9 @@ import java.util.Locale;
 public class ProfileFragment extends Fragment {
 
     private String userID, userName, userDOB;
+
+    private String userAge, userTeeBox, userHandicap, userClub, userSociety;
+
     private Calendar calendarUserDOB = Calendar.getInstance();
     private Calendar currentDate = Calendar.getInstance();
 
@@ -64,22 +67,46 @@ public class ProfileFragment extends Fragment {
         courseRef = FirebaseDatabase.getInstance().getReference().child("courses");
         societyRef = FirebaseDatabase.getInstance().getReference().child("societies");
 
+        textViewUserName = (TextView)view.findViewById(R.id.user_name);
+        editTextGender = (EditText) view.findViewById(R.id.profile_tee_box);
+        textViewAvgHandicap = (TextView)view.findViewById(R.id.avg_handicap);
+        info = (ImageView) view.findViewById(R.id.info);
+        textViewClub = (TextView) view.findViewById(R.id.club_name);
+        textViewSociety = (TextView) view.findViewById(R.id.society_name);
+        textViewAge = (TextView) view.findViewById(R.id.user_age);
+
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userName = dataSnapshot.child("first name").getValue() + " " + dataSnapshot.child("last name").getValue();
-                textViewUserName.setText(userName);
+                userTeeBox = dataSnapshot.child("tee box").getValue().toString();
+
+                // getting average handicap of user
+                if (dataSnapshot.child("rounds").getChildrenCount() > 2) {
+                    int totalScore = 0;
+                    for (DataSnapshot data : dataSnapshot.child("rounds").getChildren()) {
+                        String roundID = data.getKey();
+                        totalScore += Integer.parseInt(dataSnapshot.child(roundID).child("score").getValue().toString());
+                    }
+                    Integer avgHandicap = (totalScore / (int)dataSnapshot.getChildrenCount()) - 72;
+                    if (avgHandicap < 0) {
+                        avgHandicap = 0;
+                    }
+                    userHandicap = avgHandicap.toString();
+                    info.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    userHandicap = "N/A";
+                    info.setVisibility(View.VISIBLE);
+                }
+
+                // getting user club and setting chain to get society and calculate age
+                getClub(dataSnapshot);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-        textViewUserName = (TextView)view.findViewById(R.id.user_name);
-        textViewUserName.setText(userName);
-
-        textViewAge = (TextView) view.findViewById(R.id.user_age);
-        calculateAge();
 
         changeDOB = (FloatingActionButton) view.findViewById(R.id.edit_dob);
         changeDOB.setOnClickListener(new View.OnClickListener() {
@@ -101,23 +128,13 @@ public class ProfileFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // When OK is selected and date is set, EditText field is populated with the selected values
                                 usersRef.child("dob").setValue(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                                calculateAge();
+                                calculateAge(false);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
             }
         });
 
-        editTextGender = (EditText) view.findViewById(R.id.profile_tee_box);
-        usersRef.child("tee box").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                editTextGender.setText(dataSnapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
         editTextGender.setInputType(InputType.TYPE_NULL);
         editTextGender.setOnClickListener(new View.OnClickListener() {
             /*
@@ -151,33 +168,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        textViewAvgHandicap = (TextView)view.findViewById(R.id.avg_handicap);
-        info = (ImageView) view.findViewById(R.id.info);
-        usersRef.child("rounds").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() > 2) {
-                    int totalScore = 0;
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        String roundID = data.getKey();
-                        totalScore += Integer.parseInt(dataSnapshot.child(roundID).child("score").getValue().toString());
-                    }
-                    Integer avgHandicap = (totalScore / (int)dataSnapshot.getChildrenCount()) - 72;
-                    if (avgHandicap < 0) {
-                        avgHandicap = 0;
-                    }
-                    textViewAvgHandicap.setText(avgHandicap.toString());
-                    info.setVisibility(View.INVISIBLE);
-                }
-                else {
-                    textViewAvgHandicap.setText("N/A");
-                    info.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,30 +177,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        textViewClub = (TextView) view.findViewById(R.id.club_name);
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("club")) {
-                    String clubID = dataSnapshot.child("club").getValue().toString();
-                    courseRef.child(clubID).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            textViewClub.setText(dataSnapshot.child("name").getValue().toString());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
-                }
-                else {
-                    textViewClub.setText("Not a Club member");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
         changeClub = (FloatingActionButton) view.findViewById(R.id.edit_club);
         changeClub.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,30 +188,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        textViewSociety = (TextView) view.findViewById(R.id.society_name);
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("society")) {
-                    String societyID = dataSnapshot.child("society").getValue().toString();
-                    societyRef.child(societyID).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            textViewSociety.setText(dataSnapshot.child("name").getValue().toString());
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
-                }
-                else {
-                    textViewSociety.setText("Not a Society member");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
         changeSociety = (FloatingActionButton) view.findViewById(R.id.edit_society);
         changeSociety.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,7 +201,47 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    public void calculateAge() {
+    public void getClub(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.hasChild("club")) {
+            String clubID = dataSnapshot.child("club").getValue().toString();
+            courseRef.child(clubID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userClub = dataSnapshot.child("name").getValue().toString();
+                    getSociety(dataSnapshot);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        else {
+            userClub = "Not a Club Member";
+            getSociety(dataSnapshot);
+        }
+    }
+
+    public void getSociety(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.hasChild("society")) {
+            String societyID = dataSnapshot.child("society").getValue().toString();
+            societyRef.child(societyID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userSociety = dataSnapshot.child("name").getValue().toString();
+                    calculateAge(true);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        else {
+            userSociety = "Not a Society Member";
+            calculateAge(true);
+        }
+    }
+
+    public void calculateAge(final boolean initialize) {
         usersRef.child("dob").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -281,11 +263,27 @@ public class ProfileFragment extends Fragment {
                 if (intAge < 0) {
                     intAge = 0;
                 }
-                textViewAge.setText(intAge.toString());
+                userAge = intAge.toString();
+                setAge();
+                if (initialize) {
+                    setValues();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+    }
+
+    public void setAge() {
+        textViewAge.setText(userAge);
+    }
+
+    public void setValues() {
+        textViewUserName.setText(userName);
+        editTextGender.setText(userTeeBox);
+        textViewAvgHandicap.setText(userHandicap);
+        textViewClub.setText(userClub);
+        textViewSociety.setText(userSociety);
     }
 }
