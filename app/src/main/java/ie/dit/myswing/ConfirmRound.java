@@ -155,6 +155,7 @@ public class ConfirmRound extends AppCompatActivity {
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("to par").setValue(0);
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("tournamentID").setValue(tournamentFirebaseKey);
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("tournament name").setValue(tournamentName);
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("markingID").setValue(tournamentMarkerID);
@@ -180,6 +181,7 @@ public class ConfirmRound extends AppCompatActivity {
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("date").setValue(todaysDateString);
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("handicap").setValue(enterHandicap.getText().toString());
                                 usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("score").setValue(0);
+                                usersRef.child(mAuth.getUid()).child("rounds").child(roundID).child("to par").setValue(0);
 
                                 Intent startPlayingIntent = new Intent(ConfirmRound.this, PlayMapAndScorecard.class);
                                 startPlayingIntent.putExtra("courseName", courseName);

@@ -744,7 +744,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) - 1;
+                                final int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) - 1;
                                 holeScore.setText(Integer.toString(currentHoleScore));
 
                                 if (marker.getSnippet().contains("Putt")) {
@@ -793,10 +793,20 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                 roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
                                 int points = calculateStableford(currentHoleScore - netReduction);
                                 roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
+                                // Updating score to par of the hole, this is added to accumulate leaderboards quicker for competitions
+                                // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
+                                roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
 
                                 roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        // calculate the overall "to par" value of the round
+                                        // Existing overall to par value
+                                        roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                                                // Existing overall to par value, minus, current hole to par value
+                                                ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
+                                        );
+
                                         if (dataSnapshot.child("holes").child(selectedHole).hasChild("shots")) {
                                             for (DataSnapshot data : dataSnapshot.child("holes").child(selectedHole).child("shots").getChildren()) {
                                                 if (Integer.parseInt(data.getKey()) > shotNumber) {
@@ -885,12 +895,24 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Marker marker;
+                // Updating total round score
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
+                // Updating net score for hole
                 roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
                 int points = calculateStableford(currentHoleScore - netReduction);
+                // Updating stableford points for hole
                 roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
                 holeScore.setText(Integer.toString(currentHoleScore));
+                // Updating score to par of the hole, this is added to accumulate leaderboards quicker for competitions
+                // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
+                roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
+                // calculate the overall "to par" value of the round
+                // Existing overall to par value
+                roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                        // Existing overall to par value, minus, current hole to par value
+                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
+                );
 
                 // Adding map marker
                 String ordinalIndicator = getOrdinalIndicator(currentHoleScore);
@@ -954,6 +976,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
                 int points = calculateStableford(currentHoleScore - netReduction);
                 roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
+                // Updating score to par of the hole, this is added to accumulate leaderboards quicker for competitions
+                // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
+                roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
+                // calculate the overall "to par" value of the round
+                // Existing overall to par value
+                roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                        // Existing overall to par value, minus, current hole to par value
+                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
+                );
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker
