@@ -23,11 +23,11 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,38 +54,17 @@
       <file leaf-file-name="PlayMapFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6746">
-              <caret line="544" column="83" selection-start-line="544" selection-start-column="83" selection-end-line="544" selection-end-column="83" />
-              <folding>
-                <element signature="e#8285#8881#0" expanded="true" />
-                <element signature="e#8880#8881#0" expanded="true" />
-                <element signature="e#8920#9070#0" expanded="true" />
-                <element signature="e#9069#9070#0" expanded="true" />
-                <element signature="e#9244#9598#0" expanded="true" />
-                <element signature="e#9597#9598#0" expanded="true" />
-                <element signature="e#11009#11203#0" expanded="true" />
-                <element signature="e#11202#11203#0" expanded="true" />
-                <element signature="e#24324#24512#0" expanded="true" />
-                <element signature="e#24511#24512#0" expanded="true" />
-                <element signature="e#29577#29578#0" expanded="true" />
-                <element signature="e#29620#29621#0" expanded="true" />
-                <element signature="e#30493#36168#0" expanded="true" />
-                <element signature="e#32582#34634#0" expanded="true" />
-                <element signature="e#34633#34634#0" expanded="true" />
-                <element signature="e#34721#34963#0" expanded="true" />
-                <element signature="e#34962#34963#0" expanded="true" />
-                <element signature="e#35454#37132#0" expanded="true" />
-                <element signature="e#37131#37132#0" expanded="true" />
-                <element signature="e#37219#37461#0" expanded="true" />
-                <element signature="e#37460#37461#0" expanded="true" />
-                <element signature="e#36167#36168#0" expanded="true" />
-                <element signature="e#36218#43614#0" expanded="true" />
-                <element signature="e#38221#43028#0" expanded="true" />
-                <element signature="e#43027#43028#0" expanded="true" />
-                <element signature="e#43107#43333#0" expanded="true" />
-                <element signature="e#43332#43333#0" expanded="true" />
-                <element signature="e#43613#43614#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="538">
+              <caret line="794" column="110" selection-start-line="794" selection-start-column="110" selection-end-line="794" selection-end-column="110" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConfirmRound.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="581">
+              <caret line="190" column="127" selection-start-line="190" selection-start-column="127" selection-end-line="190" selection-end-column="127" />
             </state>
           </provider>
         </entry>
@@ -131,6 +110,7 @@
       <find>mens</find>
       <find>child(&quot;location&quot;).getValue();</find>
       <find>distanceB</find>
+      <find>mens par</find>
     </findStrings>
     <replaceStrings>
       <replace>firstName</replace>
@@ -2436,7 +2416,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_tournament_marker_setup.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TournamentMarkerSetup.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_confirm_round.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/gradient_background.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/button_style_login.xml" />
@@ -2472,6 +2451,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitePlayers.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectTournament.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitedTournamentsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" />
       </list>
     </option>
@@ -2547,6 +2527,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2573,7 +2554,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2750,18 +2730,18 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50053304" side_tool="true" weight="0.3267974" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32905984" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Logcat" order="7" sideWeight="0.49946696" visible="true" weight="0.22222222" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32897604" />
+      <window_info anchor="bottom" id="Logcat" order="7" sideWeight="0.49946696" weight="0.22222222" />
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.098614074" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.14379086" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.098614074" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" visible="true" weight="0.14379086" />
       <window_info anchor="right" id="Gradle" order="6" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Device File Explorer" order="8" sideWeight="0.5011547" side_tool="true" weight="0.32684565" />
       <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Preview" order="5" sideWeight="0.49884528" weight="0.32569295" />
@@ -2789,7 +2769,6 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.3267974" />
       <window_info anchor="right" id="Preview" order="4" weight="0.32782516" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.49946696" visible="true" weight="0.32570806" />
       <window_info anchor="bottom" id="Version Control" order="11" />
@@ -2802,6 +2781,7 @@
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
     </layout-to-restore>
   </component>
@@ -2926,13 +2906,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="73" selection-start-line="9" selection-start-column="73" selection-end-line="9" selection-end-column="73" />
         </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_bluetooth_off_120dp.xml">
@@ -3191,45 +3171,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1870">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        <state relative-caret-position="581">
+          <caret line="190" column="127" selection-start-line="190" selection-start-column="127" selection-end-line="190" selection-end-column="127" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6746">
-          <caret line="544" column="83" selection-start-line="544" selection-start-column="83" selection-end-line="544" selection-end-column="83" />
-          <folding>
-            <element signature="e#8285#8881#0" expanded="true" />
-            <element signature="e#8880#8881#0" expanded="true" />
-            <element signature="e#8920#9070#0" expanded="true" />
-            <element signature="e#9069#9070#0" expanded="true" />
-            <element signature="e#9244#9598#0" expanded="true" />
-            <element signature="e#9597#9598#0" expanded="true" />
-            <element signature="e#11009#11203#0" expanded="true" />
-            <element signature="e#11202#11203#0" expanded="true" />
-            <element signature="e#24324#24512#0" expanded="true" />
-            <element signature="e#24511#24512#0" expanded="true" />
-            <element signature="e#29577#29578#0" expanded="true" />
-            <element signature="e#29620#29621#0" expanded="true" />
-            <element signature="e#30493#36168#0" expanded="true" />
-            <element signature="e#32582#34634#0" expanded="true" />
-            <element signature="e#34633#34634#0" expanded="true" />
-            <element signature="e#34721#34963#0" expanded="true" />
-            <element signature="e#34962#34963#0" expanded="true" />
-            <element signature="e#35454#37132#0" expanded="true" />
-            <element signature="e#37131#37132#0" expanded="true" />
-            <element signature="e#37219#37461#0" expanded="true" />
-            <element signature="e#37460#37461#0" expanded="true" />
-            <element signature="e#36167#36168#0" expanded="true" />
-            <element signature="e#36218#43614#0" expanded="true" />
-            <element signature="e#38221#43028#0" expanded="true" />
-            <element signature="e#43027#43028#0" expanded="true" />
-            <element signature="e#43107#43333#0" expanded="true" />
-            <element signature="e#43332#43333#0" expanded="true" />
-            <element signature="e#43613#43614#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="538">
+          <caret line="794" column="110" selection-start-line="794" selection-start-column="110" selection-end-line="794" selection-end-column="110" />
         </state>
       </provider>
     </entry>

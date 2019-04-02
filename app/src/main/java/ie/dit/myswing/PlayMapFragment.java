@@ -55,7 +55,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
     private TextView holeScore, holePutts, holePar;
     private ImageView addPutt;
-    private int holePuttsInt;
+    private int holePuttsInt, holeIndex, handicap, netReduction;
     private Spinner selectHoleSpinner;
     private FloatingActionButton markersFAB, infoFAB;
     private String selectedHole;
@@ -127,6 +127,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         mAuth = FirebaseAuth.getInstance();
         if (!i.hasExtra("tournamentFirebaseKey")) {
             roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("rounds").child(roundID);
+            handicap = i.getIntExtra("handicap", 0);
         }
 
         // Button to display hole distances, etc
@@ -164,9 +165,13 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                             displayShotMarkers(selectedHole);
                             if (firebaseTeeBoxPath.contains("mens")) {
                                 holePar.setText(dataSnapshot.child("mens par").getValue().toString());
+                                holeIndex = Integer.parseInt(dataSnapshot.child("mens index").getValue().toString());
+                                netReduction = calculateHoleReduction(holeIndex);
                             }
                             else {
                                 holePar.setText(dataSnapshot.child("ladies par").getValue().toString());
+                                holeIndex = Integer.parseInt(dataSnapshot.child("ladies index").getValue().toString());
+                                netReduction = calculateHoleReduction(holeIndex);
                             }
 
                         }
@@ -221,6 +226,53 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         });
 
         return view;
+    }
+
+    public int calculateHoleReduction(int index) {
+        if (handicap == 0) {
+            return 0;
+        }
+        else if (handicap == 18) {
+            return 1;
+        }
+        else if (handicap == 36) {
+            return 2;
+        }
+        else if (handicap < 18) {
+            if (handicap >= index) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        else if (handicap < 36 && handicap > 18) {
+            int difference = handicap - 18;
+            if (difference >= index) {
+                return 2;
+            }
+            else return 1;
+        }
+        else return 0;
+    }
+
+    public int calculateStableford(int netScore) {
+        if (netScore == Integer.parseInt(holePar.getText().toString())) {
+            return 2;
+        }
+        else if (netScore - Integer.parseInt(holePar.getText().toString()) == -1) {
+            return 3;
+        }
+        else if (netScore - Integer.parseInt(holePar.getText().toString()) == -2) {
+            return 4;
+        }
+        else if (netScore - Integer.parseInt(holePar.getText().toString()) == -3) {
+            return 5;
+        }
+        else if (netScore - Integer.parseInt(holePar.getText().toString()) == 1) {
+            return 1;
+        }
+        else return 0;
     }
 
     public void showInfoDialog() {
@@ -737,6 +789,11 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     roundsRef.child("holes").child(selectedHole).child("drive distance").setValue((int)driveDistance[0]);
                                 }
 
+                                // Setting net score and stableford points
+                                roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
+                                int points = calculateStableford(currentHoleScore - netReduction);
+                                roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
+
                                 roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -830,6 +887,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 Marker marker;
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
+                roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
+                int points = calculateStableford(currentHoleScore - netReduction);
+                roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker
@@ -891,6 +951,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 Marker marker;
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
                 int currentHoleScore = Integer.parseInt(holeScore.getText().toString()) + 1;
+                roundsRef.child("holes").child(selectedHole).child("net score").setValue(currentHoleScore - netReduction);
+                int points = calculateStableford(currentHoleScore - netReduction);
+                roundsRef.child("holes").child(selectedHole).child("points").setValue(points);
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker

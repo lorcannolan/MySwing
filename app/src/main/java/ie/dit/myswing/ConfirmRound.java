@@ -188,6 +188,7 @@ public class ConfirmRound extends AppCompatActivity {
                                 startPlayingIntent.putExtra("roundID", roundID);
                                 startPlayingIntent.putExtra("courseLatitude", courseLatitude);
                                 startPlayingIntent.putExtra("courseLongitude", courseLongitude);
+                                startPlayingIntent.putExtra("handicap", Integer.parseInt( enterHandicap.getText().toString() ));
                                 startActivity(startPlayingIntent);
                                 finish();
                             }
