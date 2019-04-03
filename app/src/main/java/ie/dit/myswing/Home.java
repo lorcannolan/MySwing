@@ -143,7 +143,7 @@ public class Home extends AppCompatActivity {
 
         if (available == ConnectionResult.SUCCESS){
             //everything is fine and the user can make map requests
-            Log.d(TAG, "isServicesIntalled: Google Play Services is working");
+            Log.d(TAG, "isServicesInstalled: Google Play Services is working");
             return true;
         }
         else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)){

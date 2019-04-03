@@ -1,5 +1,6 @@
 package ie.dit.myswing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +50,8 @@ public class PlayedTournamentsFragment extends Fragment {
     private boolean hasPlayedTournament = false;
 
     private ArrayList<String> tournamentIDs = new ArrayList<>();
+
+    private Tournament selectedTournament;
 
     @Nullable
     @Override
@@ -97,6 +101,16 @@ public class PlayedTournamentsFragment extends Fragment {
 
         FloatingTextButton newTournament = (FloatingTextButton)view.findViewById(R.id.play_new_tournament);
         newTournament.setVisibility(View.INVISIBLE);
+
+        tournamentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedTournament = (Tournament) parent.getItemAtPosition(position);
+                Intent showLeaderboardIntent = new Intent(getActivity(), SelectedTournament.class);
+                showLeaderboardIntent.putExtra("tournamentID", selectedTournament.getFirebaseKey());
+                startActivity(showLeaderboardIntent);
+            }
+        });
 
         return view;
     }
