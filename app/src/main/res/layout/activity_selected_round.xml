@@ -210,10 +210,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="15"
+        android:id="@+id/view_round"
         android:orientation="horizontal"
         android:weightSum="10"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true">
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:layout_width="0dp"

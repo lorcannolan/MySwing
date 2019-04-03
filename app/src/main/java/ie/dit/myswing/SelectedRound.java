@@ -1,9 +1,12 @@
 package ie.dit.myswing;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,11 +18,12 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SelectedRound extends AppCompatActivity {
 
-    private String roundKey, courseName, roundDate, courseID;
+    private String roundKey, courseName, roundDate, courseID, userGender, courseLatitude, courseLongitude;
     private int totalPutts, handicap, score, toPar, netScore, totalPoints, longestDrive;
     private float avgPutts;
 
     private TextView grossTextView, netTextView, pointsTextView, handicapTextView, longestDriveTextView, averagePuttsTextView, courseTextView, dateTextView;
+    private LinearLayout viewRound;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference roundsRef, courseRef;
@@ -42,21 +46,26 @@ public class SelectedRound extends AppCompatActivity {
         score = getIntent().getIntExtra("score", 0);
         toPar = getIntent().getIntExtra("toPar", 0);
 
-        roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("rounds").child(roundKey);
+        viewRound = (LinearLayout) findViewById(R.id.view_round);
+        viewRound.setClickable(false);
+
+        roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
         roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 netScore = 0;
                 totalPoints = 0;
                 longestDrive = 0;
-                avgPutts = Float.parseFloat(dataSnapshot.child("total putts").getValue().toString()) / (float)dataSnapshot.child("holes").getChildrenCount();
-                for (DataSnapshot data : dataSnapshot.child("holes").getChildren()) {
+                avgPutts = Float.parseFloat(dataSnapshot.child("rounds").child(roundKey).child("total putts").getValue().toString()) / (float)dataSnapshot.child("rounds").child(roundKey).child("holes").getChildrenCount();
+                for (DataSnapshot data : dataSnapshot.child("rounds").child(roundKey).child("holes").getChildren()) {
                     netScore += Integer.parseInt(data.child("net score").getValue().toString());
                     totalPoints += Integer.parseInt(data.child("points").getValue().toString());
                     if (Integer.parseInt(data.child("drive distance").getValue().toString()) > longestDrive) {
                         longestDrive = Integer.parseInt(data.child("drive distance").getValue().toString());
                     }
                 }
+                userGender = dataSnapshot.child("tee box").getValue().toString();
+                getLatLng();
                 setValues();
             }
 
@@ -74,6 +83,34 @@ public class SelectedRound extends AppCompatActivity {
         courseTextView = (TextView) findViewById(R.id.selected_round_course);
         dateTextView = (TextView) findViewById(R.id.selected_round_date);
 
+        viewRound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewRoundIntent = new Intent(SelectedRound.this, RoundMapAndScorecard.class);
+                viewRoundIntent.putExtra("roundKey", roundKey);
+                viewRoundIntent.putExtra("courseID", courseID);
+                viewRoundIntent.putExtra("courseName", courseName);
+                viewRoundIntent.putExtra("userGender", userGender);
+                viewRoundIntent.putExtra("courseLatitude", courseLatitude);
+                viewRoundIntent.putExtra("courseLongitude", courseLongitude);
+                startActivity(viewRoundIntent);
+            }
+        });
+
+    }
+
+    public void getLatLng() {
+        courseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                courseLatitude = dataSnapshot.child("location").child("latitude").getValue().toString();
+                courseLongitude = dataSnapshot.child("location").child("longitude").getValue().toString();
+                viewRound.setClickable(true);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
     }
 
     public void setValues() {

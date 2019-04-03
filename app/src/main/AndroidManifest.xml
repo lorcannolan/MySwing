@@ -60,7 +60,8 @@
         <activity android:name=".PlaySelectTournament" />
         <activity android:name=".TournamentMarkerSetup" />
         <activity android:name=".SelectRoundType" />
-        <activity android:name=".SelectedRound"></activity>
+        <activity android:name=".SelectedRound"/>
+        <activity android:name=".RoundMapAndScorecard"/>
     </application>
 
 </manifest>
