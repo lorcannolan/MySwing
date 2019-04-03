@@ -129,6 +129,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             roundsRef = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid()).child("rounds").child(roundID);
             handicap = i.getIntExtra("handicap", 0);
         }
+        else {
+            handicap = -1;
+        }
 
         // Button to display hole distances, etc
         infoFAB = (FloatingActionButton) view.findViewById(R.id.play_information);
@@ -445,63 +448,68 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void displayShotMarkers(final String selectedHole) {
-        roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild("putts")) {
-                    holePutts.setText(dataSnapshot.child("putts").getChildrenCount() + "");
-                    holePuttsInt = (int) dataSnapshot.child("putts").getChildrenCount();
-                }
-                else {
-                    holePutts.setText("0");
-                    holePuttsInt = 0;
-                }
-
-                int totalShots = (int) dataSnapshot.child("shots").getChildrenCount() + holePuttsInt;
-                holeScore.setText(totalShots + "");
-                if (totalShots > 0) {
-                    Marker marker;
-                    for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
-                        LatLng shotLocation = new LatLng(
-                                Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
-                                Double.parseDouble(data.child("location").child("longitude").getValue().toString())
-                        );
-                        String ordinalIndicator = getOrdinalIndicator(Integer.parseInt(data.getKey()));
-
-                        MarkerOptions shotMarker = new MarkerOptions()
-                                .position(shotLocation)
-                                .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
-                                .snippet("Press to change to Putt.\nPress and hold to Delete.")
-                                .draggable(true)
-                                .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
-                        marker = myMap.addMarker(shotMarker);
-                        shotMarkers.add(marker);
+        if (roundsRef != null) {
+            roundsRef.child("holes").child(selectedHole).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild("putts")) {
+                        holePutts.setText(dataSnapshot.child("putts").getChildrenCount() + "");
+                        holePuttsInt = (int) dataSnapshot.child("putts").getChildrenCount();
+                    }
+                    else {
+                        holePutts.setText("0");
+                        holePuttsInt = 0;
                     }
 
-                    if (holePuttsInt > 0) {
-                        for (DataSnapshot data : dataSnapshot.child("putts").getChildren()) {
-                            LatLng puttLocation = new LatLng(
+                    int totalShots = (int) dataSnapshot.child("shots").getChildrenCount() + holePuttsInt;
+                    holeScore.setText(totalShots + "");
+                    if (totalShots > 0) {
+                        Marker marker;
+                        for (DataSnapshot data : dataSnapshot.child("shots").getChildren()) {
+                            LatLng shotLocation = new LatLng(
                                     Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
                                     Double.parseDouble(data.child("location").child("longitude").getValue().toString())
                             );
                             String ordinalIndicator = getOrdinalIndicator(Integer.parseInt(data.getKey()));
 
-                            MarkerOptions puttMarker = new MarkerOptions()
-                                    .position(puttLocation)
+                            MarkerOptions shotMarker = new MarkerOptions()
+                                    .position(shotLocation)
                                     .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
-                                    .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
+                                    .snippet("Press to change to Putt.\nPress and hold to Delete.")
                                     .draggable(true)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
-                            marker = myMap.addMarker(puttMarker);
+                                    .icon(BitmapDescriptorFactory.fromBitmap(shotIcon));
+                            marker = myMap.addMarker(shotMarker);
                             shotMarkers.add(marker);
+                        }
+
+                        if (holePuttsInt > 0) {
+                            for (DataSnapshot data : dataSnapshot.child("putts").getChildren()) {
+                                LatLng puttLocation = new LatLng(
+                                        Double.parseDouble(data.child("location").child("latitude").getValue().toString()),
+                                        Double.parseDouble(data.child("location").child("longitude").getValue().toString())
+                                );
+                                String ordinalIndicator = getOrdinalIndicator(Integer.parseInt(data.getKey()));
+
+                                MarkerOptions puttMarker = new MarkerOptions()
+                                        .position(puttLocation)
+                                        .title(selectedHole + ". " + data.getKey() + ordinalIndicator + " Shot")
+                                        .snippet("Press to change to Golf Shot.\nPress and hold to Delete.")
+                                        .draggable(true)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(puttIcon));
+                                marker = myMap.addMarker(puttMarker);
+                                shotMarkers.add(marker);
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        else {
+            holeScore.setText("0");
+        }
     }
 
     public void checkCurrentHole(final Location lastKnownLocation) {
@@ -801,11 +809,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         // calculate the overall "to par" value of the round
-                                        // Existing overall to par value
-                                        roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                                                // Existing overall to par value, minus, current hole to par value
-                                                ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
-                                        );
+                                                                                    // Existing overall to par value
+                                        int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                                                                                // Existing overall to par value, minus, current hole to par value
+                                                ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                                        roundsRef.child("to par").setValue(roundToPar);
+                                        // Update score in tournament table
+                                        if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {
+                                            FirebaseDatabase.getInstance().getReference().child("tournaments").child(tournamentFirebaseKey).child("scores").child(markingUserRoundID).setValue(roundToPar);
+                                        }
 
                                         if (dataSnapshot.child("holes").child(selectedHole).hasChild("shots")) {
                                             for (DataSnapshot data : dataSnapshot.child("holes").child(selectedHole).child("shots").getChildren()) {
@@ -894,6 +906,12 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("Play", "****************\nHandicap: " + handicap);
+                if (handicap == -1) {
+                    handicap = Integer.parseInt(dataSnapshot.child("handicap").getValue().toString());
+                    netReduction = calculateHoleReduction(holeIndex);
+                }
+                Log.d("Play", "****************\n new Handicap: " + handicap);
                 Marker marker;
                 // Updating total round score
                 roundsRef.child("score").setValue(Integer.parseInt(dataSnapshot.child("score").getValue().toString()) + 1);
@@ -908,11 +926,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
                 roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
                 // calculate the overall "to par" value of the round
-                // Existing overall to par value
-                roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                        // Existing overall to par value, minus, current hole to par value
-                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
-                );
+                                            // Existing overall to par value
+                int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                                            // Existing overall to par value, minus, current hole to par value
+                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                roundsRef.child("to par").setValue(roundToPar);
+                // Update score in tournament table
+                if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {
+                    FirebaseDatabase.getInstance().getReference().child("tournaments").child(tournamentFirebaseKey).child("scores").child(markingUserRoundID).setValue(roundToPar);
+                }
 
                 // Adding map marker
                 String ordinalIndicator = getOrdinalIndicator(currentHoleScore);
@@ -980,11 +1002,15 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
                 roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
                 // calculate the overall "to par" value of the round
-                // Existing overall to par value
-                roundsRef.child("to par").setValue( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                        // Existing overall to par value, minus, current hole to par value
-                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) )
-                );
+                                                // Existing overall to par value
+                int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
+                                                // Existing overall to par value, minus, current hole to par value
+                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                roundsRef.child("to par").setValue(roundToPar);
+                // Update score in tournament table
+                if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {
+                    FirebaseDatabase.getInstance().getReference().child("tournaments").child(tournamentFirebaseKey).child("scores").child(markingUserRoundID).setValue(roundToPar);
+                }
                 holeScore.setText(Integer.toString(currentHoleScore));
 
                 // Adding map marker

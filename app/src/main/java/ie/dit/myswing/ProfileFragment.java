@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
                     int totalScore = 0;
                     for (DataSnapshot data : dataSnapshot.child("rounds").getChildren()) {
                         String roundID = data.getKey();
-                        totalScore += Integer.parseInt(dataSnapshot.child(roundID).child("score").getValue().toString());
+                        totalScore += Integer.parseInt(data.child("score").getValue().toString());
                     }
                     Integer avgHandicap = (totalScore / (int)dataSnapshot.getChildrenCount()) - 72;
                     if (avgHandicap < 0) {
