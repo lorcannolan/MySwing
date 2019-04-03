@@ -51,7 +51,6 @@ public class SelectedTournament extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 getSupportActionBar().setTitle(dataSnapshot.child("name").getValue().toString());
-                //numberOfPlayers = (int)dataSnapshot.child("scores").getChildrenCount();
                 for (DataSnapshot data : dataSnapshot.child("scores").getChildren()) {
                     userIDs.add(data.getKey());
                     userScores.add(Integer.parseInt(data.getValue().toString()));
@@ -82,12 +81,6 @@ public class SelectedTournament extends AppCompatActivity {
     }
 
     public void sortLeaderboard() {
-//        Iterator it = leaderboard.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pair = (Map.Entry)it.next();
-//            Log.d("SelectedTournament", "******************\nName: " + pair.getKey() + "\nScore: " + pair.getValue());
-//        }
-
         /*
             Sorting algorithm for hashmap sourced online below:
                 - https://www.geeksforgeeks.org/sorting-a-hashmap-according-to-values/

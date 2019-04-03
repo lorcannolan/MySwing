@@ -45,6 +45,7 @@ public class PlayMapAndScorecard extends AppCompatActivity {
 
     private PlayMapFragment playMapFragment;
     private PlayScorecardFragment playScorecardFragment;
+    private PlayLeaderboardFragment playLeadeboardFragment;
 
     private String bluetoothDeviceAddress;
     /*
@@ -199,6 +200,10 @@ public class PlayMapAndScorecard extends AppCompatActivity {
         playScorecardFragment = new PlayScorecardFragment();
         adapter.addFragment(playMapFragment, "Map");
         adapter.addFragment(playScorecardFragment, "Scorecard");
+        if (getIntent().hasExtra("tournamentFirebaseKey")) {
+            playLeadeboardFragment = new PlayLeaderboardFragment();
+            adapter.addFragment(playLeadeboardFragment, "Leaderboard");
+        }
         viewPager.setAdapter(adapter);
     }
 
