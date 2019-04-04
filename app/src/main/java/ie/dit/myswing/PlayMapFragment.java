@@ -808,11 +808,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                                 roundsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // calculate the overall "to par" value of the round
-                                                                                    // Existing overall to par value
-                                        int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                                                                                // Existing overall to par value, minus, current hole to par value
-                                                ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                                        int roundToPar = 0;
+                                        for (DataSnapshot data : dataSnapshot.child("holes").getChildren()) {
+                                            roundToPar = roundToPar + Integer.parseInt(data.child("to par").getValue().toString());
+                                        }
                                         roundsRef.child("to par").setValue(roundToPar);
                                         // Update score in tournament table
                                         if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {
@@ -925,11 +924,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 // Updating score to par of the hole, this is added to accumulate leaderboards quicker for competitions
                 // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
                 roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
-                // calculate the overall "to par" value of the round
-                                            // Existing overall to par value
-                int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                                            // Existing overall to par value, minus, current hole to par value
-                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                int roundToPar = 0;
+                for (DataSnapshot data : dataSnapshot.child("holes").getChildren()) {
+                    roundToPar = roundToPar + Integer.parseInt(data.child("to par").getValue().toString());
+                }
                 roundsRef.child("to par").setValue(roundToPar);
                 // Update score in tournament table
                 if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {
@@ -1001,11 +999,10 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
                 // Updating score to par of the hole, this is added to accumulate leaderboards quicker for competitions
                 // (current score - net reduction (handicap) ) - current par -> this will output value such as "1 under"/"1 over" for current hole
                 roundsRef.child("holes").child(selectedHole).child("to par").setValue( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) );
-                // calculate the overall "to par" value of the round
-                                                // Existing overall to par value
-                int roundToPar = Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) -
-                                                // Existing overall to par value, minus, current hole to par value
-                        ( Integer.parseInt(dataSnapshot.child("to par").getValue().toString()) - ( (currentHoleScore - netReduction) - Integer.parseInt(holePar.getText().toString()) ) );
+                int roundToPar = 0;
+                for (DataSnapshot data : dataSnapshot.child("holes").getChildren()) {
+                    roundToPar = roundToPar + Integer.parseInt(data.child("to par").getValue().toString());
+                }
                 roundsRef.child("to par").setValue(roundToPar);
                 // Update score in tournament table
                 if (getActivity().getIntent().hasExtra("tournamentFirebaseKey")) {

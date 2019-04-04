@@ -9,6 +9,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="***" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
@@ -28,10 +29,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MySwing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MySwing.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -54,71 +54,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlayMapAndScorecard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="202" column="8" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_selected_tournament.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="70" column="37" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PlayMapFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="96" column="50" selection-start-line="96" selection-start-column="50" selection-end-line="96" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SelectedTournament.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-76">
-              <caret line="52" column="97" selection-start-line="52" selection-start-column="97" selection-end-line="52" selection-end-column="97" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayScorecardFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="69" column="50" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayLeaderboardFragment.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-59">
-              <caret line="73" column="11" selection-start-line="73" selection-start-column="11" selection-end-line="73" selection-end-column="11" />
+            <state relative-caret-position="3676">
+              <caret line="1005" column="63" selection-start-line="1005" selection-start-column="63" selection-end-line="1005" selection-end-column="63" />
               <folding>
-                <element signature="e#4032#4061#0" expanded="true" />
+                <element signature="e#35761#45548#0" expanded="true" />
+                <element signature="e#36308#45106#0" expanded="true" />
+                <element signature="e#45105#45106#0" expanded="true" />
+                <element signature="e#45185#45411#0" expanded="true" />
+                <element signature="e#45410#45411#0" expanded="true" />
+                <element signature="e#45547#45548#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/MapFragment.java">
+      <file leaf-file-name="BluetoothConnectionService.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1666">
-              <caret line="49" column="97" selection-start-line="49" selection-start-column="97" selection-end-line="49" selection-end-column="97" />
+            <state relative-caret-position="208">
+              <caret line="137" column="30" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayMapAndScorecard.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="200" column="44" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -138,9 +107,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>putString</find>
-      <find>PlacesID</find>
-      <find>N</find>
       <find>Hash</find>
       <find>Log.d</find>
       <find>LayoutPa</find>
@@ -168,6 +134,9 @@
       <find>calculateH</find>
       <find>roundsRef</find>
       <find>numberOfTournaments</find>
+      <find>toPar</find>
+      <find>connected</find>
+      <find>.connect</find>
     </findStrings>
     <replaceStrings>
       <replace>firstName</replace>
@@ -2475,7 +2444,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectCourse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectRoundType.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/MapFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureMapFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_play_map.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_play_map_and_scorecard.xml" />
@@ -2498,7 +2466,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ProfileFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayFragment.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_played_tournaments.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Home.java" />
@@ -2507,9 +2474,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/LeaderboardAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" />
       </list>
     </option>
   </component>
@@ -2862,16 +2831,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="237" column="43" selection-start-line="237" selection-start-column="43" selection-end-line="237" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/golf_shot_icon.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -3252,26 +3211,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="98" column="10" lean-forward="true" selection-start-line="98" selection-start-column="10" selection-end-line="98" selection-end-column="10" />
+          <folding>
+            <element signature="e#4032#4061#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="96" column="50" selection-start-line="96" selection-start-column="50" selection-end-line="96" selection-end-column="50" />
+        <state relative-caret-position="3676">
+          <caret line="1005" column="63" selection-start-line="1005" selection-start-column="63" selection-end-line="1005" selection-end-column="63" />
+          <folding>
+            <element signature="e#35761#45548#0" expanded="true" />
+            <element signature="e#36308#45106#0" expanded="true" />
+            <element signature="e#45105#45106#0" expanded="true" />
+            <element signature="e#45185#45411#0" expanded="true" />
+            <element signature="e#45410#45411#0" expanded="true" />
+            <element signature="e#45547#45548#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="202" column="8" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="8" />
+        <state relative-caret-position="315">
+          <caret line="200" column="44" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-59">
-          <caret line="73" column="11" selection-start-line="73" selection-start-column="11" selection-end-line="73" selection-end-column="11" />
+        <state relative-caret-position="208">
+          <caret line="137" column="30" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="30" />
           <folding>
-            <element signature="e#4032#4061#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

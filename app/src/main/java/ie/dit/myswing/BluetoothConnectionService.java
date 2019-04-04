@@ -231,6 +231,10 @@ public class BluetoothConnectionService {
                         Log.d(TAG, "***********\nAdd shot called");
                         parentActivity.addShot();
                     }
+                    else if (incomingMessage.equals("Button")) {
+                        Log.d(TAG, "***********\nAdd Button shot called");
+                        parentActivity.addButtonShot();
+                    }
                     //Log.d(TAG, "***********\nInputStream: " + incomingMessage);
                 }
                 catch (IOException e) {

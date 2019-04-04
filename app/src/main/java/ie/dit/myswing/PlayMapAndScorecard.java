@@ -185,6 +185,27 @@ public class PlayMapAndScorecard extends AppCompatActivity {
         });
     }
 
+    public void addButtonShot() {
+        Log.d(TAG, "***********\nAdd Button shot called");
+
+        // get last known location
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful()) {
+                    playMapFragment.prepareAddShot(new LatLng(
+                            task.getResult().getLatitude(),
+                            task.getResult().getLongitude()
+                    ));
+                    Toast.makeText(PlayMapAndScorecard.this, "Shot added", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     /*
         Start receiving data input from Arduino.
     */
