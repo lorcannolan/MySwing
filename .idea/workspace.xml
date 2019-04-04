@@ -9,7 +9,6 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="***" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
@@ -29,9 +28,67 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/AddCourse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/AddCourse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/BluetoothConnectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureCourse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureCourse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureMapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureScorecardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureScorecardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/ConfirmRound.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/CourseListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/CourseListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/CreateTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/CreateTournament.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/DeviceListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/DeviceListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Home.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitePlayers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/InvitePlayers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitedTournamentsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/InvitedTournamentsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/JoinClub.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/JoinClub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/JoinSociety.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/JoinSociety.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/LeaderboardAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/LeaderboardAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/MapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/MapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayLeaderboardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapAndScorecard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectCourse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectCourse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectTournament.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayedTournamentsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/PlayedTournamentsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ProfileFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/ProfileFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Round.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Round.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundMapAndScorecard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundMapAndScorecard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundMapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundMapFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundScorecardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundScorecardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ScorecardAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ScorecardAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectRoundType.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/SelectRoundType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedRound.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/SelectedRound.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/SelectedTournament.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Society.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Society.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SocietyListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/SocietyListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TabPageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/TabPageAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Tournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Tournament.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TournamentListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/TournamentListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TournamentMarkerSetup.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/TournamentMarkerSetup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TournamentsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/TournamentsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/UserListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/UserListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_course.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_course.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_configure_course.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_configure_course.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_confirm_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_confirm_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_tournament.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_tournament.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_invite_players.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_invite_players.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_play_map_and_scorecard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_play_map_and_scorecard.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_selected_tournament.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_tournament_marker_setup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_tournament_marker_setup.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -54,40 +111,92 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlayMapFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
+      <file leaf-file-name="PlayScorecardAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3676">
-              <caret line="1005" column="63" selection-start-line="1005" selection-start-column="63" selection-end-line="1005" selection-end-column="63" />
-              <folding>
-                <element signature="e#35761#45548#0" expanded="true" />
-                <element signature="e#36308#45106#0" expanded="true" />
-                <element signature="e#45105#45106#0" expanded="true" />
-                <element signature="e#45185#45411#0" expanded="true" />
-                <element signature="e#45410#45411#0" expanded="true" />
-                <element signature="e#45547#45548#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="68">
+              <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BluetoothConnectionService.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java">
+      <file leaf-file-name="TabPageAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/TabPageAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="137" column="30" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="170">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Course.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Course.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Round.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Round.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Society.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Society.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Tournament.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Tournament.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConfigureMapFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureMapFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-34">
+              <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConfigureCourse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureCourse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="20" column="26" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="PlayMapAndScorecard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapAndScorecard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="200" column="44" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
+            <state relative-caret-position="-2369">
+              <caret line="82" column="20" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -2428,25 +2537,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/toolbarBackground.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/toolbar_background.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/logout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/gradient_background_navigation.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Login.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Register.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_select_round_type.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/DeviceListAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/society_list_adapter_view.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/device_list_row.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_play.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectCourse.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectRoundType.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/MapFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureMapFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_play_map.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_play_map_and_scorecard.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_play_scorecard.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/CreateTournament.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitePlayers.java" />
@@ -2479,6 +2569,25 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Login.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureCourse.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureScorecardFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/ProfileFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/MapFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/TournamentsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/CreateTournament.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/PlayedTournamentsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/SelectedTournament.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/SelectedRound.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/SelectRoundType.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectCourse.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectTournament.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/InvitePlayers.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/ConfirmRound.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapAndScorecard.java" />
       </list>
     </option>
   </component>
@@ -2517,13 +2626,56 @@
             <path>
               <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="greeting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="java_classes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="map" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="play" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="profile" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="rounds" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="myswing" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="tournaments" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="MySwing" type="1abcf292:AndroidViewProjectNode" />
@@ -2533,7 +2685,17 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="MySwing" type="58d84e3e:PackageViewProjectNode" />
+              <item name="app" type="616d4139:PackageViewModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -2576,21 +2738,36 @@
               <item name="assets" type="462c0819:PsiDirectoryNode" />
               <item name="fonts" type="462c0819:PsiDirectoryNode" />
             </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
             <path>
-              <item name="MySwing" type="58d84e3e:PackageViewProjectNode" />
-              <item name="app" type="616d4139:PackageViewModuleNode" />
+              <item name="MySwing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MySwing" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MySwing" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="myswing" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MySwing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MySwing" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2756,7 +2933,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-413" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32905984" />
@@ -2765,16 +2941,16 @@
       <window_info id="Build Variants" order="2" sideWeight="0.50106156" side_tool="true" weight="0.24966443" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50053304" side_tool="true" weight="0.3267974" />
-      <window_info anchor="right" id="Preview" order="5" sideWeight="0.49884528" weight="0.32569295" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32905984" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32897604" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="7" sideWeight="0.49946696" visible="true" weight="0.3267974" />
+      <window_info anchor="bottom" id="Logcat" order="7" sideWeight="0.49946696" visible="true" weight="0.3278867" />
       <window_info id="Captures" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.098614074" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49893844" visible="true" weight="0.098614074" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.14379086" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="right" id="Gradle" order="6" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -2782,12 +2958,12 @@
       <window_info anchor="right" id="Theme Preview" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Preview" order="5" sideWeight="0.49884528" weight="0.32569295" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
     </layout>
     <layout-to-restore>
       <window_info anchor="bottom" id="Build" order="7" weight="0.14379086" />
@@ -2806,6 +2982,7 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.3267974" />
       <window_info anchor="right" id="Preview" order="5" sideWeight="0.49884528" weight="0.32569295" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="right" id="Device File Explorer" order="8" sideWeight="0.5011547" side_tool="true" weight="0.32675907" />
       <window_info active="true" anchor="bottom" id="Logcat" order="10" sideWeight="0.49946696" visible="true" weight="0.19281046" />
       <window_info anchor="bottom" id="Version Control" order="11" />
@@ -2818,7 +2995,6 @@
       <window_info anchor="right" id="Theme Preview" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
     </layout-to-restore>
   </component>
@@ -2831,328 +3007,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/golf_shot_icon.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/golf_putt_icon.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfigureMapFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4641">
-          <caret line="310" column="46" selection-start-line="310" selection-start-column="46" selection-end-line="310" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_play_map.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="59" column="17" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/CreateTournament.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="53" column="112" selection-start-line="53" selection-start-column="112" selection-end-line="53" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitePlayers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="57" column="112" selection-start-line="57" selection-start-column="112" selection-end-line="57" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/gradient_background.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="45" lean-forward="true" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlaySelectTournament.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2703">
-          <caret line="186" column="25" selection-start-line="186" selection-start-column="25" selection-end-line="186" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_map.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="45" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_rounds.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/UserListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-680">
-          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/round_list_row.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="50" selection-start-line="45" selection-start-column="50" selection-end-line="45" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Round.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="80" column="27" selection-start-line="80" selection-start-column="27" selection-end-line="80" selection-end-column="27" />
-          <folding>
-            <element signature="e#1833#1834#0" expanded="true" />
-            <element signature="e#1872#1873#0" expanded="true" />
-            <element signature="e#1906#1907#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="41" column="59" selection-start-line="41" selection-start-column="59" selection-end-line="41" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_play_map_and_scorecard.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_selected_round.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="215" column="67" selection-start-line="215" selection-start-column="67" selection-end-line="215" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundMapAndScorecard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="64" column="51" selection-start-line="64" selection-start-column="51" selection-end-line="64" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedRound.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="94" column="77" selection-start-line="94" selection-start-column="77" selection-end-line="94" selection-end-column="77" />
-          <folding>
-            <element signature="e#4341#4870#0" expanded="true" />
-            <element signature="e#4869#4870#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundScorecardFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-127">
-          <caret line="50" column="44" selection-start-line="50" selection-start-column="44" selection-end-line="50" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ScorecardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1181">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-365">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="141" column="8" selection-start-line="141" selection-start-column="8" selection-end-line="141" selection-end-column="8" />
-          <folding>
-            <element signature="e#6501#7304#0" expanded="true" />
-            <element signature="e#7303#7304#0" expanded="true" />
-            <element signature="e#7852#8920#0" expanded="true" />
-            <element signature="e#8919#8920#0" expanded="true" />
-            <element signature="e#9431#10549#0" expanded="true" />
-            <element signature="e#10548#10549#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/RoundMapFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="410" column="5" selection-start-line="410" selection-start-column="5" selection-end-line="410" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ProfileFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="88" column="59" selection-start-line="88" selection-start-column="59" selection-end-line="88" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_invited_tournaments.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="31" column="17" lean-forward="true" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_played_tournaments.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/TournamentListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-76">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/InvitedTournamentsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="45" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/ConfirmRound.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="70" column="112" selection-start-line="70" selection-start-column="112" selection-end-line="70" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Tournament.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scorecard_row.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayedTournamentsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="109" column="60" selection-start-line="109" selection-start-column="48" selection-end-line="109" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-v21/leaderboard_row.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/LeaderboardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/leaderboard_row.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="47" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="54" column="20" selection-start-line="54" selection-start-column="8" selection-end-line="54" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/play_scorecard_row.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3160,20 +3014,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="39" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/Home.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="145" column="79" selection-start-line="145" selection-start-column="79" selection-end-line="145" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/SelectedTournament.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-76">
-          <caret line="52" column="97" selection-start-line="52" selection-start-column="97" selection-end-line="52" selection-end-column="97" />
         </state>
       </provider>
     </entry>
@@ -3197,59 +3037,348 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/MapFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Register.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1666">
-          <caret line="49" column="97" selection-start-line="49" selection-start-column="97" selection-end-line="49" selection-end-column="97" />
+        <state relative-caret-position="-289">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayScorecardFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="69" column="50" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="50" />
+        <state relative-caret-position="-238">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayLeaderboardFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/greeting/Home.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="98" column="10" lean-forward="true" selection-start-line="98" selection-start-column="10" selection-end-line="98" selection-end-column="10" />
-          <folding>
-            <element signature="e#4032#4061#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-646">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/AddCourse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3676">
-          <caret line="1005" column="63" selection-start-line="1005" selection-start-column="63" selection-end-line="1005" selection-end-column="63" />
-          <folding>
-            <element signature="e#35761#45548#0" expanded="true" />
-            <element signature="e#36308#45106#0" expanded="true" />
-            <element signature="e#45105#45106#0" expanded="true" />
-            <element signature="e#45185#45411#0" expanded="true" />
-            <element signature="e#45410#45411#0" expanded="true" />
-            <element signature="e#45547#45548#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-952">
+          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/PlayMapAndScorecard.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ScorecardAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="200" column="44" selection-start-line="200" selection-start-column="44" selection-end-line="200" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/BluetoothConnectionService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="137" column="30" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="30" />
+        <state relative-caret-position="-136">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureScorecardFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/ProfileFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1666">
+          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/MapFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/CourseListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/TournamentsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-93">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/InvitedTournamentsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/TournamentListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/CreateTournament.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1309">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/PlayedTournamentsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-952">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/SelectedTournament.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-901">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/LeaderboardAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/SelectedRound.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-850">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundMapAndScorecard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-493">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundMapFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/rounds/RoundScorecardFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/SocietyListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/JoinSociety.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/profile/JoinClub.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/BluetoothConnectionService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-170">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/DeviceListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1768">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/SelectRoundType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectCourse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-493">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlaySelectTournament.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1054">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/TournamentMarkerSetup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1309">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/InvitePlayers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/tournaments/UserListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/ConfirmRound.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2984">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayLeaderboardFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayScorecardAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureMapFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-34">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/ConfigureCourse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="20" column="26" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/play/PlayMapAndScorecard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2369">
+          <caret line="82" column="20" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/map/TabPageAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Course.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Round.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Society.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/Tournament.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ie/dit/myswing/java_classes/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>

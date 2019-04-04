@@ -32,37 +32,37 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".Login">
+        <activity android:name=".greeting.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register" />
+        <activity android:name=".greeting.Register" />
         <activity
-            android:name=".Home"
+            android:name=".greeting.Home"
             android:label="@string/title_activity_home"
-            android:parentActivityName=".Login">
+            android:parentActivityName=".greeting.Login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ie.dit.myswing.Login" />
+                android:value="ie.dit.myswing.greeting.Login" />
         </activity>
-        <activity android:name=".AddCourse" />
-        <activity android:name=".ConfigureCourse" />
-        <activity android:name=".ConfirmRound" />
-        <activity android:name=".PlayMapAndScorecard" />
-        <activity android:name=".JoinClub" />
-        <activity android:name=".JoinSociety" />
-        <activity android:name=".CreateTournament" />
-        <activity android:name=".InvitePlayers" />
-        <activity android:name=".PlaySelectCourse" />
-        <activity android:name=".PlaySelectTournament" />
-        <activity android:name=".TournamentMarkerSetup" />
-        <activity android:name=".SelectRoundType" />
-        <activity android:name=".SelectedRound" />
-        <activity android:name=".RoundMapAndScorecard" />
-        <activity android:name=".SelectedTournament"></activity>
+        <activity android:name=".map.AddCourse" />
+        <activity android:name=".map.ConfigureCourse" />
+        <activity android:name=".play.ConfirmRound" />
+        <activity android:name=".play.PlayMapAndScorecard" />
+        <activity android:name=".profile.JoinClub" />
+        <activity android:name=".profile.JoinSociety" />
+        <activity android:name=".tournaments.CreateTournament" />
+        <activity android:name=".tournaments.InvitePlayers" />
+        <activity android:name=".play.PlaySelectCourse" />
+        <activity android:name=".play.PlaySelectTournament" />
+        <activity android:name=".play.TournamentMarkerSetup" />
+        <activity android:name=".play.SelectRoundType" />
+        <activity android:name=".rounds.SelectedRound" />
+        <activity android:name=".rounds.RoundMapAndScorecard" />
+        <activity android:name=".tournaments.SelectedTournament"></activity>
     </application>
 
 </manifest>

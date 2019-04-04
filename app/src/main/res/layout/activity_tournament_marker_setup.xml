@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TournamentMarkerSetup"
+    tools:context=".play.TournamentMarkerSetup"
     android:weightSum="4"
     android:orientation="vertical">
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectedTournament"
+    tools:context=".tournaments.SelectedTournament"
     android:background="@color/places_ui_default_primary">
 
     <LinearLayout
