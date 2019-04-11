@@ -41,7 +41,6 @@ public class SelectedTournament extends AppCompatActivity {
         tournamentID = getIntent().getStringExtra("tournamentID");
 
         getSupportActionBar().setTitle("Selected Tournament");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         leaderboardListView = (ListView) findViewById(R.id.leaderboard_list);
 

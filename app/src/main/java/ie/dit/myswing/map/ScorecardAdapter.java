@@ -140,7 +140,7 @@ public class ScorecardAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 // Custom built dialog pop-up
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Select the Par for this hole.");
+                builder.setTitle("Select the Index for this hole.");
                 builder.setItems(R.array.indexes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

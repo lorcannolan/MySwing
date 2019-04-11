@@ -58,7 +58,6 @@ public class PlaySelectTournament extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setTitle("Select Tournament");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,7 +189,7 @@ public class PlaySelectTournament extends AppCompatActivity {
                         tournamentListView.setEmptyView(empty);
                     }
                     else {
-                        tournamentListAdapter = new TournamentListAdapter(PlaySelectTournament.this, R.layout.list_adapter_view, tournamentList);
+                        tournamentListAdapter = new TournamentListAdapter(PlaySelectTournament.this, R.layout.course_list_row, tournamentList);
                         tournamentListView.setAdapter(tournamentListAdapter);
                         tournamentListView.setDivider(null);
                     }

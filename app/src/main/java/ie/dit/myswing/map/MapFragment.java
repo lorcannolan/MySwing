@@ -191,12 +191,12 @@ public class MapFragment extends Fragment {
                         numberOfCourses -= 1;
                         if (numberOfCourses == 0) {
                             /*
-                            This condition added in-case of rapid change of menu item or if back button is selected. Allows app to continue running as the user intends.
-                            Found at the below link:
-                             - https://stackoverflow.com/questions/39532507/attempt-to-invoke-virtual-method-java-lang-object-android-content-context-getsy
-                             */
+                                This condition added in-case of rapid change of menu item or if back button is selected. Allows app to continue running as the user intends.
+                                Found at the below link:
+                                 - https://stackoverflow.com/questions/39532507/attempt-to-invoke-virtual-method-java-lang-object-android-content-context-getsy
+                            */
                             if (getActivity() != null) {
-                                courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
+                                courseListAdapter = new CourseListAdapter(getContext(), R.layout.course_list_row, courseList);
                                 courseListView.setAdapter(courseListAdapter);
                                 courseListView.setDivider(null);
                             }
@@ -235,7 +235,7 @@ public class MapFragment extends Fragment {
                             courseList.add(course);
                         }
                     }
-                    courseListAdapter = new CourseListAdapter(getContext(), R.layout.list_adapter_view, courseList);
+                    courseListAdapter = new CourseListAdapter(getContext(), R.layout.course_list_row, courseList);
                     courseListView.setAdapter(courseListAdapter);
                     courseListView.setDivider(null);
                 }

@@ -93,7 +93,6 @@ public class PlayMapAndScorecard extends AppCompatActivity {
         Intent i = getIntent();
         String courseName = i.getStringExtra("courseName");
         getSupportActionBar().setTitle("Playing " + courseName);
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();

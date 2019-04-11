@@ -127,15 +127,6 @@ public class PlayFragment extends Fragment {
         }
     };
 
-//    @Override
-//    public void onDestroy() {
-//        Log.d(TAG, "***************\nonDestroy: called");
-////        super.onDestroy();
-//        getActivity().unregisterReceiver(broadcastReceiver1);
-//        getActivity().unregisterReceiver(broadcastReceiver2);
-//        getActivity().unregisterReceiver(broadcastReceiver3);
-//    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -170,7 +161,7 @@ public class PlayFragment extends Fragment {
         });
 
         playButton = (Button) view.findViewById(R.id.button);
-        playButton.setVisibility(View.VISIBLE);
+        playButton.setVisibility(View.INVISIBLE);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

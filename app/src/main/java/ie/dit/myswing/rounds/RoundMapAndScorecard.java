@@ -37,7 +37,6 @@ public class RoundMapAndScorecard extends AppCompatActivity {
         Intent i = getIntent();
         String courseName = i.getStringExtra("courseName");
         getSupportActionBar().setTitle(courseName);
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
     }
 

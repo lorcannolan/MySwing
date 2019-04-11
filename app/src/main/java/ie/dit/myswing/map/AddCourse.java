@@ -100,8 +100,6 @@ public class AddCourse extends AppCompatActivity implements OnMapReadyCallback {
         floatingTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:
-                //add location bias, hint, etc
                 if (autocompleteFragment.a.getText().toString().equals("")) {
                     Snackbar.make(container, "Must Enter Text Value", Snackbar.LENGTH_LONG).show();
                 }

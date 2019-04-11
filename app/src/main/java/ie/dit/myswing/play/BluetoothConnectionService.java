@@ -13,6 +13,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+/*
+    Tutorial on how to implement Bluetooth Connectivity within Android app followed at the below source:
+    - https://www.youtube.com/watch?v=y8R2C86BIUc&list=PLgCYzUzKIBE8KHMzpp6JITZ2JxTgWqDH2
+    The Github repository for the code within the above tutorials can be accessed using the below link:
+    - https://github.com/mitchtabian/Sending-and-Receiving-Data-with-Bluetooth/tree/master/Bluetooth-Communication/app/src/main/java/com/example/user/bluetooth_communication
+*/
+
 public class BluetoothConnectionService {
 
     private static final String TAG = "BluetoothConnectionServ";

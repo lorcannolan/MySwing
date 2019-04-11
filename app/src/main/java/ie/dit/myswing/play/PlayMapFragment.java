@@ -79,6 +79,8 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
 
     private Bitmap shotIcon, puttIcon;
 
+    private Marker currentLocation;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -575,6 +577,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
         myMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        myMap.setMyLocationEnabled(true);
         myMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {

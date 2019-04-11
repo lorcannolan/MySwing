@@ -65,7 +65,6 @@ public class ConfirmRound extends AppCompatActivity {
         confirmRound = (FloatingTextButton)findViewById(R.id.confirm_round);
 
         getSupportActionBar().setTitle("Confirm Round");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         Intent i = getIntent();
         // If coming from select tournament

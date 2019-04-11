@@ -18,7 +18,6 @@ import ie.dit.myswing.greeting.Home;
 public class ConfigureCourse extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private TabPageAdapter mPageAdapter;
     private ViewPager mViewPager;
 
     private String courseLatitude;
@@ -37,7 +36,6 @@ public class ConfigureCourse extends AppCompatActivity {
         // to allow swiping between tabs. This also prevents map tab fragment from reloading.
         mViewPager = (ViewPager) findViewById(R.id.tab_container);
 
-        mPageAdapter = new TabPageAdapter(getSupportFragmentManager());
         setupViewPager(mViewPager);
 
         tabLayout = (TabLayout)findViewById(R.id.tab_navigation);

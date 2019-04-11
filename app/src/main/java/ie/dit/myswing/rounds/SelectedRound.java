@@ -36,7 +36,6 @@ public class SelectedRound extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("Rounds");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         roundKey = getIntent().getStringExtra("roundFirebaseKey");
         courseName = getIntent().getStringExtra("courseName");

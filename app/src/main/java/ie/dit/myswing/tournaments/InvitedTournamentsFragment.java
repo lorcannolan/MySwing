@@ -166,7 +166,7 @@ public class InvitedTournamentsFragment extends Fragment {
                              - https://stackoverflow.com/questions/39532507/attempt-to-invoke-virtual-method-java-lang-object-android-content-context-getsy
                          */
                         if (getActivity() != null) {
-                            tournamentListAdapter = new TournamentListAdapter(getContext(), R.layout.list_adapter_view, tournamentList);
+                            tournamentListAdapter = new TournamentListAdapter(getContext(), R.layout.course_list_row, tournamentList);
                             tournamentListView.setAdapter(tournamentListAdapter);
                             tournamentListView.setDivider(null);
                         }

@@ -56,7 +56,6 @@ public class InvitePlayers extends AppCompatActivity {
         setContentView(R.layout.activity_invite_players);
 
         getSupportActionBar().setTitle("Invite Players");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         tournamentsRef = FirebaseDatabase.getInstance().getReference().child("tournaments");
 

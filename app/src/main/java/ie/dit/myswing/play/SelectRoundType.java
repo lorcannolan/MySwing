@@ -18,7 +18,6 @@ public class SelectRoundType extends AppCompatActivity {
         setContentView(R.layout.activity_select_round_type);
 
         getSupportActionBar().setTitle("Select Round Type");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_background));
 
         personal = (CardView) findViewById(R.id.personal);
         personal.setOnClickListener(new View.OnClickListener() {

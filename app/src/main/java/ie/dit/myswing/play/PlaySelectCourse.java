@@ -109,7 +109,7 @@ public class PlaySelectCourse extends AppCompatActivity {
                         courseList.add(course);
                         numberOfCourses -= 1;
                         if (numberOfCourses == 0) {
-                            courseListAdapter = new CourseListAdapter(PlaySelectCourse.this, R.layout.list_adapter_view, courseList);
+                            courseListAdapter = new CourseListAdapter(PlaySelectCourse.this, R.layout.course_list_row, courseList);
                             courseListView.setAdapter(courseListAdapter);
                             courseListView.setDivider(null);
                         }
@@ -147,7 +147,7 @@ public class PlaySelectCourse extends AppCompatActivity {
                             courseList.add(course);
                         }
                     }
-                    courseListAdapter = new CourseListAdapter(PlaySelectCourse.this, R.layout.list_adapter_view, courseList);
+                    courseListAdapter = new CourseListAdapter(PlaySelectCourse.this, R.layout.course_list_row, courseList);
                     courseListView.setAdapter(courseListAdapter);
                     courseListView.setDivider(null);
                 }

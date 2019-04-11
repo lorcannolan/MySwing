@@ -122,7 +122,7 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
             Information relating to LatLngBounds was found here:
                 - https://stackoverflow.com/questions/15540220/google-map-camera-position-on-multiple-markers
             LatLngBounds enables camera to zoom to markers and display all markers within the bounds of the screen.
-         */
+        */
         LatLngBounds.Builder mapBoundsBuilder = new LatLngBounds.Builder();
         boolean locationsToShow = false;
         // Men's Tee Box Marker
@@ -216,41 +216,9 @@ public class ConfigureMapFragment extends Fragment implements OnMapReadyCallback
         }
         else {
             LatLngBounds mapBounds = mapBoundsBuilder.build();
-//            CameraPosition cameraPosition = new CameraPosition.Builder()
-//                    .bearing(90)
-//                    .zoom(getBoundsZoomLeve)
-//                    .build();
             myMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds, 100));
         }
     }
-
-    // TODO:
-    // Come back to this: https://stackoverflow.com/questions/14631334/android-maps-v2-newlatlngbounds-with-bearing
-//    public int getBoundsZoomLevel(LatLngBounds bounds, int mapWidthPx, int mapHeightPx){
-//
-//        LatLng ne = bounds.northeast;
-//        LatLng sw = bounds.southwest;
-//
-//        double latFraction = (latRad(ne.latitude) - latRad(sw.latitude)) / Math.PI;
-//
-//        double lngDiff = ne.longitude - sw.longitude;
-//        double lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
-//
-//        double latZoom = zoom(mapHeightPx, WORLD_PX_HEIGHT, latFraction);
-//        double lngZoom = zoom(mapWidthPx, WORLD_PX_WIDTH, lngFraction);
-//
-//        int result = Math.min((int)latZoom, (int)lngZoom);
-//        return Math.min(result, ZOOM_MAX);
-//    }
-//
-//    private double latRad(double lat) {
-//        double sin = Math.sin(lat * Math.PI / 180);
-//        double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
-//        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
-//    }
-//    private double zoom(int mapPx, int worldPx, double fraction) {
-//        return Math.floor(Math.log(mapPx / worldPx / fraction) / LN2);
-//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

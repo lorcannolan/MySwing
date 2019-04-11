@@ -191,7 +191,7 @@ public class JoinClub extends AppCompatActivity {
                         );
                         courseList.add(course);
                     }
-                    courseListAdapter = new CourseListAdapter(JoinClub.this, R.layout.list_adapter_view, courseList);
+                    courseListAdapter = new CourseListAdapter(JoinClub.this, R.layout.course_list_row, courseList);
                     courseListView.setAdapter(courseListAdapter);
                     courseListView.setDivider(null);
                 }
@@ -227,7 +227,7 @@ public class JoinClub extends AppCompatActivity {
                             courseList.add(course);
                         }
                     }
-                    courseListAdapter = new CourseListAdapter(JoinClub.this, R.layout.list_adapter_view, courseList);
+                    courseListAdapter = new CourseListAdapter(JoinClub.this, R.layout.course_list_row, courseList);
                     courseListView.setAdapter(courseListAdapter);
                     courseListView.setDivider(null);
                 }

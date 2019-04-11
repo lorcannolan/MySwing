@@ -24,7 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/choose_par"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:focusableInTouchMode="false">
     </EditText>
 
     <EditText
@@ -33,7 +34,8 @@
         android:id="@+id/choose_index"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:textAlignment="center">
+        android:textAlignment="center"
+        android:focusableInTouchMode="false">
     </EditText>
 
 </RelativeLayout>
